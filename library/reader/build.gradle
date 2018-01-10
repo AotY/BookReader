@@ -1,0 +1,95 @@
+apply plugin: 'com.android.library'
+
+def buildToolVersion = "26.0.2"
+def supportVersion = "26.1.0"
+
+android {
+
+    compileSdkVersion 26
+    buildToolsVersion buildToolVersion
+    defaultConfig {
+
+        minSdkVersion 17
+        targetSdkVersion 26
+        versionCode 2
+        versionName "2.0"
+        multiDexEnabled true//方法总数超过64K时,dex分割
+//        ndk {
+//            moduleName "DeflatingDecompressor-v3"
+//            abiFilters "armeabi-v7a"
+//        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+//        release {
+//            // 是否进行混淆
+//            minifyEnabled false
+//            // 混淆文件的位置
+////            signingConfig signingConfigs.debug
+//            proguardFiles 'proguard-rules.pro'
+//        }
+//
+//        debug {
+//            minifyEnabled false
+//            signingConfig signingConfigs.debug
+//            proguardFiles 'proguard-rules.pro'
+//        }
+
+    }
+
+    sourceSets.main {
+        jniLibs.srcDir 'src/main/libs'
+        jni.srcDirs = []
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    productFlavors {
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
+    defaultConfig {
+        multiDexEnabled true
+    }
+    buildToolsVersion '26.0.2'
+}
+
+dependencies {
+    repositories {
+        flatDir { dirs 'libs' }
+    }
+    implementation 'com.android.support:support-v4:' + supportVersion
+    implementation 'com.android.support:appcompat-v7:' + supportVersion
+    //    compile files('libs/universal-image-loader-1.9.5.jar')
+    implementation 'com.commit451:PhotoView:1.2.4'
+    implementation 'com.android.support:design:' + supportVersion
+    implementation 'de.hdodenhof:circleimageview:1.3.0'
+    implementation 'org.apache.httpcomponents:httpcore:4.4.2'
+    implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.0'
+    implementation files('libs/json-simple-1.1.1.jar')
+    implementation files('libs/nanohttpd-2.0.5.jar')
+    implementation 'com.github.johnpersano:supertoasts:1.3.4@aar'
+    implementation 'com.github.yukuku:ambilwarna:2.0.1'
+    implementation 'com.j256.ormlite:ormlite-android:4.48'
+    implementation 'com.j256.ormlite:ormlite-core:4.48'
+    implementation files('libs/javabase64-1.3.1.jar')
+
+    //    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    //方法总数超过64K时,dex分割
+
+    implementation files('libs/universal-image-loader-1.9.5.jar')
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.githang:status-bar-compat:0.5.2'
+
+    // 状态栏颜色
+//    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
+//    compileOnly 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
+    annotationProcessor 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
+}

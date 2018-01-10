@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.koolearn.android.kooreader.popup.ProgressWindow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/progressWindow"
+    android:background="@color/white"
+    android:paddingTop="10dp"
+    android:focusable="false"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical">
+
+    <!--<TextView-->
+        <!--android:id="@+id/navigation_text"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:drawablePadding="6dp"-->
+        <!--android:paddingRight="10dp"-->
+        <!--android:ellipsize="end"-->
+        <!--android:paddingBottom="3dp"-->
+        <!--android:paddingTop="3dp"-->
+        <!--android:singleLine="true"-->
+        <!--android:text="1% 第一章 幸福的生活"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+        <!--android:textColor="#ddd"-->
+        <!--android:textSize="16dp" />-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/pre_character"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:text="上一章"
+            android:textColor="@color/text"
+            android:textSize="13sp" />
+
+        <SeekBar
+            android:id="@+id/navigation_slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="65dp"
+            android:layout_marginRight="65dp" />
+
+        <TextView
+            android:id="@+id/next_character"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:text="下一章"
+            android:textColor="@color/text"
+            android:textSize="13sp" />
+
+
+    </RelativeLayout>
+
+</com.koolearn.android.kooreader.popup.ProgressWindow>

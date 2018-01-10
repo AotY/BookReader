@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">BookReader</string>
+    <string name="bookshelf">书架</string>
+    <string name="book_mall">书城</string>
+    <string name="user_center">我的</string>
+
+    <string name="culture_book">文化</string>
+    <string name="politics_book">政治</string>
+    <string name="history_book">历史</string>
+    <string name="economics_book">经济</string>
+
+
+    <string name="load_err_retry">加载失败,点击重试</string>
+    <string name="loading">努力加载中...</string>
+    <string name="actionbar_more">更多信息</string>
+
+
+    <string name="listview_header_hint_normal">下拉刷新...</string>
+    <string name="listview_header_hint_release">释放刷新...</string>
+    <string name="listview_loading">努力加载中...</string>
+    <string name="nomore_loading">没有更多内容了</string>
+    <string name="refreshing">正在刷新...</string>
+    <string name="refresh_done">刷新完成...</string>
+    <string name="listview_header_last_time">上次更新时间：</string>
+
+
+    <string name="string_everyday_empty">暂时没有更新内容，去看看其他信息吧~</string>
+    <string name="more">更多</string>
+    <string name="loading_more">加载更多...</string>
+
+    <string name="recommend_sp_key">recommend</string>
+    <string name="pull_loads_more">上拉加载更多</string>
+    <string name="skip">跳过</string>
+    <string name="selected_book">精选书籍</string>
+
+    <string name="string_rating_num">人评分</string>
+    <string name="string_rating">评分：</string>
+    <string name="string_publisher">出版社：</string>
+</resources>

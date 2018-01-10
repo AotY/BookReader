@@ -1,0 +1,52 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/build/intermediates/res/merged/release/values-v19/values-v19.xml",
+            "map": [
+                {
+                    "source": "/Users/LeonTao/.gradle/caches/transforms-1/files-1.1/supertoasts-1.3.4.aar/5c118e39c63cb1eb5278473bef91d9c7/res/values-v19/values.xml",
+                    "from": {
+                        "startLines": "6,10,14,26,33,38,44,50,56,60,65,70,74",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "178,354,485,1026,1339,1525,1870,2116,2430,2590,2796,3031,3174",
+                        "endLines": "6,12,24,31,36,42,48,54,58,63,68,72,76",
+                        "endColumns": "52,12,12,12,12,12,12,12,12,12,12,12,12",
+                        "endOffsets": "226,479,1020,1333,1519,1864,2110,2424,2584,2790,3025,3168,3352"
+                    },
+                    "to": {
+                        "startLines": "2,3,6,17,23,27,32,37,42,45,49,53,56",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,108,238,778,1090,1275,1619,1864,2177,2336,2541,2775,2917",
+                        "endLines": "2,5,16,22,26,31,36,41,44,48,52,55,58",
+                        "endColumns": "52,12,12,12,12,12,12,12,12,12,12,12,12",
+                        "endOffsets": "103,233,773,1085,1270,1614,1859,2172,2331,2536,2770,2912,3095"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-v19/values-v19.xml",
+            "map": [
+                {
+                    "source": "/Users/LeonTao/.gradle/caches/transforms-1/files-1.1/supertoasts-1.3.4.aar/5c118e39c63cb1eb5278473bef91d9c7/res/values-v19/values.xml",
+                    "from": {
+                        "startLines": "6,10,14,26,33,38,44,50,56,60,65,70,74",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "178,354,485,1026,1339,1525,1870,2116,2430,2590,2796,3031,3174",
+                        "endLines": "6,12,24,31,36,42,48,54,58,63,68,72,76",
+                        "endColumns": "52,12,12,12,12,12,12,12,12,12,12,12,12",
+                        "endOffsets": "226,479,1020,1333,1519,1864,2110,2424,2584,2790,3025,3168,3352"
+                    },
+                    "to": {
+                        "startLines": "2,3,6,17,23,27,32,37,42,45,49,53,56",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,108,238,778,1090,1275,1619,1864,2177,2336,2541,2775,2917",
+                        "endLines": "2,5,16,22,26,31,36,41,44,48,52,55,58",
+                        "endColumns": "52,12,12,12,12,12,12,12,12,12,12,12,12",
+                        "endOffsets": "103,233,773,1085,1270,1614,1859,2172,2331,2536,2770,2912,3095"
+                    }
+                }
+            ]
+        }
+    ]
+}

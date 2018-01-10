@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+  <color name="scan_date_year">#464545</color>
+  <color name="scan_date_day">#4C4B4B</color>
+  <color name="bookmark_title">#959595</color>
+  <color name="gray">#a3a3a3</color>
+  <color name="gray_test">#cecece</color>
+  <color name="sacn_color">#FEF10D</color>
+  <color name="contents_text">#ff000000</color>
+  <color name="encode_view">#ffffffff</color>
+  <color name="possible_result_points">#c0ffbd21</color> <!-- Android standard ICS color -->
+  <color name="result_minor_text">#ffc0c0c0</color>
+  <color name="result_points">#c099cc00</color> <!-- Android standard ICS color -->
+  <color name="result_text">#ffffffff</color>
+  <color name="result_view">#b0000000</color>
+  <color name="status_text">#ffffffff</color>
+  <color name="transparent">#00000000</color>
+  <color name="viewfinder_laser">#ffcc0000</color> <!-- Android standard ICS color -->
+  <color name="viewfinder_mask">#60000000</color>
+
+  <color name="tab">#cacaca</color>
+  <color name="dialog_text">#fb9e01</color>
+  <color name="bookself_text">#5d5d5d</color>
+  <color name="text">#007aff</color>
+  <color name="hot_title">#9a99ff</color>
+  <color name="hot_text">#5e5d5d</color>
+  <color name="view_gray">#f2f2f2</color>
+  <color name="transparent_background">#50000000</color>
+  <color name="bookname">#5e5d5d</color>
+  <color name="bookAuthor">#727272</color>
+  <!--紫粉-->
+  <color name="colorPrimary">#ffffff</color>
+  <color name="colorPrimaryDark">#007aff</color>
+  <color name="colorAccent">#FF4081</color>
+  <color name="colorPrimaryLight">#c5cae9</color>
+  <!--SwipeRefreshLayout-->
+  <color name="progressBarBg">#FFFFFF</color>
+  <color name="progressBara">#3F51B5</color>
+  <color name="progressBarb">#303F9F</color>
+  <!--button-->
+  <color name="button_compelete">#3f51b5</color> <!-- 400 -->
+  <color name="button_progress">#3f51b5</color> <!-- 400 -->
+  <color name="button_normal">#738ffe</color> <!-- 400 -->
+  <color name="button_press">#5677fc</color>
+  <color name="button_error">#ff80a8</color>
+
+  <!--button-->
+  <color name="bookmark_1">#00000000</color> <!-- 400 -->
+  <color name="bookmark_2">#00000000</color> <!-- 400 -->
+  <color name="bookmark_3">#00000000</color> <!-- 400 -->
+
+
+  <!--绿色-->
+  <color name="primarys1">#009688</color>
+  <color name="primarys_dark1">#00897b</color>
+  <color name="primary_light1">#B2DFDB</color>
+  <color name="accent1">#ffb74d</color>
+
+  <color name="fontColor">#532d17</color>
+
+  <color name="primary_text">#212121</color>
+  <color name="secondary_text">#727272</color>
+  <color name="icons">#FFFFFF</color>
+  <color name="divider">#B6B6B6</color>
+
+  <color name="window_background">#FFF5F5F5</color>
+  <color name="tab_bgcolor">#eeeeee</color>
+
+  <color name="status_blue">#2a36b1</color>        <!-- 900 -->
+  <color name="navigation_blue">#455ede</color>    <!-- 700 -->
+  <color name="action_blue">#5677fc</color>        <!-- 500 -->
+  <color name="bg_blue">#738ffe</color>    <!-- 400 -->
+  <color name="window_bg_blue">#91a7ff</color>     <!-- 300 -->
+  <color name="fg_blue">#e7e9fd</color>    <!-- 50 -->
+  <color name="control_activated_blue">#4d69ff</color>    <!-- A700 -->
+  <color name="control_highlight_blue">#afbfff</color>    <!-- 200 -->
+  <color name="control_normal_blue">#e7e9fd</color>    <!-- 50 -->
+  <color name="button_normal_blue">#738ffe</color> <!-- 400 -->
+
+
+  <!--<color name="blue_pressed">#ff0099cc</color>-->
+  <!--<color name="blue_normal">#ff33b5e5</color>-->
+  <!--<color name="green_complete">#009688</color>-->
+  <!--<color name="purple_progress">#ffaa66cc</color>-->
+  <!--<color name="red_error">#ffff4444</color>-->
+
+  <!--<color name="holo_blue_bright">#ff00ddff</color>-->
+  <!--<color name="holo_green_light">#ff99cc00</color>-->
+  <!--<color name="holo_orange_light">#ffffbb33</color>-->
+  <!--<color name="holo_red_light">#ffff4444</color>-->
+</resources>

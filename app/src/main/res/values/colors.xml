@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#F44336</color>
+    <color name="colorPrimaryDark">#D32F2F</color>
+    <color name="colorPrimaryLight">#FFCDD2</color>
+    <color name="colorAccent">#FF5722</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#8a8a8a</color>
+    <color name="colorIcons">#FFFFFF</color>
+    <color name="colorDivider">#BDBDBD</color>
+
+    <!--页面背景的颜色-->
+    <color name="colorPageBg">#f2f4f5</color>
+
+    <color name="colorWhite">#ffffffff</color>
+
+    <!--tab标签栏文字的颜色-->
+    <color name="colorTabText">#585858</color>
+
+    <!--透明色-->
+    <color name="colorTransparent">#00000000</color>
+
+    <!--正文文字颜色-->
+    <color name="colorContent">#ff212121</color>
+
+    <!--分割线-->
+    <color name="colorLine">#EBEBEB</color>
+
+    <color name="colorTitle">#666</color>
+
+    <!--首页item文字颜色-->
+    <color name="colorSubtitle">#999</color>
+
+    <!--首页分割线-->
+    <color name="colorHomeLine">#D4D4D4</color>
+
+    <!--电影评分-->
+    <color name="colorRateRed">#FB5B81</color>
+
+
+    <!--阅读页面背景-->
+    <color name="read_theme_gray">#AAAAAA</color>
+
+    <color name="read_theme_green">#bed0cf</color>
+
+    <color name="read_theme_night">#000000</color>
+
+    <color name="read_theme_white">#ffffff</color>
+
+    <color name="read_theme_yellow">#e6dbbf</color>
+
+</resources>

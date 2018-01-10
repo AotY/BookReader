@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="62dp"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    android:paddingLeft="5dp">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical|start"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="8dp">
+        <TextView
+            android:id="@+id/bookmark_item_booktitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:ellipsize="end"
+            android:text="第一章"
+            android:textSize="@dimen/bookmark_size"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:lines="1"
+            android:textColor="@color/bookmark_title"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/bookmark_item_text"
+            android:textSize="@dimen/bookmark_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|start"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/black"
+            android:text="txt格式书籍阅读，不一样的Marterial Design界面风格，可以记录不同颜色的笔记，流畅的翻页动画，个性化的字体、间距，排版设置，给你极致的阅读体验！"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </LinearLayout>
+</LinearLayout>

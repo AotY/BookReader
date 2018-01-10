@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/build/intermediates/res/merged/release/drawable-ldpi-v4/ambilwarna_target.png",
+        "source": "/Users/LeonTao/.gradle/caches/transforms-1/files-1.1/ambilwarna-2.0.1.aar/a19a9f2ca86ea6640d124aa7ce66dc28/res/drawable-ldpi/ambilwarna_target.png"
+    },
+    {
+        "merged": "/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/build/intermediates/res/merged/release/drawable-ldpi-v4/ambilwarna_cursor.png",
+        "source": "/Users/LeonTao/.gradle/caches/transforms-1/files-1.1/ambilwarna-2.0.1.aar/a19a9f2ca86ea6640d124aa7ce66dc28/res/drawable-ldpi/ambilwarna_cursor.png"
+    },
+    {
+        "merged": "/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/build/intermediates/res/merged/release/drawable-ldpi-v4/ambilwarna_arrow_right.png",
+        "source": "/Users/LeonTao/.gradle/caches/transforms-1/files-1.1/ambilwarna-2.0.1.aar/a19a9f2ca86ea6640d124aa7ce66dc28/res/drawable-ldpi/ambilwarna_arrow_right.png"
+    },
+    {
+        "merged": "/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/build/intermediates/res/merged/release/drawable-ldpi-v4/ambilwarna_arrow_down.png",
+        "source": "/Users/LeonTao/.gradle/caches/transforms-1/files-1.1/ambilwarna-2.0.1.aar/a19a9f2ca86ea6640d124aa7ce66dc28/res/drawable-ldpi/ambilwarna_arrow_down.png"
+    }
+]
