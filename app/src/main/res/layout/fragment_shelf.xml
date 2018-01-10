@@ -5,7 +5,7 @@
         android:id="@+id/srl_shelf"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="50dp"
         tools:context="com.xjtu.bookreader.ui.fragment.ShelfFragment">
 
         <android.support.v7.widget.RecyclerView

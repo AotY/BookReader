@@ -15,6 +15,7 @@
             android:id="@+id/xrv_recommend"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
             android:visibility="gone" />
 
         <LinearLayout

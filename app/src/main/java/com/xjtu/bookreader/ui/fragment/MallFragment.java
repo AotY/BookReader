@@ -140,6 +140,10 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
          * 所以此处要额外调用load(),不然最初不会加载内容
          */
         loadData();
+
+        // 测试，清除缓存
+        maCache.clear();
+        maCache.remove(EVERYDAY_DATA);
     }
 
     /**
@@ -188,49 +192,47 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
         String oneData = SPUtils.getString(EVERYDAY_DATA, "2018-1-8");
 
 
-        isOldDayRequest = false;
-        mMallModel.setDate(getTodayTime().get(0), getTodayTime().get(1), getTodayTime().get(2));
+//        isOldDayRequest = false;
+//        mMallModel.setDate(getTodayTime().get(0), getTodayTime().get(1), getTodayTime().get(2));
+//
+//        showRotaLoading(true);
+//
+//        // 加载banner图片
+//        loadBannerPicture();
+//
+//        // 加载推荐内容
+//        loadRecommendData();
 
-        showRotaLoading(true);
+        if (!oneData.equals(TimeUtil.getData())) {// 是第二天
+            if (TimeUtil.isRightTime()) {//大于12：30,请求
 
-        // 加载banner图片
-        loadBannerPicture();
+                isOldDayRequest = false;
+                mMallModel.setDate(getTodayTime().get(0), getTodayTime().get(1), getTodayTime().get(2));
 
-        // 加载推荐内容
-        loadRecommendData();
+                showRotaLoading(true);
 
-//        if (!oneData.equals(TimeUtil.getData())) {// 是第二天
-//            if (TimeUtil.isRightTime()) {//大于12：30,请求
-//
-//                isOldDayRequest = false;
-//                mMallModel.setDate(getTodayTime().get(0), getTodayTime().get(1), getTodayTime().get(2));
-//
-//                showRotaLoading(true);
-//
-//                // 加载banner图片
-//                loadBannerPicture();
-//
-//                // 加载推荐内容
-//                loadRecommendData();
-//
-//
-//            } else {// 小于，取缓存没有请求前一天
-//
-//                ArrayList<String> lastTime = TimeUtil.getLastTime(getTodayTime().get(0), getTodayTime().get(1), getTodayTime().get(2));
-//                mMallModel.setDate(lastTime.get(0), lastTime.get(1), lastTime.get(2));
-//
-//                year = lastTime.get(0);
-//                month = lastTime.get(1);
-//                day = lastTime.get(2);
-//
-//                isOldDayRequest = true;// 是昨天
-//                getACacheData();
-//            }
-//        } else {// 当天，取缓存，没有请求当天
-//
-//            isOldDayRequest = false;
-//            getACacheData();
-//        }
+                // 加载banner图片
+                loadBannerPicture();
+
+                // 加载推荐内容
+                loadRecommendData();
+
+
+            } else {// 小于，取缓存没有请求前一天
+                ArrayList<String> lastTime = TimeUtil.getLastTime(getTodayTime().get(0), getTodayTime().get(1), getTodayTime().get(2));
+                mMallModel.setDate(lastTime.get(0), lastTime.get(1), lastTime.get(2));
+
+                year = lastTime.get(0);
+                month = lastTime.get(1);
+                day = lastTime.get(2);
+
+                isOldDayRequest = true;// 是昨天
+                getACacheData();
+            }
+        } else {// 当天，取缓存，没有请求当天
+            isOldDayRequest = false;
+            getACacheData();
+        }
     }
 
     /**
@@ -275,6 +277,7 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
         } else {
             loadBannerPicture();
         }
+
         mLists = (ArrayList<List<MallRecommendItemBean>>) maCache.getAsObject(Constants.EVERYDAY_CONTENT);
         if (mLists != null && mLists.size() > 0) {
             setAdapter(mLists);
@@ -458,24 +461,11 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
                         }
 
                         mHeaderBinding.banner.setImages(mBannerImages).setImageLoader(new GlideImageLoader()).start();
-
-//                        mHeaderBinding.banner.setOnBannerClickListener(new OnBannerClickListener() {
-//                            @Override
-//                            public void OnBannerClick(int position) {
-//                                position = position - 1;
-//                                // 链接没有做缓存，如果轮播图使用的缓存则点击图片无效
-//                                if (result.get(position) != null && result.get(position).getId() != null) {
-//                                    Toast.makeText(activity, "id: " + result.get(position).getId(), Toast.LENGTH_SHORT);
-//                                    BookDetailActivity.start(activity, result.get(position).getId(), mHeaderBinding.banner.getImageView(position));
-//                                }
-//                            }
-//                        });
-
                         // 这个默认下标是从0开始的。
                         mHeaderBinding.banner.setOnBannerListener(new OnBannerListener(){
                             @Override
                             public void OnBannerClick(int position) {
-                                Toast.makeText(activity, "OnBannerClick", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(activity, "OnBannerClick", Toast.LENGTH_SHORT).show();
 //                                position = position - 1;
                                 // 链接没有做缓存，如果轮播图使用的缓存则点击图片无效
                                 if (result.get(position) != null) {

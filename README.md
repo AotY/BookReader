@@ -10,11 +10,11 @@
 
 ## 主题色
 
-<color name="colorPrimary">#F44336</color>
-<color name="colorPrimaryDark">#D32F2F</color>
-<color name="colorPrimaryLight">#FFCDD2</color>
-<color name="colorAccent">#FF5722</color>
-<color name="colorPrimaryText">#212121</color>
-<color name="colorSecondaryText">#8a8a8a</color>
-<color name="colorIcons">#FFFFFF</color>
-<color name="colorDivider">#BDBDBD</color>
+- <color name="colorPrimary">#F44336</color>
+- <color name="colorPrimaryDark">#D32F2F</color>
+- <color name="colorPrimaryLight">#FFCDD2</color>
+- <color name="colorAccent">#FF5722</color>
+- <color name="colorPrimaryText">#212121</color>
+- <color name="colorSecondaryText">#8a8a8a</color>
+- <color name="colorIcons">#FFFFFF</color>
+- <color name="colorDivider">#BDBDBD</color>
