@@ -4,7 +4,7 @@
 1. 下载安装Android Studio
 2. 下载Android SDK （Version 26）
 3. 打开Android Studio，导入项目
-4. 编译云
+4. 编译运行
 
 
 
