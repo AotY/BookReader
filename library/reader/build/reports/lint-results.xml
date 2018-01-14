@@ -520,142 +520,6 @@
     </issue>
 
     <issue
-        id="InlinedApi"
-        severity="Warning"
-        message="Field requires API level 19 (current min is 17): `android.view.WindowManager.LayoutParams#FLAG_TRANSLUCENT_STATUS`"
-        category="Correctness"
-        priority="6"
-        summary="Using inlined constants on older versions"
-        explanation="This check scans through all the Android API field references in the application and flags certain constants, such as static final integers and Strings, which were introduced in later versions. These will actually be copied into the class files rather than being referenced, which means that the value is available even when running on older devices. In some cases that&apos;s fine, and in other cases it can result in a runtime crash or incorrect behavior. It depends on the context, so consider the code carefully and device whether it&apos;s safe and can be suppressed or whether the code needs tbe guarded.&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level."
-        errorLine1="        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);"
-        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        quickfix="studio">
-        <location
-            file="/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/src/main/java/com/ninestars/DialogActivity.java"
-            line="21"
-            column="30"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        severity="Error"
-        message="Call requires API level 19 (current min is 17): android.transition.Transition#setDuration"
-        category="Correctness"
-        priority="6"
-        summary="Calling new methods on older versions"
-        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on **all** versions targeted by this application (according to its minimum SDK attribute in the manifest).&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.&#xA;&#xA;If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v`*NN* folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.&#xA;&#xA;Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
-        errorLine1="        getWindow().setEnterTransition(new Slide().setDuration(500));"
-        errorLine2="                                                   ~~~~~~~~~~~"
-        quickfix="studio">
-        <location
-            file="/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/src/main/java/com/ninestars/DialogActivity.java"
-            line="22"
-            column="52"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        severity="Error"
-        message="Call requires API level 21 (current min is 17): android.view.Window#setEnterTransition"
-        category="Correctness"
-        priority="6"
-        summary="Calling new methods on older versions"
-        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on **all** versions targeted by this application (according to its minimum SDK attribute in the manifest).&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.&#xA;&#xA;If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v`*NN* folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.&#xA;&#xA;Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
-        errorLine1="        getWindow().setEnterTransition(new Slide().setDuration(500));"
-        errorLine2="                    ~~~~~~~~~~~~~~~~~~"
-        quickfix="studio">
-        <location
-            file="/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/src/main/java/com/ninestars/DialogActivity.java"
-            line="22"
-            column="21"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        severity="Error"
-        message="Call requires API level 21 (current min is 17): new android.transition.Slide"
-        category="Correctness"
-        priority="6"
-        summary="Calling new methods on older versions"
-        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on **all** versions targeted by this application (according to its minimum SDK attribute in the manifest).&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.&#xA;&#xA;If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v`*NN* folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.&#xA;&#xA;Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
-        errorLine1="        getWindow().setEnterTransition(new Slide().setDuration(500));"
-        errorLine2="                                       ~~~~~~~~~"
-        quickfix="studio">
-        <location
-            file="/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/src/main/java/com/ninestars/DialogActivity.java"
-            line="22"
-            column="40"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        severity="Error"
-        message="Call requires API level 19 (current min is 17): android.transition.Transition#setDuration"
-        category="Correctness"
-        priority="6"
-        summary="Calling new methods on older versions"
-        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on **all** versions targeted by this application (according to its minimum SDK attribute in the manifest).&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.&#xA;&#xA;If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v`*NN* folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.&#xA;&#xA;Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
-        errorLine1="        getWindow().setExitTransition(new Slide().setDuration(500));"
-        errorLine2="                                                  ~~~~~~~~~~~"
-        quickfix="studio">
-        <location
-            file="/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/src/main/java/com/ninestars/DialogActivity.java"
-            line="23"
-            column="51"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        severity="Error"
-        message="Call requires API level 21 (current min is 17): android.view.Window#setExitTransition"
-        category="Correctness"
-        priority="6"
-        summary="Calling new methods on older versions"
-        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on **all** versions targeted by this application (according to its minimum SDK attribute in the manifest).&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.&#xA;&#xA;If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v`*NN* folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.&#xA;&#xA;Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
-        errorLine1="        getWindow().setExitTransition(new Slide().setDuration(500));"
-        errorLine2="                    ~~~~~~~~~~~~~~~~~"
-        quickfix="studio">
-        <location
-            file="/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/src/main/java/com/ninestars/DialogActivity.java"
-            line="23"
-            column="21"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        severity="Error"
-        message="Call requires API level 21 (current min is 17): new android.transition.Slide"
-        category="Correctness"
-        priority="6"
-        summary="Calling new methods on older versions"
-        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on **all** versions targeted by this application (according to its minimum SDK attribute in the manifest).&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.&#xA;&#xA;If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v`*NN* folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.&#xA;&#xA;Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
-        errorLine1="        getWindow().setExitTransition(new Slide().setDuration(500));"
-        errorLine2="                                      ~~~~~~~~~"
-        quickfix="studio">
-        <location
-            file="/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/src/main/java/com/ninestars/DialogActivity.java"
-            line="23"
-            column="39"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        severity="Error"
-        message="Call requires API level 21 (current min is 17): android.app.Activity#finishAfterTransition"
-        category="Correctness"
-        priority="6"
-        summary="Calling new methods on older versions"
-        explanation="This check scans through all the Android API calls in the application and warns about any calls that are not available on **all** versions targeted by this application (according to its minimum SDK attribute in the manifest).&#xA;&#xA;If you really want to use this API and don&apos;t need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.&#xA;&#xA;If your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file&apos;s minimum SDK as the required API level.&#xA;&#xA;If you are deliberately setting `android:` attributes in style definitions, make sure you place this in a `values-v`*NN* folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.&#xA;&#xA;Similarly, you can use tools:targetApi=&quot;11&quot; in an XML file to indicate that the element will only be inflated in an adequate context."
-        errorLine1="                finishAfterTransition();"
-        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~"
-        quickfix="studio">
-        <location
-            file="/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/src/main/java/com/ninestars/DialogActivity.java"
-            line="37"
-            column="17"/>
-    </issue>
-
-    <issue
         id="OldTargetApi"
         severity="Warning"
         message="Not targeting the latest versions of Android; compatibility &#xA;modes apply. Consider testing and updating this version. &#xA;Consult the android.os.Build.VERSION_CODES javadoc for details."
@@ -799,7 +663,7 @@
     <issue
         id="GradleDependency"
         severity="Warning"
-        message="A newer version of de.hdodenhof:circleimageview than 1.3.0 is available: 2.0.0"
+        message="A newer version of de.hdodenhof:circleimageview than 1.3.0 is available: 2.2.0"
         category="Correctness"
         priority="4"
         summary="Obsolete Gradle Dependency"
@@ -949,7 +813,7 @@
         errorLine2="                    ~~~~~~~~~~~~~~~~~~~~">
         <location
             file="/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/src/main/java/com/koolearn/android/kooreader/KooReader.java"
-            line="437"
+            line="451"
             column="21"/>
     </issue>
 
@@ -5481,7 +5345,7 @@
         errorLine2="                   ~~~~~~~~~~~~">
         <location
             file="/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/src/main/java/com/koolearn/klibrary/ui/android/view/ZLAndroidWidget.java"
-            line="343"
+            line="361"
             column="20"/>
     </issue>
 

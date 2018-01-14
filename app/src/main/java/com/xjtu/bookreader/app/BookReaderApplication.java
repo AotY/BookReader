@@ -4,10 +4,13 @@ import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Environment;
+import android.support.annotation.ColorInt;
 
 import com.koolearn.klibrary.ui.android.library.ZLAndroidApplication;
 import com.xjtu.bookreader.db.BookDBHelper;
 import com.xjtu.bookreader.util.Logger;
+
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by LeonTao on 2017/12/30.
@@ -33,6 +36,21 @@ public class BookReaderApplication extends ZLAndroidApplication {
 
         // 初始化数据
 //        initData();
+
+        initToast();
+    }
+
+    private void initToast() {
+
+//        Toasty.Config.getInstance().setErrorColor( @ColorInt int errorColor) // optional
+//                .setInfoColor( @ColorInt int infoColor) // optional
+//                .setSuccessColor( @ColorInt int successColor) // optional
+//                .setWarningColor( @ColorInt int warningColor) // optional
+//                .setTextColor( @ColorInt int textColor) // optional
+//                .tintIcon( boolean tintIcon) // optional (apply textColor also to the icon)
+//                .setToastTypeface(@NonNull Typeface typeface) // optional
+//                .setTextSize( int sizeInSp) // optional
+//                .apply(); // required
     }
 
     /**
@@ -45,8 +63,6 @@ public class BookReaderApplication extends ZLAndroidApplication {
         config.setToDefaults();
         res.updateConfiguration(config, res.getDisplayMetrics());
     }
-
-
 
 
 }

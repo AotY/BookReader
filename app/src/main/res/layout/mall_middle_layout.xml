@@ -46,7 +46,7 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-                <!--新书推荐-->
+                <!--专题分类-->
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -86,14 +86,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="新书推荐"
+                            android:text="专题分类"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="12sp" />
 
                     </LinearLayout>
                 </RelativeLayout>
 
-                <!--图书排行-->
+                <!--排行榜-->
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="8dp"
-                            android:text="图书排行"
+                            android:text="@string/ranking"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="12sp" />
                     </LinearLayout>

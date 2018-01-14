@@ -2,8 +2,8 @@ package com.xjtu.bookreader.http;
 
 
 import com.xjtu.bookreader.bean.BannerBean;
+import com.xjtu.bookreader.bean.CategoryRankingBean;
 import com.xjtu.bookreader.bean.MallRecommendBean;
-import com.xjtu.bookreader.bean.MallRecommendItemBean;
 import com.xjtu.bookreader.bean.ShelfBookBean;
 import com.xjtu.bookreader.bean.book.BookBean;
 import com.xjtu.bookreader.bean.book.BookDetailBean;
@@ -32,6 +32,12 @@ public interface HttpClient {
         public static HttpClient getShelfService() {
             return HttpUtils.getInstance().getShelfService(HttpClient.class);
         }
+
+        // 获取书籍列表
+        public static HttpClient getBookListService() {
+            return HttpUtils.getInstance().getBookListService(HttpClient.class);
+        }
+
 
     }
 
@@ -65,5 +71,13 @@ public interface HttpClient {
      */
     @GET("v1/shelf/list")
     Observable<ShelfBookBean> getShelf();
+
+
+    /**
+     * 书籍列表
+     */
+    @GET("v1/book_list")
+    Observable<CategoryRankingBean> getBookList(@Query("type") String type, @Query("start") int start, @Query("count") int count);
+
 
 }

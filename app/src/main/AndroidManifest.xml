@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".app.BookReaderApplication"
         android:allowBackup="true"
@@ -19,7 +21,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".ui.TransitionActivity"
             android:screenOrientation="portrait"
@@ -30,19 +31,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
+        <activity
+            android:name=".ui.BookDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ViewBigPicTheme" />
 
         <activity
-        android:theme="@style/ViewBigPicTheme"
-        android:name=".ui.BookDetailActivity"
-        android:screenOrientation="portrait" />
+            android:name=".ui.CategoryRankingActivity"
+            android:screenOrientation="portrait"/>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
 
     </application>
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

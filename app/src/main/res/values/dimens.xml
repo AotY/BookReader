@@ -18,4 +18,10 @@
     <dimen name="movie_detail_height">165dp</dimen>
     <dimen name="mall_item_img_height">165dp</dimen>
 
+
+    <dimen name="user_center_item_font_size">16sp</dimen>
+
+    <dimen name="user_center_line_margin_start">50dp</dimen>
+
+
 </resources>

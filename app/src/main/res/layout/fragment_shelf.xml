@@ -13,6 +13,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
             android:scrollbarFadeDuration="1"
             android:scrollbarSize="4dp"
             android:scrollbars="vertical" />

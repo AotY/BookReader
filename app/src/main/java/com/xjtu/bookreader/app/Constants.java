@@ -13,6 +13,8 @@ public class Constants {
     // 保存每日推荐recyclerview内容
     public static String EVERYDAY_CONTENT = "everyday_content";
 
+    public final static String EVERYDAY_DATA = "everyday_data";
+
     // 保存每日推荐轮播图url
     public static String BANNER_PIC = "banner_pic";
 

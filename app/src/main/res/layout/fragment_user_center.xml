@@ -1,15 +1,227 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.xjtu.bookreader.ui.fragment.UserCenterFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/user_center"
-        android:layout_centerInParent="true"
-        android:textSize="30sp" />
+    <data></data>
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.xjtu.bookreader.ui.fragment.UserCenterFragment">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@drawable/user_background">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/civ_avatar_img"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/user_avatar"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp" />
+
+            <Button
+                android:layout_width="85dp"
+                android:layout_height="35dp"
+                android:layout_below="@+id/civ_avatar_img"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/button_border_settings"
+                android:fontFamily="@font/open_sans"
+                android:text="登录"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/user_center_item_font_size" />
+
+        </RelativeLayout>
+
+        <!--<view
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#BDBDBD" />-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal"
+                android:textAlignment="center">
+
+                <LinearLayout
+                    android:id="@+id/iv_my_account"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/my_account" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="13dp"
+                    android:layout_toEndOf="@+id/iv_my_account"
+                    android:fontFamily="@font/open_sans"
+                    android:text="我的账号"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="@dimen/user_center_item_font_size" />
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/user_center_line_margin_start"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorDivider" />
+
+
+            <RelativeLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal"
+                android:textAlignment="center">
+
+                <LinearLayout
+                    android:id="@+id/iv_my_purchase"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/my_purchase" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@+id/iv_my_purchase"
+                    android:fontFamily="@font/open_sans"
+                    android:text="购买历史"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="@dimen/user_center_item_font_size" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/user_center_line_margin_start"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorDivider" />
+
+
+            <RelativeLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal"
+                android:textAlignment="center">
+
+
+                <LinearLayout
+                    android:id="@+id/iv_setting"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/setting" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@+id/iv_setting"
+                    android:fontFamily="@font/open_sans"
+                    android:text="设置中心"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="@dimen/user_center_item_font_size" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/user_center_line_margin_start"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorDivider" />
+
+            <RelativeLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal"
+                android:textAlignment="center">
+
+
+                <LinearLayout
+                    android:id="@+id/iv_help"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/help" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@+id/iv_help"
+                    android:fontFamily="@font/open_sans"
+                    android:text="帮助中心"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="@dimen/user_center_item_font_size" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/user_center_line_margin_start"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorDivider" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</layout>

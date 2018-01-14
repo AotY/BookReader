@@ -21,6 +21,7 @@ package com.koolearn.kooreader.bookmodel;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.koolearn.klibrary.core.fonts.FileInfo;
 import com.koolearn.klibrary.core.fonts.FontEntry;
@@ -39,6 +40,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * 默认只能读20%，如若想修改可在BookMode类的createTextModel方法中做修改
+ */
 public class BookModel {
 
     public static BookModel createModel(Book book, FormatPlugin plugin) throws BookReadingException {
@@ -112,6 +116,7 @@ public class BookModel {
         registerFontEntry(family, new FontEntry(family, normal, bold, italic, boldItalic));
     }
 
+    // 进入之前会调用， createTextModel
     public ZLTextModel createTextModel(
             String id, String language, int paragraphsNumber,
             int[] entryIndices, int[] entryOffsets,
@@ -119,27 +124,31 @@ public class BookModel {
             String directoryName, String fileExtension, int blocksNumber
     ) {
 
-        SharedPreferences sharedPreferences = ZLAndroidApplication.getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
-        String name = sharedPreferences.getString("id", "");
+        //  验证用户登录了吗
+//        SharedPreferences sharedPreferences = ZLAndroidApplication.getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+//        String name = sharedPreferences.getString("id", "");
 
-        if ("".equals(name)){
-            /**
-             * 试读默认读取总章节数的20%
-             * 最少试读章节不能小于两章，不能大于5章
-             */
-            int chapterCount = TOCTree.subtrees().size();//章节数量
-            int limitCount = (int) (chapterCount * 0.2);//试读章节数
-            limitCount = limitCount < 2 ? 2 : limitCount;
-            limitCount = limitCount > 5 ? 5 : limitCount;
-            limitCount = limitCount > chapterCount - 1 ? chapterCount - 1 : limitCount;
-            /**
-             * 获取试读章节的最后一段，通过获取试读章节下一章的第一段然后减去1，就是试读章节的最后一段，
-             * limitcount是从1开始计数
-             * TocTree集合是从0开始计数的
-             */
-            paragraphsNumber = TOCTree.subtrees().get(limitCount).getReference().ParagraphIndex - 1;
-        }
+//        if ("".equals(name)) {
+//            /**
+//             * 试读默认读取总章节数的20%
+//             * 最少试读章节不能小于两章，不能大于5章
+//             */
+//            int chapterCount = TOCTree.subtrees().size();//章节数量
+//            int limitCount = (int) (chapterCount * 0.2);//试读章节数
+//            limitCount = limitCount < 2 ? 2 : limitCount;
+//            limitCount = limitCount > 5 ? 5 : limitCount;
+//            limitCount = limitCount > chapterCount - 1 ? chapterCount - 1 : limitCount;
+//            /**
+//             * 获取试读章节的最后一段，通过获取试读章节下一章的第一段然后减去1，就是试读章节的最后一段，
+//             * limitcount是从1开始计数
+//             * TocTree集合是从0开始计数的
+//             */
+//            paragraphsNumber = TOCTree.subtrees().get(limitCount).getReference().ParagraphIndex - 1;
+//        }
 
+        int chapterCount = TOCTree.subtrees().size();   //章节数量
+        Log.d("BookModel", "chapterCount ----------> " + chapterCount); // chapterCount ----------> 11
+        Log.d("BookModel", "paragraphsNumber ----------> " + paragraphsNumber); // paragraphsNumber ----------> 2299
         return new ZLTextPlainModel(
                 id, language, paragraphsNumber,
                 entryIndices, entryOffsets,

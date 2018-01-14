@@ -21,18 +21,13 @@ import com.xjtu.bookreader.base.BaseHeaderActivity;
 import com.xjtu.bookreader.bean.book.BookDetailBean;
 import com.xjtu.bookreader.databinding.ActivityBookDetailBinding;
 import com.xjtu.bookreader.databinding.DetailHeaderBookDetailBinding;
-import com.xjtu.bookreader.http.HttpClient;
 import com.xjtu.bookreader.util.CommonUtils;
 import com.xjtu.bookreader.util.DebugUtil;
+import com.xjtu.bookreader.util.KooreaderUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * 没有加入书架前可以查看书架详细信息
@@ -54,20 +49,19 @@ public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetai
     private final BookCollectionShadow myCollection = new BookCollectionShadow();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
 
-        verifyStoragePermissions(this);
+        KooreaderUtil.verifyStoragePermissions(this);
 
         if (getIntent() != null) {
-            bookId =  getIntent().getStringExtra(EXTRA_PARAM);
+            bookId = getIntent().getStringExtra(EXTRA_PARAM);
         }
 
         // 这里应该就是设置图片移动效果
-        setMotion(setHeaderPicView(),true);
+        setMotion(setHeaderPicView(), true);
 
         //
         initSlideShapeTheme(setHeaderImgUrl(), setHeaderImageView());
@@ -86,7 +80,7 @@ public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetai
                         final String bookPath = Environment.getExternalStorageDirectory() + "/Download" + "/活着.epub";
                         Book book = myCollection.getBookByFile(bookPath);
                         if (book != null) {
-                            openBook(book);
+                            KooreaderUtil.openBook(BookDetailActivity.this, book);
                         } else {
                             Toast.makeText(BookDetailActivity.this, "打开失败,请重试", Toast.LENGTH_SHORT).show();
                         }
@@ -96,8 +90,15 @@ public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetai
         });
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     /**
      * 跳转到阅读Activity
+     *
      * @param data
      */
     private void openBook(Book data) {
@@ -123,7 +124,7 @@ public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetai
         bookDetailBean.setRating("9.3");
         bookDetailBean.setAuthor_intro("余华，1960年出生，1983年开始写作。至今已经出版长篇小说4部，中短篇小说集6部，随笔集4部。主要作品有《兄弟》《活着》《许三观卖血记》《在细雨中呼喊》等。\n 其作品已被翻译成20多种语言在美国、英国、法国、德国、意大利、西班牙、荷兰、瑞典、挪威、希腊、俄罗斯、保加利亚、匈牙利、捷克、塞尔维亚、斯洛伐克、波兰、巴西、以色列、日本、韩国、越南、泰国和印度等国出版。曾获意大利格林扎纳·卡佛文学奖（1998年）、法国文学和艺术骑士勋章（2004年）、中华图书特殊贡献奖（2005年）、法国国际信使外国小说奖（2008年）等。");
 
-        List<String> authors =  new ArrayList<>();
+        List<String> authors = new ArrayList<>();
         authors.add("余华");
         bookDetailBean.setAuthor(authors);
         bookDetailBean.setSummary("《活着(新版)》讲述了农村人福贵悲惨的人生遭遇。福贵本是个阔少爷，可他嗜赌如命，终于赌光了家业，一贫如洗。他的父亲被他活活气死，母亲则在穷困中患了重病，福贵前去求药，却在途中被国民党抓去当壮丁。经过几番波折回到家里，才知道母亲早已去世，妻子家珍含辛茹苦地养大两个儿女。此后更加悲惨的命运一次又一次降临到福贵身上，他的妻子、儿女和孙子相继死去，最后只剩福贵和一头老牛相依为命，但老人依旧活着，仿佛比往日更加洒脱与坚强。\n" +
@@ -217,7 +218,7 @@ public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetai
     }
 
     /**
-     * @param context      activity
+     * @param context activity
      */
     public static void start(Activity context, String id, ImageView imageView) {
         Intent intent = new Intent(context, BookDetailActivity.class);
@@ -229,27 +230,6 @@ public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetai
         ActivityCompat.startActivity(context, intent, options.toBundle());
     }
 
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-    /**
-     * Checks if the app has permission to write to device storage
-     * If the app does not has permission then the user will be prompted to
-     * grant permissions
-     *
-     * @param activity
-     */
-    public static void verifyStoragePermissions(Activity activity) {
-        int permission = ActivityCompat.checkSelfPermission(activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE);
-        }
-    }
 
     @Override
     public void onDestroy() {

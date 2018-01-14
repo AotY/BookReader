@@ -7,6 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -32,6 +35,7 @@ import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.util.CommonUtils;
 import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.GlideImageLoader;
+import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
 import com.xjtu.bookreader.util.SPUtils;
 import com.xjtu.bookreader.util.TimeUtil;
@@ -41,11 +45,12 @@ import com.youth.banner.listener.OnBannerListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import rx.Subscription;
 
 /**
  * 书城Fragment，逻辑
- *
+ * <p>
  * 更新逻辑：判断是否是第二天(相对于2016-11-26)
  * 是：判断是否是大于12：30
  * *****     |是：刷新当天数据
@@ -57,8 +62,6 @@ import rx.Subscription;
 public class MallFragment extends BaseFragment<FragmentMallBinding> {
 
     private static final String TAG = "MallFragment";
-
-    public final static String  EVERYDAY_DATA = "everyday_data";
 
     private ACache maCache;
 
@@ -95,14 +98,21 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
     }
 
     @Override
-    public int setContent() {
-        return R.layout.fragment_mall;
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = (MainActivity) context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        DebugUtil.debug("MallFragment ---------> onCreate");
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public int setContent() {
+        return R.layout.fragment_mall;
     }
 
 
@@ -143,7 +153,40 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
 
         // 测试，清除缓存
         maCache.clear();
-        maCache.remove(EVERYDAY_DATA);
+        maCache.remove(Constants.EVERYDAY_DATA);
+        maCache.remove(Constants.BANNER_PIC);
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        DebugUtil.debug("MallFragment ---------> onStart");
+//        showActionBar();
+    }
+
+    @Override
+    public void onResume() {
+        DebugUtil.debug("MallFragment ---------> onResume");
+        super.onResume();
+        // 失去焦点，否则RecyclerView第一个item会回到顶部
+        bindingView.xrvRecommend.setFocusable(false);
+        // 开始图片请求
+        Glide.with(getActivity()).resumeRequests();
+
+
+//        showActionBar();
+
+    }
+
+    private void showActionBar() {
+        View decorView = activity.getWindow().getDecorView();
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+        decorView.setSystemUiVisibility(uiOptions);
+        // Remember that you should never show the action bar if the
+        // status bar is hidden, so hide that too if necessary.
+        activity.getSupportActionBar().show();
     }
 
     /**
@@ -189,7 +232,7 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
         }
 
         // 获取时间
-        String oneData = SPUtils.getString(EVERYDAY_DATA, "2018-1-8");
+        String oneData = SPUtils.getString(Constants.EVERYDAY_DATA, "2018-1-8");
 
 
 //        isOldDayRequest = false;
@@ -251,7 +294,7 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
         mHeaderBinding.includeEveryday.ibSelected.setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-            //  WebViewActivity.loadUrl(v.getContext(), "https://gank.io/xiandu", "加载中...");
+                //  WebViewActivity.loadUrl(v.getContext(), "https://gank.io/xiandu", "加载中...");
             }
         });
 
@@ -378,6 +421,7 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
 
     /**
      * 设置adapter
+     *
      * @param lists
      */
     private void setAdapter(ArrayList<List<MallRecommendItemBean>> lists) {
@@ -398,10 +442,10 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
 
         if (isOldDayRequest) {
             ArrayList<String> lastTime = TimeUtil.getLastTime(getTodayTime().get(0), getTodayTime().get(1), getTodayTime().get(2));
-            SPUtils.putString(EVERYDAY_DATA, lastTime.get(0) + "-" + lastTime.get(1) + "-" + lastTime.get(2));
+            SPUtils.putString(Constants.EVERYDAY_DATA, lastTime.get(0) + "-" + lastTime.get(1) + "-" + lastTime.get(2));
         } else {
             // 保存请求的日期
-            SPUtils.putString(EVERYDAY_DATA, TimeUtil.getData());
+            SPUtils.putString(Constants.EVERYDAY_DATA, TimeUtil.getData());
         }
 
         mIsFirst = false;
@@ -418,20 +462,11 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        // 失去焦点，否则RecyclerView第一个item会回到顶部
-        bindingView.xrvRecommend.setFocusable(false);
-        DebugUtil.error("-----MallFragment----onResume()");
-        // 开始图片请求
-        Glide.with(getActivity()).resumeRequests();
-    }
 
     @Override
     public void onPause() {
         super.onPause();
-        DebugUtil.error("-----MallFragment----onPause()");
+        DebugUtil.debug("MallFragment ---------> onPause");
         // 停止全部图片请求 跟随着Activity
         Glide.with(getActivity()).pauseRequests();
 
@@ -451,7 +486,7 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
                 }
                 BannerBean bean = (BannerBean) object;
 
-                if (bean != null && bean.getResults() != null ) {
+                if (bean != null && bean.getResults() != null) {
                     final List<BannerItemBean> result = bean.getResults();
                     if (result != null && result.size() > 0) {
 
@@ -462,7 +497,7 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
 
                         mHeaderBinding.banner.setImages(mBannerImages).setImageLoader(new GlideImageLoader()).start();
                         // 这个默认下标是从0开始的。
-                        mHeaderBinding.banner.setOnBannerListener(new OnBannerListener(){
+                        mHeaderBinding.banner.setOnBannerListener(new OnBannerListener() {
                             @Override
                             public void OnBannerClick(int position) {
 //                                Toast.makeText(activity, "OnBannerClick", Toast.LENGTH_SHORT).show();
@@ -511,6 +546,29 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
         }
     }
 
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        activity.getMenuInflater().inflate(R.menu.mall, menu);
+
+        inflater.inflate(R.menu.mall, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+//                Toast.makeText(this, "搜索", Toast.LENGTH_SHORT).show();
+                Toasty.normal(activity, "Search").show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     @Override
     protected void onRefresh() {
         showContentView();
@@ -518,10 +576,17 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
         loadData();
     }
 
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        DebugUtil.debug("MallFragment ---------> onStop");
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        DebugUtil.error("--MallFragment   ----onDestroy");
+        DebugUtil.debug("--MallFragment   ----onDestroy");
     }
 
 }

@@ -158,30 +158,59 @@
                         android:text='@{@string/string_publisher+bookDetailBean.publisher}'
                         android:textColor="@color/colorWhite" />
 
+
+                    <!--原价 打折-->
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <com.xjtu.bookreader.view.MyElideTextView
+                            android:id="@+id/origin_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:text="原价：30元"
+                            android:layout_marginRight="10dp"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/sale_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:text="优惠价格：10元"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
                     <!--加入书架，阅读-->
                     <LinearLayout
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
+
                         <Button
-                            android:layout_marginRight="10dp"
-                            android:background="@color/colorPrimary"
                             android:id="@+id/btn_add_to_shelf"
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:textSize="12sp"
-                            android:ellipsize="end"
-                            android:text='加入书架'
-                            android:textColor="@color/colorWhite" />
-                        <Button
+                            android:layout_marginRight="10dp"
                             android:background="@color/colorPrimary"
+                            android:ellipsize="end"
+                            android:text="购买下载"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="12sp" />
+
+                        <Button
                             android:id="@+id/btn_reading"
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:textSize="12sp"
+                            android:background="@color/colorPrimary"
                             android:ellipsize="end"
-                            android:text='立即阅读'
-                            android:textColor="@color/colorWhite" />
+                            android:text="在线试读"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="12sp" />
                     </LinearLayout>
                     <!--上映日期-->
                     <!--<TextView-->

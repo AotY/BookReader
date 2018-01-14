@@ -60,10 +60,18 @@ import java.util.HashMap;
 
 /**
  * 阅读器主页面
+ * 可自己定制阅读页面
  */
 public final class KooReader extends KooReaderMainActivity implements ZLApplicationWindow {
     public static final int RESULT_DO_NOTHING = RESULT_FIRST_USER;
 
+    /**
+     * 打开阅读页面
+     *
+     * @param context
+     * @param book
+     * @param bookmark 还可以传入bookmark
+     */
     public static void openBookActivity(Context context, Book book, Bookmark bookmark) {
         final Intent intent = new Intent(context, KooReader.class);
         intent.setAction(KooReaderIntents.Action.VIEW);
@@ -139,11 +147,13 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
     }
 
     /**
+     * Declare and annotate your subscribing method, 订阅者
      * 登陆提示框
+     *
      * @param readerEvent
      */
     @Subscribe
-    public void showDialog(ReaderEvent readerEvent){
+    public void showDialog(ReaderEvent readerEvent) {
         startActivity(new Intent(KooReader.this, DialogActivity.class));
     }
 
@@ -154,9 +164,12 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
         setContentView(R.layout.main);
 
         StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.white), true);
-        if (!EventBus.getDefault().isRegistered(this)){
+
+        // register
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
 //        EventBus.getDefault().post(new FinishEvent());
         myRootView = (RelativeLayout) findViewById(R.id.root_view);
         myMainView = (ZLAndroidWidget) findViewById(R.id.main_view);
@@ -301,7 +314,8 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
     protected void onDestroy() {
         getCollection().unbind();
         super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this)){
+
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }

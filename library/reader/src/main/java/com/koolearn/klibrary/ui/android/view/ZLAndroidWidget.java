@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.widget.Toast;
 
 import com.koolearn.android.kooreader.KooReader;
 import com.koolearn.android.kooreader.KooReaderMainActivity;
@@ -183,7 +184,11 @@ public class ZLAndroidWidget extends View implements ZLViewWidget, View.OnLongCl
         animator.startManualScrolling(x, y); // PreManualScrolling 先pre 然后判断是ManualScrolling还是NoScrolling
     }
 
-    // onFingerMove
+    /**
+     * onFingerMove
+     * @param x
+     * @param y
+     */
     @Override
     public void scrollManuallyTo(int x, int y) {
         final ZLView view = ZLApplication.Instance().getCurrentView();
@@ -193,28 +198,41 @@ public class ZLAndroidWidget extends View implements ZLViewWidget, View.OnLongCl
             animator.scrollTo(x, y); // 一直在改变Mode的状态
             postInvalidate();
         }else {
+            Toast.makeText(getContext(), "scrollManuallyTo 不能滑动，index: " + index.toString(), Toast.LENGTH_SHORT).show();
+            // 也是没有购买的情况。
 //            Log.i("TAG_scrollManuallyTo","最后一页，需要购买才能继续");
-            SharedPreferences sharedPreferences = ZLAndroidApplication.getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
-            String name = sharedPreferences.getString("id", "");
-            if ("".equals(name)){
-                EventBus.getDefault().post(new ReaderEvent());
-            }
+//            SharedPreferences sharedPreferences = ZLAndroidApplication.getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+//            String name = sharedPreferences.getString("id", "");
+//            if ("".equals(name)){
+//                EventBus.getDefault().post(new ReaderEvent());
+//            }
         }
     }
 
+    /**
+     *
+     * @param pageIndex
+     * @param x
+     * @param y
+     * @param direction
+     * @param speed
+     */
     @Override
     public void startAnimatedScrolling(ZLView.PageIndex pageIndex, int x, int y, ZLView.Direction direction, int speed) {
         final ZLView view = ZLApplication.Instance().getCurrentView();
 
         if (pageIndex == ZLView.PageIndex.current || !view.canScroll(pageIndex)) {
 //            Log.i("TAG_startAnimatedScrolling","最后一页，需要购买才能继续");
-            SharedPreferences sharedPreferences = ZLAndroidApplication.getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
-            String name = sharedPreferences.getString("id", "");
-            if ("".equals(name)){
-                EventBus.getDefault().post(new ReaderEvent());
-            }
-            return;
+            // 如果用户没有登录，则不能进行阅读。
+            Toast.makeText(getContext(), "startAnimatedScrolling 不能滑动，index: " + pageIndex.toString(), Toast.LENGTH_SHORT).show();
+//            SharedPreferences sharedPreferences = ZLAndroidApplication.getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+//            String name = sharedPreferences.getString("id", "");
+//            if ("".equals(name)){
+//                EventBus.getDefault().post(new ReaderEvent());
+//            }
+//            return;
         }
+
         final AnimationProvider animator = getAnimationProvider();
         animator.setup(direction, getWidth(), getHeight(), myColorLevel);
         animator.startAnimatedScrolling(pageIndex, x, y, speed);

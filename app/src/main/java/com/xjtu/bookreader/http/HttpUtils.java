@@ -44,12 +44,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class HttpUtils {
+
     private static HttpUtils instance;
     private Gson gson;
     private Context context;
-    private Object shelfdHttps;
+
+    private Object bookListHttps;
+
+    private Object shelfHttps;
     private Object recommendHttps;
     private Object doubanHttps;
+
     private IpmlTokenGetListener listener;
     private boolean debug;
 
@@ -61,6 +66,9 @@ public class HttpUtils {
 
     // 书架接口
     private final static String API_SHELF = "Https://192.168.1.101/shelf";
+
+    // 书籍列表
+    private final static String API_BOOK_LIST = "Https://192.168.1.101/book_list/";
 
     /**
      * 分页数据，每页的数量
@@ -109,20 +117,34 @@ public class HttpUtils {
     }
 
     public <T> T getShelfService(Class<T> a) {
-        if (shelfdHttps == null) {
+        if (shelfHttps == null) {
             synchronized (HttpUtils.class) {
-                if (shelfdHttps == null) {
-                    shelfdHttps = getBuilder(API_SHELF).build().create(a);
+                if (shelfHttps == null) {
+                    shelfHttps = getBuilder(API_SHELF).build().create(a);
                 }
             }
         }
-        return (T) shelfdHttps;
+        return (T) shelfHttps;
     }
+
+    public <T> T getBookListService(Class<T> a) {
+        if (bookListHttps == null) {
+            synchronized (HttpUtils.class) {
+                if (bookListHttps == null) {
+                    bookListHttps = getBuilder(API_BOOK_LIST).build().create(a);
+                }
+            }
+        }
+        return (T) bookListHttps;
+    }
+
+
 
     private Retrofit.Builder getBuilder(String apiUrl) {
         Retrofit.Builder builder = new Retrofit.Builder();
         builder.client(getOkClient());
         builder.baseUrl(apiUrl);//设置远程地址
+        // 设置converterFactory
         builder.addConverterFactory(new NullOnEmptyConverterFactory());
         builder.addConverterFactory(GsonConverterFactory.create(getGson()));
         builder.addCallAdapterFactory(RxJavaCallAdapterFactory.create());

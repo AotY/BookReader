@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--<color name="colorPrimaryDark">#D32F2F</color>-->
     <color name="colorPrimary">#F44336</color>
-    <color name="colorPrimaryDark">#D32F2F</color>
+    <color name="colorPrimaryDark">#F44336</color>
     <color name="colorPrimaryLight">#FFCDD2</color>
     <color name="colorAccent">#FF5722</color>
-    <color name="colorPrimaryText">#212121</color>
+    <color name="colorPrimaryText">#333333</color>
     <color name="colorSecondaryText">#8a8a8a</color>
     <color name="colorIcons">#FFFFFF</color>
-    <color name="colorDivider">#BDBDBD</color>
+    <color name="colorDivider">#EEEEEE</color>
 
     <!--页面背景的颜色-->
     <color name="colorPageBg">#f2f4f5</color>
@@ -49,5 +50,9 @@
     <color name="read_theme_white">#ffffff</color>
 
     <color name="read_theme_yellow">#e6dbbf</color>
+
+
+    <!--水波纹或5.0以下选择器颜色-->
+    <color name="tabBackground">#777D7D7D</color>
 
 </resources>

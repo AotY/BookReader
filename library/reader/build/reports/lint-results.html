@@ -173,10 +173,10 @@ document.getElementById(id).style.display = 'none';
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
   <header class="mdl-layout__header">
     <div class="mdl-layout__header-row">
-      <span class="mdl-layout-title">Lint Report: 14 errors and 436 warnings</span>
+      <span class="mdl-layout-title">Lint Report: 7 errors and 435 warnings</span>
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation mdl-layout--large-screen-only">
-Check performed at Tue Jan 09 21:16:17 CST 2018      </nav>
+Check performed at Sun Jan 14 20:21:58 CST 2018      </nav>
     </div>
   </header>
   <div class="mdl-layout__drawer">
@@ -186,8 +186,6 @@ Check performed at Tue Jan 09 21:16:17 CST 2018      </nav>
       <a class="mdl-navigation__link" href="#ApplySharedPref"><i class="material-icons warning-icon">warning</i>Use <code>apply()</code> on <code>SharedPreferences</code> (2)</a>
       <a class="mdl-navigation__link" href="#Assert"><i class="material-icons warning-icon">warning</i>Assertions (1)</a>
       <a class="mdl-navigation__link" href="#DefaultLocale"><i class="material-icons warning-icon">warning</i>Implied default locale in case conversion (26)</a>
-      <a class="mdl-navigation__link" href="#InlinedApi"><i class="material-icons warning-icon">warning</i>Using inlined constants on older versions (1)</a>
-      <a class="mdl-navigation__link" href="#NewApi"><i class="material-icons error-icon">error</i>Calling new methods on older versions (7)</a>
       <a class="mdl-navigation__link" href="#OldTargetApi"><i class="material-icons warning-icon">warning</i>Target SDK attribute is not targeting latest version (1)</a>
       <a class="mdl-navigation__link" href="#SdCardPath"><i class="material-icons warning-icon">warning</i>Hardcoded reference to <code>/sdcard</code> (1)</a>
       <a class="mdl-navigation__link" href="#UnusedAttribute"><i class="material-icons warning-icon">warning</i>Attribute unused on older versions (2)</a>
@@ -250,12 +248,6 @@ Check performed at Tue Jan 09 21:16:17 CST 2018      </nav>
 <tr>
 <td class="countColumn">26</td><td class="issueColumn"><i class="material-icons warning-icon">warning</i>
 <a href="#DefaultLocale">DefaultLocale</a>: Implied default locale in case conversion</td></tr>
-<tr>
-<td class="countColumn">1</td><td class="issueColumn"><i class="material-icons warning-icon">warning</i>
-<a href="#InlinedApi">InlinedApi</a>: Using inlined constants on older versions</td></tr>
-<tr>
-<td class="countColumn">7</td><td class="issueColumn"><i class="material-icons error-icon">error</i>
-<a href="#NewApi">NewApi</a>: Calling new methods on older versions</td></tr>
 <tr>
 <td class="countColumn">1</td><td class="issueColumn"><i class="material-icons warning-icon">warning</i>
 <a href="#OldTargetApi">OldTargetApi</a>: Target SDK attribute is not targeting latest version</td></tr>
@@ -798,169 +790,6 @@ If you want the methods to just perform ASCII replacement, for example to conver
 Explain</button><button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="DefaultLocaleCardLink" onclick="hideid('DefaultLocaleCard');">
 Dismiss</button>            </div>
             </div>
-          </section><a name="InlinedApi"></a>
-<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" id="InlinedApiCard" style="display: block;">
-            <div class="mdl-card mdl-cell mdl-cell--12-col">
-  <div class="mdl-card__title">
-    <h2 class="mdl-card__title-text">Using inlined constants on older versions</h2>
-  </div>
-              <div class="mdl-card__supporting-text">
-<div class="issue">
-<div class="warningslist">
-<span class="location"><a href="../../src/main/java/com/ninestars/DialogActivity.java">../../src/main/java/com/ninestars/DialogActivity.java</a>:21</span>: <span class="message">Field requires API level 19 (current min is 17): <code>android.view.WindowManager.LayoutParams#FLAG_TRANSLUCENT_STATUS</code></span><br /><pre class="errorlines">
-<span class="lineno"> 18 </span>    <span class="annotation">@Override</span>
-<span class="lineno"> 19 </span>    <span class="keyword">protected</span> <span class="keyword">void</span> onCreate(<span class="annotation">@Nullable</span> Bundle savedInstanceState) {
-<span class="lineno"> 20 </span>        <span class="keyword">super</span>.onCreate(savedInstanceState);
-<span class="caretline"><span class="lineno"> 21 </span>        getWindow().addFlags(<span class="warning">WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS</span>);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span class="lineno"> 22 </span>        getWindow().setEnterTransition(<span class="keyword">new</span> Slide().setDuration(<span class="number">500</span>));
-<span class="lineno"> 23 </span>        getWindow().setExitTransition(<span class="keyword">new</span> Slide().setDuration(<span class="number">500</span>));
-<span class="lineno"> 24 </span>        setContentView(R.layout.dialog);
-</pre>
-
-</div>
-<div class="metadata"><div class="explanation" id="explanationInlinedApi" style="display: none;">
-This check scans through all the Android API field references in the application and flags certain constants, such as static final integers and Strings, which were introduced in later versions. These will actually be copied into the class files rather than being referenced, which means that the value is available even when running on older devices. In some cases that's fine, and in other cases it can result in a runtime crash or incorrect behavior. It depends on the context, so consider the code carefully and device whether it's safe and can be suppressed or whether the code needs tbe guarded.<br/>
-<br/>
-If you really want to use this API and don't need to support older devices just set the <code>minSdkVersion</code> in your <code>build.gradle</code> or <code>AndroidManifest.xml</code> files.<br/>
-If your code is <b>deliberately</b> accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the <code>@TargetApi</code> annotation specifying the local minimum SDK to apply, such as <code>@TargetApi(11)</code>, such that this check considers 11 rather than your manifest file's minimum SDK as the required API level.<br/>Note: This issue has an associated quickfix operation in Android Studio and IntelliJ IDEA.<br>
-To suppress this error, use the issue id "InlinedApi" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
-<br/></div>
-</div>
-</div>
-<div class="chips">
-<span class="mdl-chip">
-    <span class="mdl-chip__text">InlinedApi</span>
-</span>
-<span class="mdl-chip">
-    <span class="mdl-chip__text">Correctness</span>
-</span>
-<span class="mdl-chip">
-    <span class="mdl-chip__text">Warning</span>
-</span>
-<span class="mdl-chip">
-    <span class="mdl-chip__text">Priority 6/10</span>
-</span>
-</div>
-              </div>
-              <div class="mdl-card__actions mdl-card--border">
-<button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="explanationInlinedApiLink" onclick="reveal('explanationInlinedApi');">
-Explain</button><button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="InlinedApiCardLink" onclick="hideid('InlinedApiCard');">
-Dismiss</button>            </div>
-            </div>
-          </section><a name="NewApi"></a>
-<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" id="NewApiCard" style="display: block;">
-            <div class="mdl-card mdl-cell mdl-cell--12-col">
-  <div class="mdl-card__title">
-    <h2 class="mdl-card__title-text">Calling new methods on older versions</h2>
-  </div>
-              <div class="mdl-card__supporting-text">
-<div class="issue">
-<div class="warningslist">
-<span class="location"><a href="../../src/main/java/com/ninestars/DialogActivity.java">../../src/main/java/com/ninestars/DialogActivity.java</a>:22</span>: <span class="message">Call requires API level 19 (current min is 17): android.transition.Transition#setDuration</span><br /><pre class="errorlines">
-<span class="lineno"> 19 </span>    <span class="keyword">protected</span> <span class="keyword">void</span> onCreate(<span class="annotation">@Nullable</span> Bundle savedInstanceState) {
-<span class="lineno"> 20 </span>        <span class="keyword">super</span>.onCreate(savedInstanceState);
-<span class="lineno"> 21 </span>        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-<span class="caretline"><span class="lineno"> 22 </span>        getWindow().setEnterTransition(<span class="keyword">new</span> Slide().<span class="error">setDuration</span>(<span class="number">500</span>));&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span class="lineno"> 23 </span>        getWindow().setExitTransition(<span class="keyword">new</span> Slide().setDuration(<span class="number">500</span>));
-<span class="lineno"> 24 </span>        setContentView(R.layout.dialog);
-<span class="lineno"> 25 </span>        setTitle(<span class="string">"提示"</span>);
-</pre>
-
-<span class="location"><a href="../../src/main/java/com/ninestars/DialogActivity.java">../../src/main/java/com/ninestars/DialogActivity.java</a>:22</span>: <span class="message">Call requires API level 21 (current min is 17): android.view.Window#setEnterTransition</span><br /><pre class="errorlines">
-<span class="lineno"> 19 </span>    <span class="keyword">protected</span> <span class="keyword">void</span> onCreate(<span class="annotation">@Nullable</span> Bundle savedInstanceState) {
-<span class="lineno"> 20 </span>        <span class="keyword">super</span>.onCreate(savedInstanceState);
-<span class="lineno"> 21 </span>        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-<span class="caretline"><span class="lineno"> 22 </span>        getWindow().<span class="error">setEnterTransition</span>(<span class="keyword">new</span> Slide().setDuration(<span class="number">500</span>));&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span class="lineno"> 23 </span>        getWindow().setExitTransition(<span class="keyword">new</span> Slide().setDuration(<span class="number">500</span>));
-<span class="lineno"> 24 </span>        setContentView(R.layout.dialog);
-<span class="lineno"> 25 </span>        setTitle(<span class="string">"提示"</span>);
-</pre>
-
-<span class="location"><a href="../../src/main/java/com/ninestars/DialogActivity.java">../../src/main/java/com/ninestars/DialogActivity.java</a>:22</span>: <span class="message">Call requires API level 21 (current min is 17): new android.transition.Slide</span><br /><pre class="errorlines">
-<span class="lineno"> 19 </span>    <span class="keyword">protected</span> <span class="keyword">void</span> onCreate(<span class="annotation">@Nullable</span> Bundle savedInstanceState) {
-<span class="lineno"> 20 </span>        <span class="keyword">super</span>.onCreate(savedInstanceState);
-<span class="lineno"> 21 </span>        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-<span class="caretline"><span class="lineno"> 22 </span>        getWindow().setEnterTransition(<span class="error"><span class="keyword">new</span> Slide</span>().setDuration(<span class="number">500</span>));&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span class="lineno"> 23 </span>        getWindow().setExitTransition(<span class="keyword">new</span> Slide().setDuration(<span class="number">500</span>));
-<span class="lineno"> 24 </span>        setContentView(R.layout.dialog);
-<span class="lineno"> 25 </span>        setTitle(<span class="string">"提示"</span>);
-</pre>
-
-<span class="location"><a href="../../src/main/java/com/ninestars/DialogActivity.java">../../src/main/java/com/ninestars/DialogActivity.java</a>:23</span>: <span class="message">Call requires API level 19 (current min is 17): android.transition.Transition#setDuration</span><br /><pre class="errorlines">
-<span class="lineno"> 20 </span>        <span class="keyword">super</span>.onCreate(savedInstanceState);
-<span class="lineno"> 21 </span>        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-<span class="lineno"> 22 </span>        getWindow().setEnterTransition(<span class="keyword">new</span> Slide().setDuration(<span class="number">500</span>));
-<span class="caretline"><span class="lineno"> 23 </span>        getWindow().setExitTransition(<span class="keyword">new</span> Slide().<span class="error">setDuration</span>(<span class="number">500</span>));&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span class="lineno"> 24 </span>        setContentView(R.layout.dialog);
-<span class="lineno"> 25 </span>        setTitle(<span class="string">"提示"</span>);
-<span class="lineno"> 26 </span>        mOkButton = (Button) findViewById(R.id.ok);
-</pre>
-
-<span class="location"><a href="../../src/main/java/com/ninestars/DialogActivity.java">../../src/main/java/com/ninestars/DialogActivity.java</a>:23</span>: <span class="message">Call requires API level 21 (current min is 17): android.view.Window#setExitTransition</span><br /><pre class="errorlines">
-<span class="lineno"> 20 </span>        <span class="keyword">super</span>.onCreate(savedInstanceState);
-<span class="lineno"> 21 </span>        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-<span class="lineno"> 22 </span>        getWindow().setEnterTransition(<span class="keyword">new</span> Slide().setDuration(<span class="number">500</span>));
-<span class="caretline"><span class="lineno"> 23 </span>        getWindow().<span class="error">setExitTransition</span>(<span class="keyword">new</span> Slide().setDuration(<span class="number">500</span>));&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span class="lineno"> 24 </span>        setContentView(R.layout.dialog);
-<span class="lineno"> 25 </span>        setTitle(<span class="string">"提示"</span>);
-<span class="lineno"> 26 </span>        mOkButton = (Button) findViewById(R.id.ok);
-</pre>
-
-<span class="location"><a href="../../src/main/java/com/ninestars/DialogActivity.java">../../src/main/java/com/ninestars/DialogActivity.java</a>:23</span>: <span class="message">Call requires API level 21 (current min is 17): new android.transition.Slide</span><br /><pre class="errorlines">
-<span class="lineno"> 20 </span>        <span class="keyword">super</span>.onCreate(savedInstanceState);
-<span class="lineno"> 21 </span>        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-<span class="lineno"> 22 </span>        getWindow().setEnterTransition(<span class="keyword">new</span> Slide().setDuration(<span class="number">500</span>));
-<span class="caretline"><span class="lineno"> 23 </span>        getWindow().setExitTransition(<span class="error"><span class="keyword">new</span> Slide</span>().setDuration(<span class="number">500</span>));&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span class="lineno"> 24 </span>        setContentView(R.layout.dialog);
-<span class="lineno"> 25 </span>        setTitle(<span class="string">"提示"</span>);
-<span class="lineno"> 26 </span>        mOkButton = (Button) findViewById(R.id.ok);
-</pre>
-
-<span class="location"><a href="../../src/main/java/com/ninestars/DialogActivity.java">../../src/main/java/com/ninestars/DialogActivity.java</a>:37</span>: <span class="message">Call requires API level 21 (current min is 17): android.app.Activity#finishAfterTransition</span><br /><pre class="errorlines">
-<span class="lineno"> 34 </span>        mCancleButton.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() {
-<span class="lineno"> 35 </span>            <span class="annotation">@Override</span>
-<span class="lineno"> 36 </span>            <span class="keyword">public</span> <span class="keyword">void</span> onClick(View v) {
-<span class="caretline"><span class="lineno"> 37 </span>                <span class="error">finishAfterTransition</span>();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span class="lineno"> 38 </span>            }
-<span class="lineno"> 39 </span>        });
-<span class="lineno"> 40 </span>    }
-</pre>
-
-</div>
-<div class="metadata"><div class="explanation" id="explanationNewApi" style="display: none;">
-This check scans through all the Android API calls in the application and warns about any calls that are not available on <b>all</b> versions targeted by this application (according to its minimum SDK attribute in the manifest).<br/>
-<br/>
-If you really want to use this API and don't need to support older devices just set the <code>minSdkVersion</code> in your <code>build.gradle</code> or <code>AndroidManifest.xml</code> files.<br/>
-<br/>
-If your code is <b>deliberately</b> accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the <code>@TargetApi</code> annotation specifying the local minimum SDK to apply, such as <code>@TargetApi(11)</code>, such that this check considers 11 rather than your manifest file's minimum SDK as the required API level.<br/>
-<br/>
-If you are deliberately setting <code>android:</code> attributes in style definitions, make sure you place this in a <code>values-v</code><i>NN</i> folder in order to avoid running into runtime conflicts on certain devices where manufacturers have added custom attributes whose ids conflict with the new ones on later platforms.<br/>
-<br/>
-Similarly, you can use tools:targetApi="11" in an XML file to indicate that the element will only be inflated in an adequate context.<br/>Note: This issue has an associated quickfix operation in Android Studio and IntelliJ IDEA.<br>
-To suppress this error, use the issue id "NewApi" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
-<br/></div>
-</div>
-</div>
-<div class="chips">
-<span class="mdl-chip">
-    <span class="mdl-chip__text">NewApi</span>
-</span>
-<span class="mdl-chip">
-    <span class="mdl-chip__text">Correctness</span>
-</span>
-<span class="mdl-chip">
-    <span class="mdl-chip__text">Error</span>
-</span>
-<span class="mdl-chip">
-    <span class="mdl-chip__text">Priority 6/10</span>
-</span>
-</div>
-              </div>
-              <div class="mdl-card__actions mdl-card--border">
-<button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="explanationNewApiLink" onclick="reveal('explanationNewApi');">
-Explain</button><button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="NewApiCardLink" onclick="hideid('NewApiCard');">
-Dismiss</button>            </div>
-            </div>
           </section><a name="OldTargetApi"></a>
 <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" id="OldTargetApiCard" style="display: block;">
             <div class="mdl-card mdl-cell mdl-cell--12-col">
@@ -1236,7 +1065,7 @@ Dismiss</button>            </div>
               <div class="mdl-card__supporting-text">
 <div class="issue">
 <div class="warningslist">
-<span class="location"><a href="../../build.gradle">../../build.gradle</a>:73</span>: <span class="message">A newer version of de.hdodenhof:circleimageview than 1.3.0 is available: 2.0.0</span><br /><pre class="errorlines">
+<span class="location"><a href="../../build.gradle">../../build.gradle</a>:73</span>: <span class="message">A newer version of de.hdodenhof:circleimageview than 1.3.0 is available: 2.2.0</span><br /><pre class="errorlines">
 <span class="lineno"> 70 </span>    <span class="comment">//    compile files('libs/universal-image-loader-1.9.5.jar')</span>
 <span class="lineno"> 71 </span>    implementation <span class="string">'com.commit451:PhotoView:1.2.4'</span>
 <span class="lineno"> 72 </span>    implementation <span class="string">'com.android.support:design:'</span> + supportVersion
@@ -1537,14 +1366,14 @@ Dismiss</button>            </div>
               <div class="mdl-card__supporting-text">
 <div class="issue">
 <div class="warningslist">
-<span class="location"><a href="../../src/main/java/com/koolearn/android/kooreader/KooReader.java">../../src/main/java/com/koolearn/android/kooreader/KooReader.java</a>:437</span>: <span class="message">Provide a timeout when requesting a wakelock with <code>PowerManager.Wakelock.acquire(long timeout)</code>. This will ensure the OS will cleanup any wakelocks that last longer than you intend, and will save your user's battery.</span><br /><pre class="errorlines">
-<span class="lineno"> 434 </span>              myWakeLock =
-<span class="lineno"> 435 </span>                      ((PowerManager) getSystemService(POWER_SERVICE))
-<span class="lineno"> 436 </span>                              .newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, <span class="string">"KooReader"</span>);
-<span class="caretline"><span class="lineno"> 437 </span>              <span class="warning">myWakeLock.acquire()</span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span class="lineno"> 438 </span>          }
-<span class="lineno"> 439 </span>      }
-<span class="lineno"> 440 </span>  }
+<span class="location"><a href="../../src/main/java/com/koolearn/android/kooreader/KooReader.java">../../src/main/java/com/koolearn/android/kooreader/KooReader.java</a>:451</span>: <span class="message">Provide a timeout when requesting a wakelock with <code>PowerManager.Wakelock.acquire(long timeout)</code>. This will ensure the OS will cleanup any wakelocks that last longer than you intend, and will save your user's battery.</span><br /><pre class="errorlines">
+<span class="lineno"> 448 </span>              myWakeLock =
+<span class="lineno"> 449 </span>                      ((PowerManager) getSystemService(POWER_SERVICE))
+<span class="lineno"> 450 </span>                              .newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, <span class="string">"KooReader"</span>);
+<span class="caretline"><span class="lineno"> 451 </span>              <span class="warning">myWakeLock.acquire()</span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno"> 452 </span>          }
+<span class="lineno"> 453 </span>      }
+<span class="lineno"> 454 </span>  }
 </pre>
 
 </div>
@@ -3557,13 +3386,13 @@ Dismiss</button>            </div>
 <span class="lineno"> 25 </span>    }
 </pre>
 
-<span class="location"><a href="../../src/main/java/com/koolearn/klibrary/ui/android/view/ZLAndroidWidget.java">../../src/main/java/com/koolearn/klibrary/ui/android/view/ZLAndroidWidget.java</a>:343</span>: <span class="message">Custom view <code>ZLAndroidWidget</code> overrides <code>onTouchEvent</code> but not <code>performClick</code></span><br /><pre class="errorlines">
-<span class="lineno"> 340 </span>    <span class="keyword">private</span> <span class="keyword">boolean</span> myScreenIsTouched;
-<span class="lineno"> 341 </span>
-<span class="lineno"> 342 </span>    <span class="annotation">@Override</span>
-<span class="caretline"><span class="lineno"> 343 </span>    <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="warning">onTouchEvent</span>(MotionEvent event) {&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<span class="lineno"> 344 </span>        <span class="keyword">int</span> x = (<span class="keyword">int</span>) event.getX();
-<span class="lineno"> 345 </span>        <span class="keyword">int</span> y = (<span class="keyword">int</span>) event.getY();
+<span class="location"><a href="../../src/main/java/com/koolearn/klibrary/ui/android/view/ZLAndroidWidget.java">../../src/main/java/com/koolearn/klibrary/ui/android/view/ZLAndroidWidget.java</a>:361</span>: <span class="message">Custom view <code>ZLAndroidWidget</code> overrides <code>onTouchEvent</code> but not <code>performClick</code></span><br /><pre class="errorlines">
+<span class="lineno"> 358 </span>    <span class="keyword">private</span> <span class="keyword">boolean</span> myScreenIsTouched;
+<span class="lineno"> 359 </span>
+<span class="lineno"> 360 </span>    <span class="annotation">@Override</span>
+<span class="caretline"><span class="lineno"> 361 </span>    <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="warning">onTouchEvent</span>(MotionEvent event) {&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno"> 362 </span>        <span class="keyword">int</span> x = (<span class="keyword">int</span>) event.getX();
+<span class="lineno"> 363 </span>        <span class="keyword">int</span> y = (<span class="keyword">int</span>) event.getY();
 </pre>
 
 </div>

@@ -23,6 +23,7 @@ import com.xjtu.bookreader.databinding.ShelfHeaderItemBookBinding;
 import com.xjtu.bookreader.databinding.ShelfItemBookBinding;
 import com.xjtu.bookreader.db.BookDBHelper;
 import com.xjtu.bookreader.ui.MainActivity;
+import com.xjtu.bookreader.util.KooreaderUtil;
 import com.xjtu.bookreader.util.Logger;
 import com.xjtu.bookreader.util.PerfectClickListener;
 import com.xjtu.bookreader.util.StringResourceUtil;
@@ -33,7 +34,6 @@ import java.util.List;
 /**
  * 书籍Adapter，用户点击后跳转到书籍阅读页面
  * Created by jingbin on 2016/12/15.
- *
  */
 
 public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -56,11 +56,15 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private BookCollectionShadow myCollection;
 
-    public ShelfAdapter(Context context) {
+    public ShelfAdapter(Context context, BookCollectionShadow myCollection) {
         this.context = (MainActivity) context;
-        list = new ArrayList<>();
+        this.myCollection = myCollection;
 
-        initData(context);
+        list = new ArrayList<>();
+        KooreaderUtil.verifyStoragePermissions(this.context);
+
+        // 第一次初始化数据
+//        initData(context);
     }
 
     /**
@@ -68,9 +72,9 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      */
     private void initData(Context context) {
         final String path = Environment.getExternalStorageDirectory() + "/Download";
-        Logger.d("----------------------------------------------> " +path);
+        Logger.d("----------------------------------------------> " + path);
         bookDBHelper = new BookDBHelper(context);
-        bookDBHelper.insertBook("1", path  + "/芳华.epub");
+        bookDBHelper.insertBook("1", path + "/芳华.epub");
         bookDBHelper.insertBook("2", path + "/步履不停.epub");
         bookDBHelper.insertBook("3", path + "/艺术的故事.epub");
         bookDBHelper.insertBook("4", path + "/我的前半生.epub");
@@ -78,13 +82,14 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         bookDBHelper.insertBook("6", path + "/活着.epub");
         bookDBHelper.insertBook("7", path + "/人间失格.epub");
         bookDBHelper.insertBook("8", path + "/月亮与六便士.epub");
-        int rows = bookDBHelper.numberOfRows();
+//        int rows = bookDBHelper.numberOfRows();
 
     }
 
 
     /**
      * getItemViewType
+     *
      * @param position
      * @return
      */
@@ -101,6 +106,7 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     /**
      * onCreateViewHolder
+     *
      * @param parent
      * @param viewType
      * @return
@@ -140,6 +146,7 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     /**
      * 这里是？ 一个头，一个尾巴吗？
+     *
      * @return
      */
     @Override
@@ -296,7 +303,8 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             public void run() {
                                 Book book = myCollection.getBookByFile(bookPath);
                                 if (book != null) {
-                                    openBook(book);
+
+                                    KooreaderUtil.openBook(context, book);
                                 } else {
                                     Toast.makeText(context, "打开失败,请重试", Toast.LENGTH_SHORT).show();
                                 }
@@ -318,6 +326,7 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     /**
      * 跳转到阅读Activity
+     *
      * @param data
      */
     private void openBook(Book data) {
@@ -348,9 +357,6 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void addAll(List<ShelfBookItemBean> list) {
         this.list.addAll(list);
     }
-
-
-
 
 
 }

@@ -1,21 +1,20 @@
 package com.xjtu.bookreader.ui.fragment;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 
 
-import com.koolearn.android.kooreader.KooReader;
+import com.bumptech.glide.Glide;
 import com.koolearn.android.kooreader.libraryService.BookCollectionShadow;
-import com.koolearn.kooreader.book.Book;
 import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.adapter.ShelfAdapter;
 import com.xjtu.bookreader.base.BaseFragment;
@@ -25,9 +24,12 @@ import com.xjtu.bookreader.databinding.FragmentShelfBinding;
 import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.util.CommonUtils;
 import com.xjtu.bookreader.util.DebugUtil;
+import com.xjtu.bookreader.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 
 /**
@@ -72,14 +74,16 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DebugUtil.debug("ShelfFragment ---------> onCreate");
+        setHasOptionsMenu(true);
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        DebugUtil.debug("ShelfFragment ---------> onActivityCreated");
         showContentView();
-
-        verifyStoragePermissions(activity);
 
         bindingView.srlShelf.setColorSchemeColors(CommonUtils.getColor(R.color.colorPrimary));
 
@@ -106,6 +110,7 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 
         // 准备就绪
         mIsPrepared = true;
+
         /**
          * 因为启动时先走loadData()再走onActivityCreated，
          * 所以此处要额外调用load(),不然最初不会加载内容
@@ -114,14 +119,31 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        DebugUtil.debug("ShelfFragment ---------> onStart");
+//        showActionBar();
+    }
 
-    /**
-     * 跳转到阅读Activity
-     * @param data
-     */
-    private void openBook(Book data) {
-        KooReader.openBookActivity(activity, data, null);
-        activity.overridePendingTransition(com.ninestars.android.R.anim.tran_fade_in, com.ninestars.android.R.anim.tran_fade_out);
+    @Override
+    public void onResume() {
+        super.onResume();
+        DebugUtil.debug("ShelfFragment ---------> onResume");
+
+//        showActionBar();
+
+    }
+
+    private void showActionBar() {
+
+        View decorView = activity.getWindow().getDecorView();
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+        decorView.setSystemUiVisibility(uiOptions);
+        // Remember that you should never show the action bar if the
+        // status bar is hidden, so hide that too if necessary.
+        activity.getSupportActionBar().show();
     }
 
     @Override
@@ -142,6 +164,31 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
     }
 
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        activity.getMenuInflater().inflate(R.menu.shelf, menu);
+        inflater.inflate(R.menu.shelf, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+//                Toast.makeText(this, "搜索", Toast.LENGTH_SHORT).show();
+                Toasty.normal(activity, "Search").show();
+                return true;
+
+            case R.id.action_edit:
+                Toasty.normal(activity, "edit").show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     /**
      * 加载我的书架
      */
@@ -161,8 +208,7 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
         shelfBookBean.setResults(shelfBookItemBeanList);
 
         if (mShelfAdapter == null) {
-            mShelfAdapter = new ShelfAdapter(activity);
-            mShelfAdapter.setMyCollection(myCollection);
+            mShelfAdapter = new ShelfAdapter(activity, myCollection);
         }
         mShelfAdapter.setList(shelfBookBean.getResults());
         mShelfAdapter.notifyDataSetChanged();
@@ -279,32 +325,23 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        DebugUtil.debug("ShelfFragment ---------> onPause");
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        DebugUtil.debug("ShelfFragment ---------> onStop");
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         myCollection.unbind();
-        DebugUtil.error("-- ShelfFragment ----onDestroy");
+        DebugUtil.debug("ShelfFragment ----onDestroy");
     }
 
-
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-    /**
-     * Checks if the app has permission to write to device storage
-     * If the app does not has permission then the user will be prompted to
-     * grant permissions
-     *
-     * @param activity
-     */
-    public static void verifyStoragePermissions(Activity activity) {
-        int permission = ActivityCompat.checkSelfPermission(activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE);
-        }
-    }
 }
