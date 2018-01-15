@@ -23,6 +23,7 @@ public class TimeUtil {
      */
     private static SimpleDateFormat sdf1 = new SimpleDateFormat(pat1);
     private static SimpleDateFormat sdf2 = new SimpleDateFormat(pat2);
+
     private static long timeMilliseconds;
 
     public static Long farmatTime(String string) {

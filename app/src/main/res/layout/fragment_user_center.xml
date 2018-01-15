@@ -22,13 +22,14 @@
                 android:layout_width="95dp"
                 android:layout_height="95dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/user_avatar"
+                android:src="@drawable/girl_avatar"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="2dp" />
 
             <Button
+                android:id="@+id/btn_login"
                 android:layout_width="85dp"
-                android:layout_height="35dp"
+                android:layout_height="30dp"
                 android:layout_below="@+id/civ_avatar_img"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="14dp"
@@ -51,6 +52,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rl_my_account_container"
                 android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,6 +95,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/rl_my_purchase_container"
                 android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,6 +139,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/rl_setting_container"
                 android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -178,6 +182,7 @@
                 android:background="@color/colorDivider" />
 
             <RelativeLayout
+                android:id="@+id/rl_help_container"
                 android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

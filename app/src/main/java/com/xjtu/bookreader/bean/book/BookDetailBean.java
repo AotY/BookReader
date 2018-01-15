@@ -4,7 +4,6 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.xjtu.bookreader.BR;
-import com.xjtu.bookreader.bean.ImagesBean;
 import com.xjtu.bookreader.http.ParamNames;
 
 import java.io.Serializable;
@@ -96,11 +95,9 @@ public class BookDetailBean extends BaseObservable implements Serializable {
 
     @ParamNames("rating")
     private String rating;
-//    private BooksBean.RatingBean rating;
 
     @ParamNames("title")
     private String title;
-
 
     @ParamNames("subtitle")
     private String subtitle;
@@ -108,14 +105,8 @@ public class BookDetailBean extends BaseObservable implements Serializable {
     @ParamNames("pubdate")
     private String pubdate;
 
-    @ParamNames("origin_title")
-    private String origin_title;
-
     @ParamNames("image")
     private String image;
-
-    @ParamNames("binding")
-    private String binding;
 
     @ParamNames("catalog")
     private String catalog;
@@ -123,27 +114,17 @@ public class BookDetailBean extends BaseObservable implements Serializable {
     @ParamNames("pages")
     private String pages;
 
-//    @ParamNames("images")
-//    private ImagesBean images;
-
     @ParamNames("alt")
     private String alt;
-
 
     @ParamNames("publisher")
     private String publisher;
 
-    @ParamNames("isbn10")
-    private String isbn10;
-
-    @ParamNames("isbn13")
-    private String isbn13;
+    @ParamNames("isbn")
+    private String isbn;
 
     @ParamNames("url")
     private String url;
-
-//    @ParamNames("alt_title")
-//    private String alt_title;
 
     @ParamNames("author_intro")
     private String author_intro;
@@ -163,15 +144,14 @@ public class BookDetailBean extends BaseObservable implements Serializable {
     @ParamNames("translator")
     private List<String> translator;
 
-//    @Bindable
-//    public BooksBean.RatingBean getRating() {
-//        return rating;
-//    }
-//
-//    public void setRating(BooksBean.RatingBean rating) {
-//        this.rating = rating;
-//        notifyPropertyChanged(BR.rating);
-//    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
 
     @Bindable
     public String getRating() {
@@ -203,16 +183,6 @@ public class BookDetailBean extends BaseObservable implements Serializable {
     }
 
     @Bindable
-    public String getOrigin_title() {
-        return origin_title;
-    }
-
-    public void setOrigin_title(String origin_title) {
-        this.origin_title = origin_title;
-        notifyPropertyChanged(BR.origin_title);
-    }
-
-    @Bindable
     public String getImage() {
         return image;
     }
@@ -222,15 +192,6 @@ public class BookDetailBean extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.image);
     }
 
-    @Bindable
-    public String getBinding() {
-        return binding;
-    }
-
-    public void setBinding(String binding) {
-        this.binding = binding;
-        notifyPropertyChanged(BR.binding);
-    }
 
     @Bindable
     public String getCatalog() {
@@ -293,26 +254,6 @@ public class BookDetailBean extends BaseObservable implements Serializable {
     }
 
     @Bindable
-    public String getIsbn10() {
-        return isbn10;
-    }
-
-    public void setIsbn10(String isbn10) {
-        this.isbn10 = isbn10;
-        notifyPropertyChanged(BR.isbn10);
-    }
-
-    @Bindable
-    public String getIsbn13() {
-        return isbn13;
-    }
-
-    public void setIsbn13(String isbn13) {
-        this.isbn13 = isbn13;
-        notifyPropertyChanged(BR.isbn13);
-    }
-
-    @Bindable
     public String getTitle() {
         return title;
     }
@@ -331,16 +272,6 @@ public class BookDetailBean extends BaseObservable implements Serializable {
         this.url = url;
         notifyPropertyChanged(BR.url);
     }
-
-//    @Bindable
-//    public String getAlt_title() {
-//        return alt_title;
-//    }
-//
-//    public void setAlt_title(String alt_title) {
-//        this.alt_title = alt_title;
-//        notifyPropertyChanged(BR.alt_title);
-//    }
 
     @Bindable
     public String getAuthor_intro() {
@@ -381,16 +312,6 @@ public class BookDetailBean extends BaseObservable implements Serializable {
         this.author = author;
         notifyPropertyChanged(BR.author);
     }
-
-//    @Bindable
-//    public List<BooksBean.TagsBean> getTags() {
-//        return tags;
-//    }
-//
-//    public void setTags(List<BooksBean.TagsBean> tags) {
-//        this.tags = tags;
-//        notifyPropertyChanged(BR.tags);
-//    }
 
     @Bindable
     public List<String> getTranslator() {

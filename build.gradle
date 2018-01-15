@@ -1,15 +1,19 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
+//    ext.objectboxVersion = '1.4.0'
+
     repositories {
         google()
         jcenter()
+//        maven { url "http://objectbox.net/beta-repo/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+//
+//        classpath "io.objectbox:objectbox-gradle-plugin:$objectboxVersion"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -26,6 +30,8 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
         maven { url "http://dl.bintray.com/mobisystech/maven" }
+
+//        maven { url "http://objectbox.net/beta-repo/" }
     }
 }
 

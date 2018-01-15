@@ -79,6 +79,9 @@ android {
 
         implementation 'de.hdodenhof:circleimageview:2.2.0'
 
+        // An Android library that makes developers use SQLite database extremely easy.
+        implementation 'org.litepal.android:core:1.6.1'
+
         // compile 'com.youth.banner:banner:1.4.10'  //最新版本
         implementation project(':library:banner')
         implementation project(':library:reader')

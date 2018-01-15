@@ -65,7 +65,7 @@ public class HttpUtils {
     private final static String API_RECOMMEND = "Https://192.168.1.101/recommend";
 
     // 书架接口
-    private final static String API_SHELF = "Https://192.168.1.101/shelf";
+//    private final static String API_SHELF = "Https://192.168.1.101/shelf";
 
     // 书籍列表
     private final static String API_BOOK_LIST = "Https://192.168.1.101/book_list/";
@@ -116,16 +116,16 @@ public class HttpUtils {
         return (T) recommendHttps;
     }
 
-    public <T> T getShelfService(Class<T> a) {
-        if (shelfHttps == null) {
-            synchronized (HttpUtils.class) {
-                if (shelfHttps == null) {
-                    shelfHttps = getBuilder(API_SHELF).build().create(a);
-                }
-            }
-        }
-        return (T) shelfHttps;
-    }
+//    public <T> T getShelfService(Class<T> a) {
+//        if (shelfHttps == null) {
+//            synchronized (HttpUtils.class) {
+//                if (shelfHttps == null) {
+//                    shelfHttps = getBuilder(API_SHELF).build().create(a);
+//                }
+//            }
+//        }
+//        return (T) shelfHttps;
+//    }
 
     public <T> T getBookListService(Class<T> a) {
         if (bookListHttps == null) {

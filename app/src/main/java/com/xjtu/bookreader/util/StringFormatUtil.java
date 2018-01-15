@@ -1,8 +1,6 @@
 package com.xjtu.bookreader.util;
 
 
-import com.xjtu.bookreader.bean.PersonBean;
-
 import java.util.List;
 
 /**
@@ -10,27 +8,6 @@ import java.util.List;
  */
 
 public class StringFormatUtil {
-
-    /**
-     * 格式化导演、主演名字
-     */
-    public static String formatName(List<PersonBean> casts) {
-        if (casts != null && casts.size() > 0) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < casts.size(); i++) {
-                if (i < casts.size() - 1) {
-                    stringBuilder.append(casts.get(i).getName()).append(" / ");
-                } else {
-                    stringBuilder.append(casts.get(i).getName());
-                }
-            }
-            return stringBuilder.toString();
-
-        } else {
-            return "佚名";
-        }
-    }
-
     /**
      * 格式化电影类型
      */

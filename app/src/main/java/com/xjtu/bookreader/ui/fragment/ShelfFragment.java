@@ -13,20 +13,17 @@ import android.view.MenuItem;
 import android.view.View;
 
 
-import com.bumptech.glide.Glide;
 import com.koolearn.android.kooreader.libraryService.BookCollectionShadow;
 import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.adapter.ShelfAdapter;
 import com.xjtu.bookreader.base.BaseFragment;
-import com.xjtu.bookreader.bean.ShelfBookBean;
-import com.xjtu.bookreader.bean.ShelfBookItemBean;
+import com.xjtu.bookreader.bean.model.BookOfShelf;
 import com.xjtu.bookreader.databinding.FragmentShelfBinding;
 import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.util.CommonUtils;
 import com.xjtu.bookreader.util.DebugUtil;
-import com.xjtu.bookreader.util.Logger;
 
-import java.util.ArrayList;
+import org.litepal.crud.DataSupport;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -41,17 +38,13 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 
     private boolean mIsFirst = true;
 
-    // 开始请求的角标
-    private int mStart = 0;
-    // 一次请求的数量
-
-    private int mCount = 18;
-
     private MainActivity activity;
 
     private ShelfAdapter mShelfAdapter;
 
     private GridLayoutManager mLayoutManager;
+
+    private List<BookOfShelf> bookOfShelfList;
 
     private final BookCollectionShadow myCollection = new BookCollectionShadow();
 
@@ -83,10 +76,12 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         DebugUtil.debug("ShelfFragment ---------> onActivityCreated");
+
         showContentView();
 
         bindingView.srlShelf.setColorSchemeColors(CommonUtils.getColor(R.color.colorPrimary));
 
+        // 刷新页面
         bindingView.srlShelf.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -94,7 +89,6 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
                 bindingView.srlShelf.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mStart = 0;
                         loadCustomData();
                     }
                 }, 1000);
@@ -102,7 +96,7 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
             }
         });
 
-
+        // 设置LayoutManger
         mLayoutManager = new GridLayoutManager(getActivity(), 3);
         bindingView.xrvShelf.setLayoutManager(mLayoutManager);
 
@@ -110,9 +104,8 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 
         // 准备就绪
         mIsPrepared = true;
-
         /**
-         * 因为启动时先走loadData()再走onActivityCreated，
+         * 因为启动时先走loadData() 再走onActivityCreated，
          * 所以此处要额外调用load(),不然最初不会加载内容
          */
         loadData();
@@ -123,7 +116,6 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
     public void onStart() {
         super.onStart();
         DebugUtil.debug("ShelfFragment ---------> onStart");
-//        showActionBar();
     }
 
     @Override
@@ -131,20 +123,8 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
         super.onResume();
         DebugUtil.debug("ShelfFragment ---------> onResume");
 
-//        showActionBar();
-
     }
 
-    private void showActionBar() {
-
-        View decorView = activity.getWindow().getDecorView();
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
-        decorView.setSystemUiVisibility(uiOptions);
-        // Remember that you should never show the action bar if the
-        // status bar is hidden, so hide that too if necessary.
-        activity.getSupportActionBar().show();
-    }
 
     @Override
     protected void loadData() {
@@ -193,24 +173,27 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
      * 加载我的书架
      */
     private void loadCustomData() {
-        ShelfBookBean shelfBookBean = new ShelfBookBean();
-        shelfBookBean.setError(false);
-        List<ShelfBookItemBean> shelfBookItemBeanList = new ArrayList<>();
+//        ShelfBookBean shelfBookBean = new ShelfBookBean();
+//        shelfBookBean.setError(false);
+//        List<BookOfShelf> bookOfShelfList = new ArrayList<>();
 
-        shelfBookItemBeanList.add(new ShelfBookItemBean("1", "芳华", "https://img3.doubanio.com/lpic/s29418322.jpg"));
-        shelfBookItemBeanList.add(new ShelfBookItemBean("2", "步履不停", "http://mebook.cc/wp-content/uploads/2017/06/blob-39.png"));
-        shelfBookItemBeanList.add(new ShelfBookItemBean("3", "艺术的故事", "https://img3.doubanio.com/lpic/s3219163.jpg"));
-        shelfBookItemBeanList.add(new ShelfBookItemBean("4", "我的前半生", "https://img1.doubanio.com/lpic/s2720819.jpg"));
-        shelfBookItemBeanList.add(new ShelfBookItemBean("5", "百年孤独", "https://img3.doubanio.com/lpic/s6384944.jpg"));
-        shelfBookItemBeanList.add(new ShelfBookItemBean("6", "活着", "https://img3.doubanio.com/lpic/s27279654.jpg"));
-        shelfBookItemBeanList.add(new ShelfBookItemBean("7", "人间失格", "https://img3.doubanio.com/lpic/s6100756.jpg"));
-        shelfBookItemBeanList.add(new ShelfBookItemBean("8", "月亮与六便士", "https://img1.doubanio.com/lpic/s2659208.jpg"));
-        shelfBookBean.setResults(shelfBookItemBeanList);
+//        bookOfShelfList.add(new BookOfShelf("1", "芳华", "https://img3.doubanio.com/lpic/s29418322.jpg"));
+//        bookOfShelfList.add(new BookOfShelf("2", "步履不停", "http://mebook.cc/wp-content/uploads/2017/06/blob-39.png"));
+//        bookOfShelfList.add(new BookOfShelf("3", "艺术的故事", "https://img3.doubanio.com/lpic/s3219163.jpg"));
+//        bookOfShelfList.add(new BookOfShelf("4", "我的前半生", "https://img1.doubanio.com/lpic/s2720819.jpg"));
+//        bookOfShelfList.add(new BookOfShelf("5", "百年孤独", "https://img3.doubanio.com/lpic/s6384944.jpg"));
+//        bookOfShelfList.add(new BookOfShelf("6", "活着", "https://img3.doubanio.com/lpic/s27279654.jpg"));
+//        bookOfShelfList.add(new BookOfShelf("7", "人间失格", "https://img3.doubanio.com/lpic/s6100756.jpg"));
+//        bookOfShelfList.add(new BookOfShelf("8", "月亮与六便士", "https://img1.doubanio.com/lpic/s2659208.jpg"));
+//        shelfBookBean.setResults(bookOfShelfList);
+
+        bookOfShelfList = DataSupport.findAll(BookOfShelf.class);
 
         if (mShelfAdapter == null) {
             mShelfAdapter = new ShelfAdapter(activity, myCollection);
         }
-        mShelfAdapter.setList(shelfBookBean.getResults());
+
+        mShelfAdapter.setList(bookOfShelfList);
         mShelfAdapter.notifyDataSetChanged();
         bindingView.xrvShelf.setAdapter(mShelfAdapter);
 
@@ -219,6 +202,8 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 //            bindingView.srlShelf.setRefreshing(false);
 //        }
         bindingView.srlShelf.setRefreshing(false);
+
+//        mIsFirst = false;
 
 //        // 加载我的书架数据
 //        Subscription get = HttpClient.Builder.getShelfService().getShelf()
@@ -288,11 +273,13 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
                     if (mShelfAdapter == null) {
                         return;
                     }
+
                     if (mLayoutManager.getItemCount() == 0) {
                         mShelfAdapter.updateLoadStatus(ShelfAdapter.LOAD_NONE);
                         return;
 
                     }
+
                     if (lastVisibleItem + 1 == mLayoutManager.getItemCount()
                             && mShelfAdapter.getLoadStatus() != ShelfAdapter.LOAD_MORE) {
                         mShelfAdapter.updateLoadStatus(ShelfAdapter.LOAD_MORE);
@@ -300,7 +287,6 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                mStart += mCount;
                                 loadCustomData();
                             }
                         }, 1000);

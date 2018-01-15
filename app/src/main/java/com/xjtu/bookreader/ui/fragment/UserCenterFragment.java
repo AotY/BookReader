@@ -1,7 +1,7 @@
 package com.xjtu.bookreader.ui.fragment;
 
 
-import android.app.ActionBar;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,6 +29,7 @@ import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.util.CommonUtils;
 import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.Logger;
+import com.xjtu.bookreader.util.PerfectClickListener;
 
 
 /**
@@ -65,9 +67,9 @@ public class UserCenterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        FragmentUserCenterBinding binding = DataBindingUtil.inflate(
+        userCenterBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_user_center, container, false);
-        View view = binding.getRoot();
+        View view = userCenterBinding.getRoot();
         //here data must be an instance of the class MarsDataProvider
 //        binding.setMarsdata(data);
         return view;
@@ -80,6 +82,7 @@ public class UserCenterFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         DebugUtil.debug("UserCenterFragment ---------> setUserVisibleHint : " + isVisibleToUser);
@@ -114,7 +117,12 @@ public class UserCenterFragment extends Fragment {
     private void hideActionBar() {
         // Remember that you should never show the action bar if the
         // status bar is hidden, so hide that too if necessary.
-        activity.getSupportActionBar().hide();
+        // 取消hide, show 动画
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setShowHideAnimationEnabled(false);
+            actionBar.hide();
+        }
 
 //        Window window = activity.getWindow();
 //        View decorView = activity.getWindow().getDecorView();
@@ -125,9 +133,14 @@ public class UserCenterFragment extends Fragment {
     }
 
 
+    @SuppressLint("RestrictedApi")
     private void showActionBar() {
-        activity.getSupportActionBar().show();
-
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setShowHideAnimationEnabled(false);
+            actionBar.show();
+        }
+//        activity.getSupportActionBar().show();
 //        View decorView = activity.getWindow().getDecorView();
         // Hide the status bar.
 //        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
@@ -138,6 +151,64 @@ public class UserCenterFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        // 设置点击事件
+        initClick();
+    }
+
+    private void initClick() {
+
+        // 点击用户头像，进入用户资料编辑页面
+        userCenterBinding.civAvatarImg.setOnClickListener(new PerfectClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+
+            }
+        });
+
+        // 点击登录，登录成功或点击进入用户资料编辑页面
+        userCenterBinding.btnLogin.setOnClickListener(new PerfectClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+
+            }
+        });
+
+        // 点击我的账号，查看余额、充值等
+        userCenterBinding.rlMyAccountContainer.setOnClickListener(new PerfectClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+
+            }
+        });
+
+
+        // 点击我的购买历史
+        userCenterBinding.rlMyPurchaseContainer.setOnClickListener(new PerfectClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+
+            }
+        });
+
+
+        // 点击设置中心
+        userCenterBinding.rlSettingContainer.setOnClickListener(new PerfectClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+
+            }
+        });
+
+        // 点击帮助中心
+        userCenterBinding.rlHelpContainer.setOnClickListener(new PerfectClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+
+            }
+        });
+
+
     }
 
 

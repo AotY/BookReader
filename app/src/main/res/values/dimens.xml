@@ -21,7 +21,7 @@
 
     <dimen name="user_center_item_font_size">16sp</dimen>
 
-    <dimen name="user_center_line_margin_start">50dp</dimen>
+    <dimen name="user_center_line_margin_start">55dp</dimen>
 
 
 </resources>

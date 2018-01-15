@@ -133,7 +133,7 @@ public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetai
 
         bookDetailBean.setUrl("https://book.douban.com/subject/4913064/");
         bookDetailBean.setAlt("https://book.douban.com/subject/4913064/");
-        bookDetailBean.setIsbn13("9787506365437");
+        bookDetailBean.setIsbn("9787506365437");
         bookDetailBean.setCatalog("中文版自序\n" +
                 "韩文版自序\n" +
                 "日文版自序\n" +

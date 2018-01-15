@@ -1,5 +1,6 @@
 package com.xjtu.bookreader.ui;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,8 @@ import com.xjtu.bookreader.ui.fragment.UserCenterFragment;
 import com.xjtu.bookreader.util.Logger;
 import com.xjtu.bookreader.util.StringResourceUtil;
 import com.xjtu.bookreader.view.CustomViewPager;
+
+import org.litepal.crud.DataSupport;
 
 import es.dmoral.toasty.Toasty;
 
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_user_center:
                     viewPager.setCurrentItem(2);
+                    setTitle("");
                     return true;
             }
             return false;
@@ -69,16 +73,14 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        View decorView = getWindow().getDecorView();
-//        // Hide the status bar.
-//        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        decorView.setSystemUiVisibility(uiOptions);
-
         setTitle(StringResourceUtil.getStringById(R.string.bookshelf));
+        // 取消hide, show 动画
+        getSupportActionBar().setShowHideAnimationEnabled(false);
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 

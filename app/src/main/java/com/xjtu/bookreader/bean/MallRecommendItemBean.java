@@ -27,7 +27,7 @@ public class MallRecommendItemBean implements Serializable {
     private String title;
 
     @ParamNames("rating")  // 书籍评分
-    private BooksBean.RatingBean rating;
+    private String rating;
 
     @ParamNames("image")  // 书籍主图片
     private String image;
@@ -42,7 +42,7 @@ public class MallRecommendItemBean implements Serializable {
         this.image = image;
     }
 
-    public MallRecommendItemBean(String type_title, String id, String title, BooksBean.RatingBean rating, String image) {
+    public MallRecommendItemBean(String type_title, String id, String title, String rating, String image) {
         this.type_title = type_title;
         this.id = id;
         this.title = title;
@@ -77,11 +77,11 @@ public class MallRecommendItemBean implements Serializable {
     }
 
 //    @Bindable
-    public BooksBean.RatingBean getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(BooksBean.RatingBean rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
