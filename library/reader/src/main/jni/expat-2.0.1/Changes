@@ -163,7 +163,7 @@ Release 1.95.0 Fri Sep 29 2000
                         sysid, pubid, has_internal_subset
                 o Many paired handler setters (like XML_SetElementHandler)
                   now have corresponding individual handler setters
-                o XML_GetInputContext for getting the input context of
+                o XML_GetInputContext for getting the input activity of
                   the current parse position.
         - Added reference material
         - Packaged into a distribution that builds a sharable library

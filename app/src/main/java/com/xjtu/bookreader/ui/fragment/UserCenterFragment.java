@@ -9,27 +9,26 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.databinding.FragmentUserCenterBinding;
+import com.xjtu.bookreader.ui.HelpActivity;
+import com.xjtu.bookreader.ui.LoginActivity;
 import com.xjtu.bookreader.ui.MainActivity;
-import com.xjtu.bookreader.util.CommonUtils;
+import com.xjtu.bookreader.ui.PurchaseHistoryActivity;
+import com.xjtu.bookreader.ui.SettingsActivity;
+import com.xjtu.bookreader.ui.UserProfileActivity;
 import com.xjtu.bookreader.util.DebugUtil;
-import com.xjtu.bookreader.util.Logger;
 import com.xjtu.bookreader.util.PerfectClickListener;
+import com.xjtu.bookreader.util.UserUtil;
 
 
 /**
@@ -113,6 +112,7 @@ public class UserCenterFragment extends Fragment {
 //        showActionBar();
     }
 
+    @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void hideActionBar() {
         // Remember that you should never show the action bar if the
@@ -123,7 +123,6 @@ public class UserCenterFragment extends Fragment {
             actionBar.setShowHideAnimationEnabled(false);
             actionBar.hide();
         }
-
 //        Window window = activity.getWindow();
 //        View decorView = activity.getWindow().getDecorView();
 //        // Hide the status bar.
@@ -152,17 +151,25 @@ public class UserCenterFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
         // 设置点击事件
-        initClick();
+        initView();
+
+        initData();
     }
 
-    private void initClick() {
 
-        // 点击用户头像，进入用户资料编辑页面
+    private void initView() {
+
+        // 如果用户登录，点击用户头像，进入用户资料编辑页面；如果没有登录，则不响应。
         userCenterBinding.civAvatarImg.setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-
+                // 如果用户登录并且在线
+                if (UserUtil.isOnline(activity)) {
+                    //调转到资料编辑页面
+                    UserProfileActivity.start(activity);
+                }
             }
         });
 
@@ -170,7 +177,10 @@ public class UserCenterFragment extends Fragment {
         userCenterBinding.btnLogin.setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-
+                // 如果用户登录并且在线
+                if (!UserUtil.isLogined()) {
+                    LoginActivity.start(activity);
+                }
             }
         });
 
@@ -178,7 +188,8 @@ public class UserCenterFragment extends Fragment {
         userCenterBinding.rlMyAccountContainer.setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-
+                if (UserUtil.isOnline(activity)) {
+                }
             }
         });
 
@@ -187,6 +198,9 @@ public class UserCenterFragment extends Fragment {
         userCenterBinding.rlMyPurchaseContainer.setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
+                if (UserUtil.isOnline(activity)) {
+                    PurchaseHistoryActivity.start(activity);
+                }
 
             }
         });
@@ -196,7 +210,7 @@ public class UserCenterFragment extends Fragment {
         userCenterBinding.rlSettingContainer.setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-
+                SettingsActivity.start(activity);
             }
         });
 
@@ -204,10 +218,23 @@ public class UserCenterFragment extends Fragment {
         userCenterBinding.rlHelpContainer.setOnClickListener(new PerfectClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
-
+                HelpActivity.start(activity);
             }
         });
 
+        // 是否登录过
+        if (UserUtil.isLogined()) {
+            userCenterBinding.btnLogin.setVisibility(View.GONE);
+            userCenterBinding.llUserNameContainer.setVisibility(View.VISIBLE);
+            userCenterBinding.setUserName(UserUtil.getUserName());
+        } else {
+            userCenterBinding.llUserNameContainer.setVisibility(View.GONE);
+            userCenterBinding.btnLogin.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //
+    private void initData() {
 
     }
 

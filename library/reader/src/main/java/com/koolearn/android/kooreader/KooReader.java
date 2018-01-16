@@ -1,5 +1,6 @@
 package com.koolearn.android.kooreader;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +58,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -65,21 +68,16 @@ import java.util.HashMap;
 public final class KooReader extends KooReaderMainActivity implements ZLApplicationWindow {
     public static final int RESULT_DO_NOTHING = RESULT_FIRST_USER;
 
-    /**
-     * 打开阅读页面
-     *
-     * @param context
-     * @param book
-     * @param bookmark 还可以传入bookmark
-     */
-    public static void openBookActivity(Context context, Book book, Bookmark bookmark) {
-        final Intent intent = new Intent(context, KooReader.class);
-        intent.setAction(KooReaderIntents.Action.VIEW);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        KooReaderIntents.putBookExtra(intent, book);
-        KooReaderIntents.putBookmarkExtra(intent, bookmark);
-        context.startActivity(intent);
-    }
+    private int requestCode = 0;
+
+    private boolean isForResult = false;
+
+    private long bookId = 0;
+
+    private static final String BOOK_ID = "bookId";
+    private static final String LAST_TIME = "lastTime";
+    private static final String PROGRESS = "progress";
+
 
     private KooReaderApp myKooReaderApp;
     private volatile Book myBook;
@@ -91,10 +89,39 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
     final DataService.Connection DataConnection = new DataService.Connection();
 
     volatile boolean IsPaused = false;
-//    private volatile long myResumeTimestamp; // 数据同步
+    //    private volatile long myResumeTimestamp; // 数据同步
 
     private Intent myOpenBookIntent = null;
 
+
+    /**
+     * 打开阅读页面
+     *
+     * @param book
+     * @param bookmark 还可以传入bookmark
+     */
+    public static void openBookActivity(Activity activity, Book book, Bookmark bookmark) {
+        final Intent intent = new Intent(activity, KooReader.class);
+        intent.setAction(KooReaderIntents.Action.VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        KooReaderIntents.putBookExtra(intent, book);
+        KooReaderIntents.putBookmarkExtra(intent, bookmark);
+        activity.startActivity(intent);
+    }
+
+
+    public static void openBookActivityForResult(Activity activity, int requestCode, Book book, Bookmark bookmark) {
+        final Intent intent = new Intent(activity, KooReader.class);
+        intent.setAction(KooReaderIntents.Action.VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        KooReaderIntents.putBookExtra(intent, book);
+        KooReaderIntents.putBookmarkExtra(intent, bookmark);
+        //        activity.startActivityForResult(intent, requestCode, bundle);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+
+    // synchronized 同步
     private synchronized void openBook(Intent intent, final Runnable action, boolean force) {
         if (!force && myBook != null) {
             return;
@@ -163,6 +190,7 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
 
+
         StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.white), true);
 
         // register
@@ -170,7 +198,7 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
             EventBus.getDefault().register(this);
         }
 
-//        EventBus.getDefault().post(new FinishEvent());
+        //        EventBus.getDefault().post(new FinishEvent());
         myRootView = (RelativeLayout) findViewById(R.id.root_view);
         myMainView = (ZLAndroidWidget) findViewById(R.id.main_view);
         myCurlView = (ZLAndroidCurlWidget) findViewById(R.id.curl_view);
@@ -182,6 +210,7 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
                 myCurlView.setViewMode(CurlView.SHOW_ONE_PAGE);
             }
         });
+
         myKooReaderApp = (KooReaderApp) KooReaderApp.Instance();
         if (myKooReaderApp == null) {
             myKooReaderApp = new KooReaderApp(Paths.systemInfo(this), new BookCollectionShadow());
@@ -209,6 +238,7 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
         if (myKooReaderApp.getPopupById(ProgressPopup.ID) == null) {
             new ProgressPopup(myKooReaderApp);
         }
+
         myKooReaderApp.addAction(ActionCode.SHOW_NAVIGATION, new ShowNavigationAction(this, myKooReaderApp)); //y 页面跳转
         myKooReaderApp.addAction(ActionCode.PROCESS_HYPERLINK, new ProcessHyperlinkAction(this, myKooReaderApp)); //y 打开超链接、图片等
         myKooReaderApp.addAction(ActionCode.OPEN_VIDEO, new OpenVideoAction(this, myKooReaderApp));
@@ -219,9 +249,10 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
         myKooReaderApp.addAction(ActionCode.SELECTION_HIDE_PANEL, new SelectionHidePanelAction(this, myKooReaderApp));
         myKooReaderApp.addAction(ActionCode.SELECTION_COPY_TO_CLIPBOARD, new SelectionCopyAction(this, myKooReaderApp));
         myKooReaderApp.addAction(ActionCode.SELECTION_SHARE, new SelectionShareAction(this, myKooReaderApp));
+
         new OpenPhotoAction(this, myKooReaderApp, myRootView);
-//        final Intent intent = getIntent();
-//        myOpenBookIntent = intent;
+        //        final Intent intent = getIntent();
+        //        myOpenBookIntent = intent;
         ZLAndroidPaintContext.myReader = myKooReaderApp;
     }
 
@@ -272,11 +303,14 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
         registerReceiver(myBatteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
         IsPaused = false;
-//        myResumeTimestamp = System.currentTimeMillis();
+        //        myResumeTimestamp = System.currentTimeMillis();
         myOpenBookIntent = getIntent();
-//        Bookmark mark = KooReaderIntents.getBookmarkExtra(getIntent());
+
+        bookId = myOpenBookIntent.getLongExtra(BOOK_ID, 0);
+
+        //        Bookmark mark = KooReaderIntents.getBookmarkExtra(getIntent());
         if (myOpenBookIntent != null) {
-//            myOpenBookIntent = null;
+            //            myOpenBookIntent = null;
             getCollection().bindToService(this, new Runnable() {
                 public void run() {
                     System.out.println(KooReaderIntents.getBookmarkExtra(myOpenBookIntent));
@@ -289,7 +323,7 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
     @Override
     protected void onPause() {
         IsPaused = true;
-
+        // myCurlView Curl: 卷曲 ？
         if (myCurlView != null && myCurlView.getVisibility() == View.VISIBLE) {
             myCurlView.onPause();
         }
@@ -318,7 +352,42 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+
     }
+
+
+    //    @Override
+    //    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    //        return (myMainView != null && myMainView.onKeyDown(keyCode, event)) || super.onKeyDown(keyCode, event);
+    ////        return (myCurlView != null && myCurlView.onKeyDown(keyCode, event)) || super.onKeyDown(keyCode, event);
+    //    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            Log.d("KooReader", "------------------_> onKeyDown Called");
+            onBackPressed();
+            return true;
+        }
+        return (myMainView != null && myMainView.onKeyDown(keyCode, event)) || super.onKeyDown(keyCode, event);
+        //        return super.onKeyDown(keyCode, event);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Log.d("KooReader", "----------------> onBackPressed ");
+        Log.d("KooReader", "BOOK_ID ----------------> onBackPressed " +  myBook.getId());
+        Intent data = new Intent();
+        data.putExtra(BOOK_ID, myBook.getId());
+        data.putExtra(LAST_TIME, new Date());
+        data.putExtra(PROGRESS, myKooReaderApp.getTextView().getProgress().toFloat());
+        setResult(RESULT_OK, data); // passing the RESULT_OK parameter
+        //        finish();
+        super.onBackPressed();
+    }
+
 
     @Override
     public void onLowMemory() {
@@ -326,35 +395,35 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
         super.onLowMemory();
     }
 
-//    @Override
-//    public boolean onSearchRequested() {
-//        final KooReaderApp.PopupPanel popup = myKooReaderApp.getActivePopup();
-//        myKooReaderApp.hideActivePopup();
-//        if (DeviceType.Instance().hasStandardSearchDialog()) {
-//            final SearchManager manager = (SearchManager)getSystemService(SEARCH_SERVICE);
-//            manager.setOnCancelListener(new SearchManager.OnCancelListener() {
-//                public void onCancel() {
-//                    if (popup != null) {
-//                        myKooReaderApp.showPopup(popup.getId());
-//                    }
-//                    manager.setOnCancelListener(null);
-//                }
-//            });
-//            startSearch(myKooReaderApp.MiscOptions.TextSearchPattern.getValue(), true, null, false);
-//        } else {
-//            SearchDialogUtil.showDialog(
-//                    this, KooReader.class, myKooReaderApp.MiscOptions.TextSearchPattern.getValue(), new DialogInterface.OnCancelListener() {
-//                        @Override
-//                        public void onCancel(DialogInterface di) {
-//                            if (popup != null) {
-//                                myKooReaderApp.showPopup(popup.getId());
-//                            }
-//                        }
-//                    }
-//            );
-//        }
-//        return true;
-//    }
+    //    @Override
+    //    public boolean onSearchRequested() {
+    //        final KooReaderApp.PopupPanel popup = myKooReaderApp.getActivePopup();
+    //        myKooReaderApp.hideActivePopup();
+    //        if (DeviceType.Instance().hasStandardSearchDialog()) {
+    //            final SearchManager manager = (SearchManager)getSystemService(SEARCH_SERVICE);
+    //            manager.setOnCancelListener(new SearchManager.OnCancelListener() {
+    //                public void onCancel() {
+    //                    if (popup != null) {
+    //                        myKooReaderApp.showPopup(popup.getId());
+    //                    }
+    //                    manager.setOnCancelListener(null);
+    //                }
+    //            });
+    //            startSearch(myKooReaderApp.MiscOptions.TextSearchPattern.getValue(), true, null, false);
+    //        } else {
+    //            SearchDialogUtil.showDialog(
+    //                    this, KooReader.class, myKooReaderApp.MiscOptions.TextSearchPattern.getValue(), new DialogInterface.OnCancelListener() {
+    //                        @Override
+    //                        public void onCancel(DialogInterface di) {
+    //                            if (popup != null) {
+    //                                myKooReaderApp.showPopup(popup.getId());
+    //                            }
+    //                        }
+    //                    }
+    //            );
+    //        }
+    //        return true;
+    //    }
 
     //选中字体之后，进行的提示
     public void showSelectionPanel() {
@@ -407,7 +476,7 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
     @Override
     public void hideDictionarySelection() {
         myKooReaderApp.getTextView().hideOutline();
-//y        myKooReaderApp.getTextView().removeHighlightings(DictionaryHighlighting.class);
+        //y        myKooReaderApp.getTextView().removeHighlightings(DictionaryHighlighting.class);
         myKooReaderApp.getViewWidget().reset();
         myKooReaderApp.getViewWidget().repaint();
     }
@@ -415,7 +484,7 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
     //弹出一级菜单
     public void navigate() {
         ((NavigationPopup) myKooReaderApp.getPopupById(NavigationPopup.ID)).runNavigation();
-//        ((MainMenuPopup)myKooReaderApp.getPopupById(MainMenuPopup.ID)).runNavigation();
+        //        ((MainMenuPopup)myKooReaderApp.getPopupById(MainMenuPopup.ID)).runNavigation();
     }
 
     //点击设置，弹出二级菜单
@@ -423,15 +492,10 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
         ((SettingPopup) myKooReaderApp.getPopupById(SettingPopup.ID)).runNavigation();
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return (myMainView != null && myMainView.onKeyDown(keyCode, event)) || super.onKeyDown(keyCode, event);
-//        return (myCurlView != null && myCurlView.onKeyDown(keyCode, event)) || super.onKeyDown(keyCode, event);
-    }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-//        return (myCurlView != null && myCurlView.onKeyUp(keyCode, event)) || super.onKeyUp(keyCode, event);
+        //        return (myCurlView != null && myCurlView.onKeyUp(keyCode, event)) || super.onKeyUp(keyCode, event);
         return (myMainView != null && myMainView.onKeyUp(keyCode, event)) || super.onKeyUp(keyCode, event);
     }
 
@@ -524,7 +588,7 @@ public final class KooReader extends KooReaderMainActivity implements ZLApplicat
     @Override
     public ZLViewWidget getViewWidget() {
         return myMainView;
-//        return myCurlView;
+        //        return myCurlView;
     }
 
     @Override

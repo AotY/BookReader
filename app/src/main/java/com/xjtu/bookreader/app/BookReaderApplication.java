@@ -64,8 +64,8 @@ public class BookReaderApplication extends ZLAndroidApplication {
 //        bookOfShelfList.add(new BookOfShelf("1", "芳华", ));
 //        bookOfShelfList.add(new BookOfShelf("2", "步履不停", ""));
 //        bookOfShelfList.add(new BookOfShelf("3", ""));
-//        bookOfShelfList.add(new BookOfShelf("4", "我的前半生", "https://img1.doubanio.com/lpic/s2720819.jpg"));
-//        bookOfShelfList.add(new BookOfShelf("5", "百年孤独", "https://img3.doubanio.com/lpic/s6384944.jpg"));
+//        bookOfShelfList.add(new BookOfShelf("4", "", ""));
+//        bookOfShelfList.add(new BookOfShelf("5", "", ""));
 //        bookOfShelfList.add(new BookOfShelf("6", "活着", "https://img3.doubanio.com/lpic/s27279654.jpg"));
 //        bookOfShelfList.add(new BookOfShelf("7", "人间失格", "https://img3.doubanio.com/lpic/s6100756.jpg"));
 //        bookOfShelfList.add(new BookOfShelf("8", "月亮与六便士", "https://img1.doubanio.com/lpic/s2659208.jpg"));
@@ -87,6 +87,18 @@ public class BookReaderApplication extends ZLAndroidApplication {
         bookOfShelf3.setBookPath(path + "/艺术的故事.epub");
         bookOfShelf3.setCoverImage("https://img3.doubanio.com/lpic/s3219163.jpg");
         bookOfShelf3.save();
+
+        BookOfShelf bookOfShelf4 = new BookOfShelf(10004, "我的前半生");
+        bookOfShelf4.setDownloaded(true);
+        bookOfShelf4.setBookPath(path + "/我的前半生.epub");
+        bookOfShelf4.setCoverImage("https://img1.doubanio.com/lpic/s2720819.jpg");
+        bookOfShelf4.save();
+
+        BookOfShelf bookOfShelf5 = new BookOfShelf(10005, "百年孤独");
+        bookOfShelf5.setDownloaded(true);
+        bookOfShelf5.setBookPath(path + "/百年孤独.epub");
+        bookOfShelf5.setCoverImage("https://img3.doubanio.com/lpic/s6384944.jpg");
+        bookOfShelf5.save();
 
     }
 

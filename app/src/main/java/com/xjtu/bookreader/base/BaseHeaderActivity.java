@@ -33,7 +33,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.databinding.BaseHeaderTitleBarBinding;
-import com.xjtu.bookreader.util.CommonUtils;
+import com.xjtu.bookreader.util.CommonUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
 import com.xjtu.bookreader.view.CustomChangeBounds;
 import com.xjtu.bookreader.view.MyNestedScrollView;
@@ -357,9 +357,9 @@ public abstract class BaseHeaderActivity<HV extends ViewDataBinding, SV extends 
     }
 
     private void initNewSlidingParams() {
-        int titleBarAndStatusHeight = (int) (CommonUtils.getDimens(R.dimen.nav_bar_height) + StatusBarUtil.getStatusBarHeight(this));
+        int titleBarAndStatusHeight = (int) (CommonUtil.getDimens(R.dimen.nav_bar_height) + StatusBarUtil.getStatusBarHeight(this));
         // 减掉后，没到顶部就不透明了
-        slidingDistance = imageBgHeight - titleBarAndStatusHeight - (int) (CommonUtils.getDimens(R.dimen.base_header_activity_slide_more));
+        slidingDistance = imageBgHeight - titleBarAndStatusHeight - (int) (CommonUtil.getDimens(R.dimen.base_header_activity_slide_more));
     }
 
     /**

@@ -85,11 +85,12 @@ dependencies {
     //方法总数超过64K时,dex分割
 
     implementation files('libs/universal-image-loader-1.9.5.jar')
-    implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.githang:status-bar-compat:0.5.2'
+
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    annotationProcessor 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
 
     // 状态栏颜色
 //    provided 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
 //    compileOnly 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
-    annotationProcessor 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
 }

@@ -55,9 +55,9 @@ public class MallModel {
     public void showBannerPage(final RequestImpl listener) {
         BannerBean bannerBean = new BannerBean();
         List<BannerItemBean> bannerItemBeans = new ArrayList<>();
-        bannerItemBeans.add(new BannerItemBean("1", "芳华", "http://img3.jiemian.com/101/original/20170522/149545357274009400.jpg"));
-        bannerItemBeans.add(new BannerItemBean("2", "步履不停", "http://img.suilengea.com/?tag=a&url=mmbizz-zqpicz-zcn/mmbiz_jpg/XKl38Yp6CNia641f0cewp42gS4vaBI2FWa5GmibOJC39NXgSib7Hz1W5X2V2zVT7448wjAAEl1eYwQibrwSF7FjdMw/0?wx_fmt=jpeg"));
-        bannerItemBeans.add(new BannerItemBean("8", "月亮与六便士", "https://upload-images.jianshu.io/upload_images/2243916-b47c3c92f9c3032f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/476"));
+        bannerItemBeans.add(new BannerItemBean(10001, "芳华", "http://img3.jiemian.com/101/original/20170522/149545357274009400.jpg"));
+        bannerItemBeans.add(new BannerItemBean(10002, "步履不停", "http://img.suilengea.com/?tag=a&url=mmbizz-zqpicz-zcn/mmbiz_jpg/XKl38Yp6CNia641f0cewp42gS4vaBI2FWa5GmibOJC39NXgSib7Hz1W5X2V2zVT7448wjAAEl1eYwQibrwSF7FjdMw/0?wx_fmt=jpeg"));
+        bannerItemBeans.add(new BannerItemBean(10008, "月亮与六便士", "https://upload-images.jianshu.io/upload_images/2243916-b47c3c92f9c3032f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/476"));
         bannerBean.setResults(bannerItemBeans);
         bannerBean.setError(false);
         listener.loadSuccess(bannerBean);
@@ -91,20 +91,20 @@ public class MallModel {
         ArrayList<List<MallRecommendItemBean>> listList = new ArrayList<List<MallRecommendItemBean>>();
 
         List<MallRecommendItemBean> mallRecommendItemBeans1 = new ArrayList<>();
-        mallRecommendItemBeans1.add(new MallRecommendItemBean("1", "芳华", "https://img3.doubanio.com/lpic/s29418322.jpg"));
-        mallRecommendItemBeans1.add(new MallRecommendItemBean("2", "步履不停", "http://mebook.cc/wp-content/uploads/2017/06/blob-39.png"));
-        mallRecommendItemBeans1.add(new MallRecommendItemBean("3", "艺术的故事", "https://img3.doubanio.com/lpic/s3219163.jpg"));
+        mallRecommendItemBeans1.add(new MallRecommendItemBean(10001, "芳华", "https://img3.doubanio.com/lpic/s29418322.jpg"));
+        mallRecommendItemBeans1.add(new MallRecommendItemBean(10002, "步履不停", "http://mebook.cc/wp-content/uploads/2017/06/blob-39.png"));
+        mallRecommendItemBeans1.add(new MallRecommendItemBean(10003, "艺术的故事", "https://img3.doubanio.com/lpic/s3219163.jpg"));
 
         List<MallRecommendItemBean> mallRecommendItemBeans2 = new ArrayList<>();
-        mallRecommendItemBeans2.add(new MallRecommendItemBean("4", "我的前半生", "https://img1.doubanio.com/lpic/s2720819.jpg"));
-        mallRecommendItemBeans2.add(new MallRecommendItemBean("5", "百年孤独", "https://img3.doubanio.com/lpic/s6384944.jpg"));
-        mallRecommendItemBeans2.add(new MallRecommendItemBean("6", "活着", "https://img3.doubanio.com/lpic/s27279654.jpg"));
+        mallRecommendItemBeans2.add(new MallRecommendItemBean(10004, "我的前半生", "https://img1.doubanio.com/lpic/s2720819.jpg"));
+        mallRecommendItemBeans2.add(new MallRecommendItemBean(10005, "百年孤独", "https://img3.doubanio.com/lpic/s6384944.jpg"));
+        mallRecommendItemBeans2.add(new MallRecommendItemBean(10006, "活着", "https://img3.doubanio.com/lpic/s27279654.jpg"));
 
 
         List<MallRecommendItemBean> mallRecommendItemBeans3 = new ArrayList<>();
-        mallRecommendItemBeans3.add(new MallRecommendItemBean("7", "人间失格", "https://img3.doubanio.com/lpic/s6100756.jpg"));
-        mallRecommendItemBeans3.add(new MallRecommendItemBean("8", "月亮与六便士", "https://img1.doubanio.com/lpic/s2659208.jpg"));
-        mallRecommendItemBeans3.add(new MallRecommendItemBean("2", "步履不停", "http://mebook.cc/wp-content/uploads/2017/06/blob-39.png"));
+        mallRecommendItemBeans3.add(new MallRecommendItemBean(10007, "人间失格", "https://img3.doubanio.com/lpic/s6100756.jpg"));
+        mallRecommendItemBeans3.add(new MallRecommendItemBean(10008, "月亮与六便士", "https://img1.doubanio.com/lpic/s2659208.jpg"));
+        mallRecommendItemBeans3.add(new MallRecommendItemBean(10009, "步履不停", "http://mebook.cc/wp-content/uploads/2017/06/blob-39.png"));
 
 
 

@@ -30,7 +30,7 @@ timestamp='2005-12-11'
 # the same distribution terms that you use for the rest of that program.
 
 
-# Please send patches to <config-patches@gnu.org>.  Submit a context
+# Please send patches to <config-patches@gnu.org>.  Submit a activity
 # diff and a properly formatted ChangeLog entry.
 #
 # Configuration subroutine to validate and canonicalize a configuration type.

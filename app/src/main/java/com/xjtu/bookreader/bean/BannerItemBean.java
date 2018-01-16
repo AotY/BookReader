@@ -16,7 +16,7 @@ public class BannerItemBean implements Serializable {
 
 
     @ParamNames("id") // 书籍id
-    private String id;
+    private long id;
 
     @ParamNames("title")  // 书籍标题
     private String title;
@@ -28,18 +28,18 @@ public class BannerItemBean implements Serializable {
     }
 
 
-    public BannerItemBean(String id, String title, String image) {
+    public BannerItemBean(long id, String title, String image) {
         this.id = id;
         this.title = title;
         this.image = image;
     }
 
     //    @Bindable
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

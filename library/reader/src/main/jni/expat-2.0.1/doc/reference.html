@@ -355,11 +355,11 @@ could overflow. It may not be supported by all compilers, and is turned
 off by default.</dd>
 
 <dt>XML_CONTEXT_BYTES</dt>
-<dd>The number of input bytes of markup context which the parser will
+<dd>The number of input bytes of markup activity which the parser will
 ensure are available for reporting via <code><a href=
 "#XML_GetInputContext" >XML_GetInputContext</a></code>.  This is
 normally set to 1024, and must be set to a positive interger.  If this
-is not defined, the input context will not be available and <code><a
+is not defined, the input activity will not be available and <code><a
 href= "#XML_GetInputContext" >XML_GetInputContext</a></code> will
 always report NULL.  Without this, Expat has a smaller memory
 footprint and can be faster.</dd>
@@ -442,7 +442,7 @@ initialization you want for your parser objects.</p>
 
 <p>Walking through a document hierarchy with a stream oriented parser
 will require a good stack mechanism in order to keep track of current
-context.  For instance, to answer the simple question, "What element
+activity.  For instance, to answer the simple question, "What element
 does this text belong to?" requires a stack, since the parser may have
 descended into other elements that are children of the current one and
 has encountered this text on the way out.</p>
@@ -949,12 +949,12 @@ the namespace URI and the local part of the name.</p>
 <pre class="fcndec" id="XML_ExternalEntityParserCreate">
 XML_Parser XMLCALL
 XML_ExternalEntityParserCreate(XML_Parser p,
-                               const XML_Char *context,
+                               const XML_Char *activity,
                                const XML_Char *encoding);
 </pre>
 <div class="fcndef">
 Construct a new <code>XML_Parser</code> object for parsing an external
-general entity. Context is the context argument passed in a call to a
+general entity. Context is the activity argument passed in a call to a
 ExternalEntityRefHandler. Other state information such as handlers,
 user data, namespace processing is inherited from the parser passed as
 the 1st argument. So you shouldn't need to call any of the behavior
@@ -1425,7 +1425,7 @@ XML_SetExternalEntityRefHandler(XML_Parser p,
 <pre class="signature">
 typedef int
 (XMLCALL *XML_ExternalEntityRefHandler)(XML_Parser p,
-                                        const XML_Char *context,
+                                        const XML_Char *activity,
                                         const XML_Char *base,
                                         const XML_Char *systemId,
                                         const XML_Char *publicId);
@@ -1435,12 +1435,12 @@ called for processing an external DTD subset if parameter entity parsing
 is in effect. (See <a href="#XML_SetParamEntityParsing">
 <code>XML_SetParamEntityParsing</code></a>.)</p>
 
-<p>The <code>context</code> parameter specifies the parsing context in
-the format expected by the <code>context</code> argument to <code><a
+<p>The <code>activity</code> parameter specifies the parsing activity in
+the format expected by the <code>activity</code> argument to <code><a
 href="#XML_ExternalEntityParserCreate"
 >XML_ExternalEntityParserCreate</a></code>.  <code>code</code> is
 valid only until the handler returns, so if the referenced entity is
-to be parsed later, it must be copied.  <code>context</code> is NULL
+to be parsed later, it must be copied.  <code>activity</code> is NULL
 only when the entity is a parameter entity, which is how one can
 differentiate between general and parameter entities.</p>
 
@@ -1461,7 +1461,7 @@ calling parser to return an
 
 <p>Second, instead of having the user data as its first argument, it
 receives the parser that encountered the entity reference. This, along
-with the context parameter, may be used as arguments to a call to
+with the activity parameter, may be used as arguments to a call to
 <code><a href= "#XML_ExternalEntityParserCreate"
 >XML_ExternalEntityParserCreate</a></code>.  Using the returned
 parser, the body of the external entity can be recursively parsed.</p>
@@ -1978,7 +1978,7 @@ parse and the returned buffer should only be referred to from within
 the handler that made the call. This input buffer contains the
 untranslated bytes of the input.</p>
 
-<p>Only a limited amount of context is kept, so if the event
+<p>Only a limited amount of activity is kept, so if the event
 triggering a call spans over a very large amount of input, the actual
 parse position may be before the beginning of the buffer.</p>
 
@@ -2266,7 +2266,7 @@ time, the following features have been defined to have values:</p>
   <dd>The number of bytes occupied by one <code>XML_LChar</code>
   character.</dd>
   <dt><code>XML_FEATURE_CONTEXT_BYTES</code></dt>
-  <dd>The maximum number of characters of context which can be
+  <dd>The maximum number of characters of activity which can be
   reported by <code><a href= "#XML_GetInputContext"
   >XML_GetInputContext</a></code>.</dd>
 </dl>

@@ -8,7 +8,6 @@ import com.xjtu.bookreader.app.BookReaderApplication;
 
 public class StringResourceUtil {
 
-
     public static String getStringById(int id) {
         return BookReaderApplication.getInstance().getResources().getString(id);
     }

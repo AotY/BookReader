@@ -16,12 +16,13 @@
     <!--电影详情图片的宽高-->
     <dimen name="movie_detail_width">125dp</dimen>
     <dimen name="movie_detail_height">165dp</dimen>
-    <dimen name="mall_item_img_height">165dp</dimen>
+    <dimen name="mall_item_img_height">168dp</dimen>
 
 
     <dimen name="user_center_item_font_size">16sp</dimen>
 
     <dimen name="user_center_line_margin_start">55dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 
 </resources>

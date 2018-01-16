@@ -13,6 +13,11 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".app.BookReaderApplication"
         android:allowBackup="true"
@@ -38,16 +43,26 @@
             android:name=".ui.BookDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ViewBigPicTheme" />
-
         <activity
             android:name=".ui.CategoryRankingActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".ui.HelpActivity"
+            android:label="@string/title_activity_help"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.PurchaseHistoryActivity" />
+        <activity android:name=".ui.UserProfileActivity"></activity>
     </application>
 
 </manifest>

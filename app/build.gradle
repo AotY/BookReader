@@ -82,14 +82,23 @@ android {
         // An Android library that makes developers use SQLite database extremely easy.
         implementation 'org.litepal.android:core:1.6.1'
 
+        // eventBus
+        implementation 'org.greenrobot:eventbus:3.0.0'
+        annotationProcessor 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
+
         // compile 'com.youth.banner:banner:1.4.10'  //最新版本
         implementation project(':library:banner')
         implementation project(':library:reader')
 
-//        compile 'com.google.guava:guava:22.0-android'
+        // compile 'com.google.guava:guava:22.0-android'
         // compile project(':library:folioreader')
         // A Java ePub reader and parser framework for Android.
         // compile 'com.folioreader:folioreader:0.3.3'
     }
+}
+dependencies {
+    implementation 'com.android.support:support-v4:26.+'
+    implementation 'com.android.support:support-vector-drawable:26.+'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 

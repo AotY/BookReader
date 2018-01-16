@@ -20,6 +20,7 @@
 package com.koolearn.kooreader.book;
 
 public final class Book extends AbstractBook {
+
 	private final String myPath;
 	private String myCoverPath;
 

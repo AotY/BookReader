@@ -1,0 +1,55 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-land/values-land.xml",
+            "map": [
+                {
+                    "source": "/Users/LeonTao/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/aecf497be054b082394c08671abc858b/res/values-land/values-land.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,125,189,260",
+                        "endColumns": "69,63,70,67",
+                        "endOffsets": "120,184,255,323"
+                    }
+                },
+                {
+                    "source": "/Users/LeonTao/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/428ff8b866463b236a60999d47eab0d3/res/values-land/values-land.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "232"
+                    },
+                    "to": {
+                        "startLines": "8",
+                        "startColumns": "4",
+                        "startOffsets": "433",
+                        "endLines": "11",
+                        "endColumns": "12",
+                        "endOffsets": "610"
+                    }
+                },
+                {
+                    "source": "/Users/LeonTao/.gradle/caches/transforms-1/files-1.1/ambilwarna-2.0.1.aar/02347f247466a85fbac08e6f946cf62c/res/values-land/values-land.xml",
+                    "from": {
+                        "startLines": "4,5",
+                        "startColumns": "4,4",
+                        "startOffsets": "166,219",
+                        "endColumns": "52,51",
+                        "endOffsets": "214,266"
+                    },
+                    "to": {
+                        "startLines": "6,7",
+                        "startColumns": "4,4",
+                        "startOffsets": "328,381",
+                        "endColumns": "52,51",
+                        "endOffsets": "376,428"
+                    }
+                }
+            ]
+        }
+    ]
+}

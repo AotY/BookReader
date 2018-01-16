@@ -32,14 +32,12 @@ import com.xjtu.bookreader.http.cache.ACache;
 import com.xjtu.bookreader.model.MallModel;
 import com.xjtu.bookreader.ui.BookDetailActivity;
 import com.xjtu.bookreader.ui.MainActivity;
-import com.xjtu.bookreader.util.CommonUtils;
+import com.xjtu.bookreader.util.CommonUtil;
 import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.GlideImageLoader;
-import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
-import com.xjtu.bookreader.util.SPUtils;
+import com.xjtu.bookreader.util.SharedPreferencesUtils;
 import com.xjtu.bookreader.util.TimeUtil;
-import com.youth.banner.listener.OnBannerClickListener;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
@@ -232,7 +230,7 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
         }
 
         // 获取时间
-        String oneData = SPUtils.getString(Constants.EVERYDAY_DATA, "2018-1-8");
+        String oneData = SharedPreferencesUtils.getString(Constants.EVERYDAY_DATA, "2018-1-8");
 
 
 //        isOldDayRequest = false;
@@ -391,12 +389,12 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
 
         EmptyAdapter emptyAdapter = new EmptyAdapter();
         ArrayList<String> list = new ArrayList<>();
-        list.add(CommonUtils.getString(R.string.string_everyday_empty));
+        list.add(CommonUtil.getString(R.string.string_everyday_empty));
         emptyAdapter.addAll(list);
         bindingView.xrvRecommend.setAdapter(emptyAdapter);
 
         // 保存请求的日期
-        SPUtils.putString("everyday_data", TimeUtil.getData());
+        SharedPreferencesUtils.putString("everyday_data", TimeUtil.getData());
 
         mIsFirst = false;
     }
@@ -442,10 +440,10 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
 
         if (isOldDayRequest) {
             ArrayList<String> lastTime = TimeUtil.getLastTime(getTodayTime().get(0), getTodayTime().get(1), getTodayTime().get(2));
-            SPUtils.putString(Constants.EVERYDAY_DATA, lastTime.get(0) + "-" + lastTime.get(1) + "-" + lastTime.get(2));
+            SharedPreferencesUtils.putString(Constants.EVERYDAY_DATA, lastTime.get(0) + "-" + lastTime.get(1) + "-" + lastTime.get(2));
         } else {
             // 保存请求的日期
-            SPUtils.putString(Constants.EVERYDAY_DATA, TimeUtil.getData());
+            SharedPreferencesUtils.putString(Constants.EVERYDAY_DATA, TimeUtil.getData());
         }
 
         mIsFirst = false;

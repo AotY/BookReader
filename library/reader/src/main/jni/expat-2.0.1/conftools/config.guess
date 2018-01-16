@@ -28,7 +28,7 @@ timestamp='2006-07-02'
 
 
 # Originally written by Per Bothner <per@bothner.com>.
-# Please send patches to <config-patches@gnu.org>.  Submit a context
+# Please send patches to <config-patches@gnu.org>.  Submit a activity
 # diff and a properly formatted ChangeLog entry.
 #
 # This script attempts to guess a canonical system name similar to

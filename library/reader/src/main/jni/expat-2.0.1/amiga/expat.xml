@@ -23,7 +23,7 @@
 		</method>
 		<method name="XML_ExternalEntityParserCreate" result="XML_Parser">
 			<arg name="parser" type="XML_Parser"/>
-			<arg name="context" type="const XML_Char *"/>
+			<arg name="activity" type="const XML_Char *"/>
 			<arg name="encoding" type="const XML_Char *"/>
 		</method>
 		<method name="XML_ParserFree" result="void">

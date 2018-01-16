@@ -1,6 +1,7 @@
 package com.xjtu.bookreader.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -19,10 +20,16 @@ import com.xjtu.bookreader.adapter.ShelfAdapter;
 import com.xjtu.bookreader.base.BaseFragment;
 import com.xjtu.bookreader.bean.model.BookOfShelf;
 import com.xjtu.bookreader.databinding.FragmentShelfBinding;
+import com.xjtu.bookreader.event.BackFromKooReaderEvent;
+import com.xjtu.bookreader.event.SwitchFragmentEvent;
 import com.xjtu.bookreader.ui.MainActivity;
-import com.xjtu.bookreader.util.CommonUtils;
+import com.xjtu.bookreader.util.CommonUtil;
 import com.xjtu.bookreader.util.DebugUtil;
+import com.xjtu.bookreader.util.PerfectClickListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.litepal.crud.DataSupport;
 import java.util.List;
 
@@ -69,7 +76,7 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
         super.onCreate(savedInstanceState);
         DebugUtil.debug("ShelfFragment ---------> onCreate");
         setHasOptionsMenu(true);
-
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -79,7 +86,21 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 
         showContentView();
 
-        bindingView.srlShelf.setColorSchemeColors(CommonUtils.getColor(R.color.colorPrimary));
+        initView();
+
+        // 准备就绪
+        mIsPrepared = true;
+        /**
+         * 因为启动时先走loadData() 再走onActivityCreated，
+         * 所以此处要额外调用load(),不然最初不会加载内容
+         */
+        loadData();
+
+    }
+
+    //
+    private void initView() {
+        bindingView.srlShelf.setColorSchemeColors(CommonUtil.getColor(R.color.colorPrimary));
 
         // 刷新页面
         bindingView.srlShelf.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -97,20 +118,22 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
         });
 
         // 设置LayoutManger
-        mLayoutManager = new GridLayoutManager(getActivity(), 3);
+        mLayoutManager = new GridLayoutManager(activity, 3);
         bindingView.xrvShelf.setLayoutManager(mLayoutManager);
-
         scrollRecycleView();
 
-        // 准备就绪
-        mIsPrepared = true;
-        /**
-         * 因为启动时先走loadData() 再走onActivityCreated，
-         * 所以此处要额外调用load(),不然最初不会加载内容
-         */
-        loadData();
 
+        // 切换到MallFragment
+        bindingView.btnShelfEmpty.setOnClickListener(new PerfectClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+                DebugUtil.debug("rlShelfEmptyContainer ----------------> OnClick()");
+                // 通知MainActivity切换到MallFragment
+                EventBus.getDefault().post(new SwitchFragmentEvent(SwitchFragmentEvent.BOOK_MALL));
+            }
+        });
     }
+
 
     @Override
     public void onStart() {
@@ -125,6 +148,11 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 
     }
 
+    // 当用户从阅读页返回时，重新加载数据（重新排序排序）
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBackFromKooReaderEvent(BackFromKooReaderEvent event) {
+        loadData();
+    }
 
     @Override
     protected void loadData() {
@@ -187,7 +215,9 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 //        bookOfShelfList.add(new BookOfShelf("8", "月亮与六便士", "https://img1.doubanio.com/lpic/s2659208.jpg"));
 //        shelfBookBean.setResults(bookOfShelfList);
 
-        bookOfShelfList = DataSupport.findAll(BookOfShelf.class);
+        // 这里按照上次阅读时间排序(降序）
+//        bookOfShelfList = DataSupport.findAll(BookOfShelf.class);
+        bookOfShelfList = DataSupport.where().order("lastTime desc").find(BookOfShelf.class);
 
         if (mShelfAdapter == null) {
             mShelfAdapter = new ShelfAdapter(activity, myCollection);
@@ -202,6 +232,13 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 //            bindingView.srlShelf.setRefreshing(false);
 //        }
         bindingView.srlShelf.setRefreshing(false);
+
+        // 如果没有数据，则设置空白页面
+       if (bookOfShelfList.size() == 0) {
+            bindingView.rlShelfEmptyContainer.setVisibility(View.VISIBLE);
+        } else {
+            bindingView.rlShelfEmptyContainer.setVisibility(View.GONE);
+        }
 
 //        mIsFirst = false;
 
@@ -312,22 +349,31 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 
     @Override
     public void onPause() {
-        super.onPause();
         DebugUtil.debug("ShelfFragment ---------> onPause");
+        super.onPause();
     }
 
 
     @Override
     public void onStop() {
-        super.onStop();
         DebugUtil.debug("ShelfFragment ---------> onStop");
+        super.onStop();
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         myCollection.unbind();
+        EventBus.getDefault().unregister(this);
         DebugUtil.debug("ShelfFragment ----onDestroy");
+
+        super.onDestroy();
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        DebugUtil.debug("ShelfFragment ---------------> onActivityResult");
+    }
 }

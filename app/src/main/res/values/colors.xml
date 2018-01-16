@@ -9,7 +9,7 @@
     <color name="colorPrimaryText">#333333</color>
     <color name="colorSecondaryText">#8a8a8a</color>
     <color name="colorIcons">#FFFFFF</color>
-    <color name="colorDivider">#EEEEEE</color>
+    <color name="colorDivider">#DDEEEEEE</color>
 
     <!--页面背景的颜色-->
     <color name="colorPageBg">#f2f4f5</color>

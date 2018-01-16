@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.app.ConstantsImageUrl;
 import com.xjtu.bookreader.databinding.ActivityTransitionBinding;
-import com.xjtu.bookreader.util.CommonUtils;
+import com.xjtu.bookreader.util.CommonUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
 
 import java.util.Random;
@@ -31,7 +31,7 @@ public class TransitionActivity extends AppCompatActivity {
 
         int i = new Random().nextInt(ConstantsImageUrl.TRANSITION_URLS.length);
         // 先显示默认图
-        mBinding.ivDefultPic.setImageDrawable(CommonUtils.getDrawable(R.drawable.img_transition_default));
+        mBinding.ivDefultPic.setImageDrawable(CommonUtil.getDrawable(R.drawable.img_transition_default));
         Glide.with(this)
                 .load(ConstantsImageUrl.TRANSITION_URLS[i])
 //                .placeholder(R.drawable.img_transition_2)

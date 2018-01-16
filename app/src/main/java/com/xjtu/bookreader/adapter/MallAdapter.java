@@ -18,7 +18,7 @@ import com.xjtu.bookreader.http.rx.RxBus;
 import com.xjtu.bookreader.http.rx.RxCodeConstants;
 import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.ui.BookDetailActivity;
-import com.xjtu.bookreader.util.CommonUtils;
+import com.xjtu.bookreader.util.CommonUtil;
 import com.xjtu.bookreader.util.ImgLoadUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
 
@@ -81,16 +81,16 @@ public class MallAdapter extends BaseRecyclerViewAdapter<List<MallRecommendItemB
             binding.tvTitleType.setText(title);
             // 图标
             if (getStringById(R.string.culture_book).equals(title)) {  // 文化
-                binding.ivTitleType.setImageDrawable(CommonUtils.getDrawable(R.drawable.home_title_android));
+                binding.ivTitleType.setImageDrawable(CommonUtil.getDrawable(R.drawable.home_title_android));
                 index = 0;
             } else if (getStringById(R.string.politics_book).equals(title)) { // 政治
-                binding.ivTitleType.setImageDrawable(CommonUtils.getDrawable(R.drawable.home_title_meizi));
+                binding.ivTitleType.setImageDrawable(CommonUtil.getDrawable(R.drawable.home_title_meizi));
                 index = 1;
             } else if (getStringById(R.string.history_book).equals(title)) { // 历史
-                binding.ivTitleType.setImageDrawable(CommonUtils.getDrawable(R.drawable.home_title_ios));
+                binding.ivTitleType.setImageDrawable(CommonUtil.getDrawable(R.drawable.home_title_ios));
                 index = 2;
             } else if (getStringById(R.string.economics_book).equals(title)) { // 经济
-                binding.ivTitleType.setImageDrawable(CommonUtils.getDrawable(R.drawable.home_title_android));
+                binding.ivTitleType.setImageDrawable(CommonUtil.getDrawable(R.drawable.home_title_android));
                 index = 2;
             }
 
@@ -147,8 +147,6 @@ public class MallAdapter extends BaseRecyclerViewAdapter<List<MallRecommendItemB
 //        DebugUtil.error("-----Image_url: "+object.get(position).getImage_url());
         ImgLoadUtil.displayRandom(imgNumber, object.get(position).getImage(), imageView);
     }
-
-
 
 
     /**

@@ -156,7 +156,7 @@ public class ImgLoadUtil {
         Glide.with(imageView.getContext())
                 .load(url)
                 .crossFade(500)
-                .override((int) CommonUtils.getDimens(R.dimen.movie_detail_width), (int) CommonUtils.getDimens(R.dimen.movie_detail_height))
+                .override((int) CommonUtil.getDimens(R.dimen.movie_detail_width), (int) CommonUtil.getDimens(R.dimen.movie_detail_height))
                 .placeholder(getDefaultPic(0))
                 .error(getDefaultPic(0))
                 .into(imageView);
@@ -170,7 +170,7 @@ public class ImgLoadUtil {
         Glide.with(imageView.getContext())
                 .load(url)
                 .crossFade(500)
-                .override((int) CommonUtils.getDimens(R.dimen.book_detail_width), (int) CommonUtils.getDimens(R.dimen.book_detail_height))
+                .override((int) CommonUtil.getDimens(R.dimen.book_detail_width), (int) CommonUtil.getDimens(R.dimen.book_detail_height))
                 .placeholder(getDefaultPic(2))
                 .error(getDefaultPic(2))
                 .into(imageView);

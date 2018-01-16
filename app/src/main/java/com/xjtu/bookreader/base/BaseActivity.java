@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 
 import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.databinding.ActivityBaseBinding;
-import com.xjtu.bookreader.util.CommonUtils;
+import com.xjtu.bookreader.util.CommonUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
 import com.xjtu.bookreader.view.statusbar.StatusBarUtil;
 
@@ -60,7 +60,7 @@ public class BaseActivity<SV extends ViewDataBinding> extends AppCompatActivity 
         getWindow().setContentView(mBaseBinding.getRoot());
 
         // 设置透明状态栏
-        StatusBarUtil.setColor(this, CommonUtils.getColor(R.color.colorPrimary),0);
+        StatusBarUtil.setColor(this, CommonUtil.getColor(R.color.colorPrimary),0);
         llProgressBar = getView(R.id.ll_progress_bar);
         refresh = getView(R.id.ll_error_refresh);
         ImageView img = getView(R.id.img_progress);

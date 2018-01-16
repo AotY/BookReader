@@ -16,7 +16,7 @@ import java.util.Date;
 public class BookOfShelf extends DataSupport implements Serializable {
 
     // 书籍id
-//    @Column(unique = true, nullable = true)
+    @Column(unique = true, nullable = true)
     private long id;
 
     // 书籍标题
@@ -38,7 +38,7 @@ public class BookOfShelf extends DataSupport implements Serializable {
     private int pages;
 
     // 进度
-    private int progress;
+    private float progress;
 
     // 是否已经下载
     private boolean isDownloaded;
@@ -115,11 +115,11 @@ public class BookOfShelf extends DataSupport implements Serializable {
         this.pages = pages;
     }
 
-    public int getProgress() {
+    public float getProgress() {
         return progress;
     }
 
-    public void setProgress(int progress) {
+    public void setProgress(float progress) {
         this.progress = progress;
     }
 

@@ -1,33 +1,25 @@
 package com.xjtu.bookreader.adapter;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.databinding.DataBindingUtil;
-import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.koolearn.android.kooreader.KooReader;
 import com.koolearn.android.kooreader.libraryService.BookCollectionShadow;
 import com.koolearn.kooreader.book.Book;
+import com.koolearn.kooreader.book.Bookmark;
 import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.bean.model.BookOfShelf;
-import com.xjtu.bookreader.databinding.ShelfFooterItemBookBinding;
 import com.xjtu.bookreader.databinding.ShelfHeaderItemBookBinding;
 import com.xjtu.bookreader.databinding.ShelfItemBookBinding;
-import com.xjtu.bookreader.db.BookDBHelper;
 import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.KooreaderUtil;
-import com.xjtu.bookreader.util.Logger;
 import com.xjtu.bookreader.util.PerfectClickListener;
-import com.xjtu.bookreader.util.StringResourceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +33,7 @@ import es.dmoral.toasty.Toasty;
 
 public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private MainActivity context;
+    private MainActivity activity;
 
     private int status = 1;
 
@@ -60,12 +52,12 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private BookCollectionShadow myCollection;
 
-    public ShelfAdapter(Context context, BookCollectionShadow myCollection) {
-        this.context = (MainActivity) context;
+    public ShelfAdapter(Context activity, BookCollectionShadow myCollection) {
+        this.activity = (MainActivity) activity;
         this.myCollection = myCollection;
 
         list = new ArrayList<>();
-        KooreaderUtil.verifyStoragePermissions(this.context);
+        KooreaderUtil.verifyStoragePermissions(this.activity);
     }
 
     /**
@@ -116,7 +108,7 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             BookViewHolder bookViewHolder = (BookViewHolder) holder;
             if (list != null && list.size() > 0) {
                 // 内容从"1"开始 bookViewHolder.bindItem(list.get(position - 1), position - 1);
-                DebugUtil.debug("list.size() ----------------> " +list.size());
+                DebugUtil.debug("list.size() ----------------> " + list.size());
                 bookViewHolder.bindItem(list.get(position - 1), position - 1);
             }
         }
@@ -124,6 +116,7 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     /**
      * 这里是？ 一个头，一个尾巴吗？
+     *
      * @return
      */
     @Override
@@ -184,10 +177,12 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      */
     private class HeaderViewHolder extends RecyclerView.ViewHolder {
         ShelfHeaderItemBookBinding mBindBook;
+
         HeaderViewHolder(View view) {
             super(view);
             mBindBook = DataBindingUtil.getBinding(view);
         }
+
         private void bindItem() {
         }
     }
@@ -218,15 +213,24 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     // 判断书籍是否已经下载
                     if (bookOfShelf.isDownloaded()) {
                         final String bookPath = bookOfShelf.getBookPath();
+                        final long bookId = bookOfShelf.getId();
 
                         if (myCollection != null) {
-                            myCollection.bindToService(context, new Runnable() {
+                            myCollection.bindToService(activity, new Runnable() {
                                 public void run() {
                                     Book book = myCollection.getBookByFile(bookPath);
                                     if (book != null) {
-                                        KooreaderUtil.openBook(context, book);
+                                        book.setTitle(bookOfShelf.getTitle());
+                                        book.setMyCoverPath(bookOfShelf.getCoverImage());
+                                        book.setId(bookOfShelf.getId());
+
+                                        DebugUtil.debug("bookOfShelf.getId() ------------------> " + bookOfShelf.getId());
+//                                        book.setBookId(bookOfShelf.getId());
+                                        // 这里打开书籍，返回时需要回传时间和进度。
+                                        Bookmark bookmark = null;
+                                        KooreaderUtil.openBookForResult(activity, MainActivity.REQUEST_FROM_SHELF_ADAPTER, book, bookmark);
                                     } else {
-                                        Toasty.error(context, "打开失败，文件不存在, paht --->" + bookPath).show();
+                                        Toasty.error(activity, "打开失败，文件不存在, paht --->" + bookPath).show();
                                     }
                                 }
                             });

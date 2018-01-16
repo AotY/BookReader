@@ -1,9 +1,7 @@
 package com.xjtu.bookreader.ui;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -13,15 +11,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
-import com.koolearn.android.kooreader.KooReader;
 import com.koolearn.android.kooreader.libraryService.BookCollectionShadow;
 import com.koolearn.kooreader.book.Book;
+import com.koolearn.kooreader.book.Bookmark;
 import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.base.BaseHeaderActivity;
 import com.xjtu.bookreader.bean.book.BookDetailBean;
 import com.xjtu.bookreader.databinding.ActivityBookDetailBinding;
 import com.xjtu.bookreader.databinding.DetailHeaderBookDetailBinding;
-import com.xjtu.bookreader.util.CommonUtils;
+import com.xjtu.bookreader.util.CommonUtil;
 import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.KooreaderUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
@@ -36,7 +34,7 @@ import java.util.List;
 public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetailBinding, ActivityBookDetailBinding> {
 
     // 数据id
-    private String bookId;
+    private long bookId;
 
     private BookDetailBean bookDetailBean;
 
@@ -57,7 +55,7 @@ public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetai
         KooreaderUtil.verifyStoragePermissions(this);
 
         if (getIntent() != null) {
-            bookId = getIntent().getStringExtra(EXTRA_PARAM);
+            bookId = getIntent().getLongExtra(EXTRA_PARAM, 0);
         }
 
         // 这里应该就是设置图片移动效果
@@ -80,7 +78,10 @@ public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetai
                         final String bookPath = Environment.getExternalStorageDirectory() + "/Download" + "/活着.epub";
                         Book book = myCollection.getBookByFile(bookPath);
                         if (book != null) {
-                            KooreaderUtil.openBook(BookDetailActivity.this, book);
+                            DebugUtil.debug("bookId -----------> " + bookId);
+                            book.setId(bookId);
+                            Bookmark bookmark = null;
+                            KooreaderUtil.openBook(BookDetailActivity.this, book, bookmark);
                         } else {
                             Toast.makeText(BookDetailActivity.this, "打开失败,请重试", Toast.LENGTH_SHORT).show();
                         }
@@ -96,15 +97,6 @@ public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetai
         super.onResume();
     }
 
-    /**
-     * 跳转到阅读Activity
-     *
-     * @param data
-     */
-    private void openBook(Book data) {
-        KooReader.openBookActivity(this, data, null);
-        this.overridePendingTransition(com.ninestars.android.R.anim.tran_fade_in, com.ninestars.android.R.anim.tran_fade_out);
-    }
 
     @Override
     protected int setHeaderLayout() {
@@ -220,12 +212,12 @@ public class BookDetailActivity extends BaseHeaderActivity<DetailHeaderBookDetai
     /**
      * @param context activity
      */
-    public static void start(Activity context, String id, ImageView imageView) {
+    public static void start(Activity context, long id, ImageView imageView) {
         Intent intent = new Intent(context, BookDetailActivity.class);
         intent.putExtra(EXTRA_PARAM, id);
         ActivityOptionsCompat options =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(context,
-                        imageView, CommonUtils.getString(R.string.transition_book_img));//与xml文件对应
+                        imageView, CommonUtil.getString(R.string.transition_book_img));//与xml文件对应
 
         ActivityCompat.startActivity(context, intent, options.toBundle());
     }
