@@ -74,6 +74,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         loginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 //        setContentView(R.layout.activity_login);
+
+        setTitle("登录");
         initView();
 
     }

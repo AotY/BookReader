@@ -131,4 +131,5 @@
         completions."
     </string>
     <string name="title_activity_help">帮助中心</string>
+    <string name="finish">完成</string>
 </resources>

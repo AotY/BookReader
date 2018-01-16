@@ -1,19 +1,15 @@
 package com.xjtu.bookreader.app;
 
-import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Environment;
-import android.support.annotation.ColorInt;
 
 import com.koolearn.klibrary.ui.android.library.ZLAndroidApplication;
 import com.xjtu.bookreader.bean.model.BookOfShelf;
-import com.xjtu.bookreader.db.BookDBHelper;
-import com.xjtu.bookreader.util.Logger;
+import com.xjtu.bookreader.util.SharedPreferencesUtils;
+import com.xjtu.bookreader.util.UserUtil;
 
 import org.litepal.LitePal;
-
-import es.dmoral.toasty.Toasty;
 
 /**
  * Created by LeonTao on 2017/12/30.
@@ -41,16 +37,32 @@ public class BookReaderApplication extends ZLAndroidApplication {
 
         initTextSize();
 
-        // 初始化数据
-//        initData();
+
+        if (SharedPreferencesUtils.getBoolean("first_init", true)) {
+            // 初始化数据
+            initDBData();
+
+            // 初始化用户数据
+            initUserData();
+
+            SharedPreferencesUtils.putBoolean("first_init", false);
+        }
+
 
         initToast();
+    }
+
+
+    private void initUserData() {
+        UserUtil.setUserId(1000023);
+        UserUtil.setUserName("无法长大。");
+        UserUtil.setUserAvatar("https://avatars1.githubusercontent.com/u/8146843?s=460&v=4");
     }
 
     /**
      * init data
      */
-    private void initData() {
+    private void initDBData() {
         final String path = Environment.getExternalStorageDirectory() + "/Download";
 //        bookDBHelper.insertBook("1", );
 //        bookDBHelper.insertBook("2", path + "/步履不停.epub");
@@ -66,8 +78,8 @@ public class BookReaderApplication extends ZLAndroidApplication {
 //        bookOfShelfList.add(new BookOfShelf("3", ""));
 //        bookOfShelfList.add(new BookOfShelf("4", "", ""));
 //        bookOfShelfList.add(new BookOfShelf("5", "", ""));
-//        bookOfShelfList.add(new BookOfShelf("6", "活着", "https://img3.doubanio.com/lpic/s27279654.jpg"));
-//        bookOfShelfList.add(new BookOfShelf("7", "人间失格", "https://img3.doubanio.com/lpic/s6100756.jpg"));
+//        bookOfShelfList.add(new BookOfShelf("6", "", ""));
+//        bookOfShelfList.add(new BookOfShelf("7", "", ""));
 //        bookOfShelfList.add(new BookOfShelf("8", "月亮与六便士", "https://img1.doubanio.com/lpic/s2659208.jpg"));
 
         BookOfShelf bookOfShelf1 = new BookOfShelf(10001, "芳华");
@@ -100,6 +112,17 @@ public class BookReaderApplication extends ZLAndroidApplication {
         bookOfShelf5.setCoverImage("https://img3.doubanio.com/lpic/s6384944.jpg");
         bookOfShelf5.save();
 
+        BookOfShelf bookOfShelf6 = new BookOfShelf(10006, "活着");
+        bookOfShelf6.setDownloaded(true);
+        bookOfShelf6.setBookPath(path + "/活着.epub");
+        bookOfShelf6.setCoverImage("https://img3.doubanio.com/lpic/s27279654.jpg");
+        bookOfShelf6.save();
+
+        BookOfShelf bookOfShelf7 = new BookOfShelf(10007, "人间失格");
+        bookOfShelf7.setDownloaded(true);
+        bookOfShelf7.setBookPath(path + "/人间失格.epub");
+        bookOfShelf7.setCoverImage("https://img3.doubanio.com/lpic/s6100756.jpg");
+        bookOfShelf7.save();
     }
 
 

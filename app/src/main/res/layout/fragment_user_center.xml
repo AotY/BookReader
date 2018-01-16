@@ -5,6 +5,10 @@
         <variable
             name="userName"
             type="String"/>
+
+        <variable
+            name="userAvatar"
+            type="String"/>
     </data>
 
     <LinearLayout

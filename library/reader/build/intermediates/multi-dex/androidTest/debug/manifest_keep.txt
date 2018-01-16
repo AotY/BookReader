@@ -1,3 +1,0 @@
-# Referenced at /Users/LeonTao/AndroidStudioProjects/556_Book/BookReader/library/reader/build/intermediates/manifest/androidTest/debug/AndroidManifest.xml:9
--keep class com.android.test.runner.MultiDexTestRunner { <init>(...); }
-

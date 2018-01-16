@@ -19,6 +19,7 @@ public class UserUtil {
 
     /**
      * 设置用户id
+     *
      * @param userId
      */
     public static void setUserId(long userId) {
@@ -27,6 +28,7 @@ public class UserUtil {
 
     /**
      * 设置用户名
+     *
      * @param userName
      */
     public static void setUserName(String userName) {
@@ -35,6 +37,7 @@ public class UserUtil {
 
     /**
      * 设置用户头像地址
+     *
      * @param userAvatar
      */
     public static void setUserAvatar(String userAvatar) {
@@ -43,15 +46,17 @@ public class UserUtil {
 
     /**
      * 获取用户ID
+     *
      * @return
      */
-    public static String getUserId() {
-        return SharedPreferencesUtils.getString(USER_ID, "");
+    public static long getUserId() {
+        return SharedPreferencesUtils.getLong(USER_ID, 0);
     }
 
 
     /**
      * 获取用户名
+     *
      * @return
      */
     public static String getUserName() {
@@ -60,6 +65,7 @@ public class UserUtil {
 
     /**
      * 获取用户头像地址
+     *
      * @return
      */
     public static String getUserAvatar() {
@@ -71,10 +77,10 @@ public class UserUtil {
      */
 
     public static boolean isLogined() {
-        String userId = getUserId();
+        long userId = getUserId();
         String userName = getUserName();
 
-        if ("".equals(userId) || "".equals(userName)) {
+        if (userId == 0 || "".equals(userName)) {
             return false;
         }
         return true;
@@ -84,10 +90,10 @@ public class UserUtil {
      * 判断用户是否在线，（登录成功，并且当前有网络）
      */
     public static boolean isOnline(Context context) {
-        String userId = getUserId();
+        long userId = getUserId();
         String userName = getUserName();
 
-        if ("".equals(userId) || "".equals(userName)) {
+        if (userId == 0 || "".equals(userName)) {
             return false;
         }
 

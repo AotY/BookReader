@@ -55,6 +55,7 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 
     private final BookCollectionShadow myCollection = new BookCollectionShadow();
 
+    private Menu mMenu ;
     public ShelfFragment() {
         // Required empty public constructor
     }
@@ -178,18 +179,20 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 //        activity.getMenuInflater().inflate(R.menu.shelf, menu);
         inflater.inflate(R.menu.shelf, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        mMenu = menu;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
-//                Toast.makeText(this, "搜索", Toast.LENGTH_SHORT).show();
-                Toasty.normal(activity, "Search").show();
-                return true;
-
             case R.id.action_edit:
                 Toasty.normal(activity, "edit").show();
+                mMenu.getItem(0).setVisible(false);
+                mMenu.getItem(1).setVisible(true);
+                return true;
+
+            case R.id.action_delete:
+                Toasty.normal(activity, "delete").show();
                 return true;
 
             default:

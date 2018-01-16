@@ -1,9 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.xjtu.bookreader.ui.UserProfileActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-</android.support.constraint.ConstraintLayout>
+
+    <data>
+
+        <variable
+            name="userId"
+            type="String" />
+
+        <variable
+            name="userName"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.xjtu.bookreader.ui.UserProfileActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_user_image"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/girl_avatar"
+                tools:layout_editor_absoluteX="145dp"
+                tools:layout_editor_absoluteY="53dp" />
+
+            <TextView
+                android:id="@+id/tv_user_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/civ_user_image"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="3dp"
+                android:fontFamily="@font/open_sans"
+                android:text="@{userId}"
+                android:textColor="@color/colorSecondaryText" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:fontFamily="@font/open_sans"
+                android:text="用户名"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="@dimen/user_center_item_font_size" />
+
+
+            <EditText
+                android:id="@+id/et_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:ems="10"
+                android:hint="@{userName}"
+                android:inputType="textPersonName"
+                android:paddingBottom="2dp"
+                android:paddingStart="2dp"
+                android:paddingTop="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/open_sans"
+                android:text="性别"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="@dimen/user_center_item_font_size" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="男"
+                    android:textAlignment="center" />
+
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="女"
+                    android:textAlignment="center"
+                    tools:layout_editor_absoluteX="210dp"
+                    tools:layout_editor_absoluteY="431dp" />
+            </RadioGroup>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:textSize="@dimen/user_center_item_font_size"
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="130dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/button_border_settings"
+                    android:fontFamily="@font/open_sans"
+                    android:text="取消"
+                    android:textColor="@color/colorPrimary" />
+
+                <Button
+                    android:textSize="@dimen/user_center_item_font_size"
+                    android:id="@+id/btn_confirm"
+                    android:layout_width="130dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/button_border_settings"
+                    android:fontFamily="@font/open_sans"
+                    android:text="修改"
+                    android:textColor="@color/colorPrimary" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

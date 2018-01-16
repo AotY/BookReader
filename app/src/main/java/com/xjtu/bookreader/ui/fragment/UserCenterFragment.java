@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.databinding.FragmentUserCenterBinding;
 import com.xjtu.bookreader.ui.HelpActivity;
@@ -26,9 +27,12 @@ import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.ui.PurchaseHistoryActivity;
 import com.xjtu.bookreader.ui.SettingsActivity;
 import com.xjtu.bookreader.ui.UserProfileActivity;
+import com.xjtu.bookreader.util.CommonUtil;
 import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
 import com.xjtu.bookreader.util.UserUtil;
+
+import es.dmoral.toasty.Toasty;
 
 
 /**
@@ -59,7 +63,7 @@ public class UserCenterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DebugUtil.debug("UserCenterFragment ---------> onPause");
+        DebugUtil.debug("UserCenterFragment ---------> onCreate");
     }
 
     @Override
@@ -74,83 +78,12 @@ public class UserCenterFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        DebugUtil.debug("UserCenterFragment ---------> onStart");
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        DebugUtil.debug("UserCenterFragment ---------> setUserVisibleHint : " + isVisibleToUser);
-        super.setUserVisibleHint(isVisibleToUser);
-        try{
-            if(getUserVisibleHint()) {//界面可见时
-                hideActionBar();
-            } else {
-                showActionBar();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
-    @Override
-    public void onResume() {
-        DebugUtil.debug("UserCenterFragment ---------> onResume");
-        super.onResume();
-//        hideActionBar();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        DebugUtil.debug("UserCenterFragment ---------> onPause");
-//        showActionBar();
-    }
-
-    @SuppressLint("RestrictedApi")
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void hideActionBar() {
-        // Remember that you should never show the action bar if the
-        // status bar is hidden, so hide that too if necessary.
-        // 取消hide, show 动画
-        ActionBar actionBar = activity.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setShowHideAnimationEnabled(false);
-            actionBar.hide();
-        }
-//        Window window = activity.getWindow();
-//        View decorView = activity.getWindow().getDecorView();
-//        // Hide the status bar.
-//        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        decorView.setSystemUiVisibility(uiOptions);
-
-    }
-
-
-    @SuppressLint("RestrictedApi")
-    private void showActionBar() {
-        ActionBar actionBar = activity.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setShowHideAnimationEnabled(false);
-            actionBar.show();
-        }
-//        activity.getSupportActionBar().show();
-//        View decorView = activity.getWindow().getDecorView();
-        // Hide the status bar.
-//        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
-//        decorView.setSystemUiVisibility(uiOptions);
-    }
 
     // 如果需要加载数据
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        DebugUtil.debug("UserCenterFragment ---------> onActivityCreated");
 
         // 设置点击事件
         initView();
@@ -169,6 +102,22 @@ public class UserCenterFragment extends Fragment {
                 if (UserUtil.isOnline(activity)) {
                     //调转到资料编辑页面
                     UserProfileActivity.start(activity);
+                }else {
+                    Toasty.normal(activity, "当前无网络连接。");
+                }
+            }
+        });
+
+        // 编辑用户名
+        userCenterBinding.ivUserNameEdit.setOnClickListener(new PerfectClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+                // 如果用户登录并且在线
+                if (UserUtil.isOnline(activity)) {
+                    //调转到资料编辑页面
+                    UserProfileActivity.start(activity);
+                }else {
+                    Toasty.normal(activity, "当前无网络连接。");
                 }
             }
         });
@@ -227,6 +176,14 @@ public class UserCenterFragment extends Fragment {
             userCenterBinding.btnLogin.setVisibility(View.GONE);
             userCenterBinding.llUserNameContainer.setVisibility(View.VISIBLE);
             userCenterBinding.setUserName(UserUtil.getUserName());
+//            userCenterBinding.setUserAvatar(UserUtil.getUserAvatar());
+            Glide.with(this)
+                    .load(UserUtil.getUserAvatar())
+                    .crossFade(500)
+                    .placeholder(R.drawable.girl_avatar)
+                    .error(R.drawable.girl_avatar)
+                    .into(userCenterBinding.civAvatarImg);
+
         } else {
             userCenterBinding.llUserNameContainer.setVisibility(View.GONE);
             userCenterBinding.btnLogin.setVisibility(View.VISIBLE);
@@ -236,6 +193,79 @@ public class UserCenterFragment extends Fragment {
     //
     private void initData() {
 
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        DebugUtil.debug("UserCenterFragment ---------> onStart");
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        DebugUtil.debug("UserCenterFragment ---------> setUserVisibleHint : " + isVisibleToUser);
+        super.setUserVisibleHint(isVisibleToUser);
+        try {
+            if (getUserVisibleHint()) {//界面可见时
+                hideActionBar();
+            } else {
+                showActionBar();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        DebugUtil.debug("UserCenterFragment ---------> onResume");
+        super.onResume();
+//        hideActionBar();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        DebugUtil.debug("UserCenterFragment ---------> onPause");
+//        showActionBar();
+    }
+
+    @SuppressLint("RestrictedApi")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void hideActionBar() {
+        // Remember that you should never show the action bar if the
+        // status bar is hidden, so hide that too if necessary.
+        // 取消hide, show 动画
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setShowHideAnimationEnabled(false);
+            actionBar.hide();
+        }
+//        Window window = activity.getWindow();
+//        View decorView = activity.getWindow().getDecorView();
+//        // Hide the status bar.
+//        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+//        decorView.setSystemUiVisibility(uiOptions);
+
+    }
+
+
+    @SuppressLint("RestrictedApi")
+    private void showActionBar() {
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setShowHideAnimationEnabled(false);
+            actionBar.show();
+        }
+//        activity.getSupportActionBar().show();
+//        View decorView = activity.getWindow().getDecorView();
+        // Hide the status bar.
+//        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+//        decorView.setSystemUiVisibility(uiOptions);
     }
 
 
