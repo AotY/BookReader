@@ -21,16 +21,20 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.databinding.FragmentUserCenterBinding;
+import com.xjtu.bookreader.event.OtherFragmentVisibleEvent;
 import com.xjtu.bookreader.ui.HelpActivity;
 import com.xjtu.bookreader.ui.LoginActivity;
 import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.ui.PurchaseHistoryActivity;
 import com.xjtu.bookreader.ui.SettingsActivity;
 import com.xjtu.bookreader.ui.UserProfileActivity;
-import com.xjtu.bookreader.util.CommonUtil;
 import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
 import com.xjtu.bookreader.util.UserUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import es.dmoral.toasty.Toasty;
 
@@ -60,10 +64,12 @@ public class UserCenterFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DebugUtil.debug("UserCenterFragment ---------> onCreate");
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -102,7 +108,7 @@ public class UserCenterFragment extends Fragment {
                 if (UserUtil.isOnline(activity)) {
                     //调转到资料编辑页面
                     UserProfileActivity.start(activity);
-                }else {
+                } else {
                     Toasty.normal(activity, "当前无网络连接。");
                 }
             }
@@ -116,7 +122,7 @@ public class UserCenterFragment extends Fragment {
                 if (UserUtil.isOnline(activity)) {
                     //调转到资料编辑页面
                     UserProfileActivity.start(activity);
-                }else {
+                } else {
                     Toasty.normal(activity, "当前无网络连接。");
                 }
             }
@@ -204,6 +210,16 @@ public class UserCenterFragment extends Fragment {
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onOtherFragmentVisiable(OtherFragmentVisibleEvent event) {
+        if (event.isVisible()) {
+            showActionBar();
+        } else {
+            hideActionBar();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         DebugUtil.debug("UserCenterFragment ---------> setUserVisibleHint : " + isVisibleToUser);
@@ -219,19 +235,16 @@ public class UserCenterFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onResume() {
         DebugUtil.debug("UserCenterFragment ---------> onResume");
         super.onResume();
-//        hideActionBar();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         DebugUtil.debug("UserCenterFragment ---------> onPause");
-//        showActionBar();
     }
 
     @SuppressLint("RestrictedApi")
@@ -285,4 +298,11 @@ public class UserCenterFragment extends Fragment {
         super.onStop();
         DebugUtil.debug("UserCenterFragment ---------> onStop");
     }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
 }
+

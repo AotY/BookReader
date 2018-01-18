@@ -98,6 +98,10 @@ android {
         implementation project(':library:banner')
         implementation project(':library:reader')
 
+
+        //dialog
+        implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
         // compile 'com.google.guava:guava:22.0-android'
         // compile project(':library:folioreader')
         // A Java ePub reader and parser framework for Android.

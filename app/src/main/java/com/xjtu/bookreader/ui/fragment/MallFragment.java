@@ -2,8 +2,10 @@ package com.xjtu.bookreader.ui.fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ import com.xjtu.bookreader.bean.BannerItemBean;
 import com.xjtu.bookreader.bean.MallRecommendItemBean;
 import com.xjtu.bookreader.databinding.FragmentMallBinding;
 import com.xjtu.bookreader.databinding.MallHeaderItemBinding;
+import com.xjtu.bookreader.event.OtherFragmentVisibleEvent;
 import com.xjtu.bookreader.http.RequestImpl;
 import com.xjtu.bookreader.http.cache.ACache;
 import com.xjtu.bookreader.model.MallModel;
@@ -39,6 +42,8 @@ import com.xjtu.bookreader.util.PerfectClickListener;
 import com.xjtu.bookreader.util.SharedPreferencesUtils;
 import com.xjtu.bookreader.util.TimeUtil;
 import com.youth.banner.listener.OnBannerListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,21 +176,26 @@ public class MallFragment extends BaseFragment<FragmentMallBinding> {
         bindingView.xrvRecommend.setFocusable(false);
         // 开始图片请求
         Glide.with(getActivity()).resumeRequests();
-
-
-//        showActionBar();
-
     }
 
-    private void showActionBar() {
-        View decorView = activity.getWindow().getDecorView();
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
-        decorView.setSystemUiVisibility(uiOptions);
-        // Remember that you should never show the action bar if the
-        // status bar is hidden, so hide that too if necessary.
-        activity.getSupportActionBar().show();
+
+    //显示或者隐藏ActionBar
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        DebugUtil.debug("MallFragment ---------> setUserVisibleHint : " + isVisibleToUser);
+        super.setUserVisibleHint(isVisibleToUser);
+        try {
+            if (getUserVisibleHint()) {//界面可见时
+                EventBus.getDefault().post(new OtherFragmentVisibleEvent(true));
+            } else{
+                EventBus.getDefault().post(new OtherFragmentVisibleEvent(false));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     /**
      *

@@ -2,9 +2,12 @@ package com.xjtu.bookreader.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.koolearn.android.kooreader.libraryService.BookCollectionShadow;
 import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.adapter.ShelfAdapter;
@@ -21,16 +26,19 @@ import com.xjtu.bookreader.base.BaseFragment;
 import com.xjtu.bookreader.bean.model.BookOfShelf;
 import com.xjtu.bookreader.databinding.FragmentShelfBinding;
 import com.xjtu.bookreader.event.BackFromKooReaderEvent;
+import com.xjtu.bookreader.event.OtherFragmentVisibleEvent;
 import com.xjtu.bookreader.event.SwitchFragmentEvent;
 import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.util.CommonUtil;
 import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
+import com.xjtu.bookreader.view.decoration.GridDividerDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.litepal.crud.DataSupport;
+
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -55,7 +63,8 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 
     private final BookCollectionShadow myCollection = new BookCollectionShadow();
 
-    private Menu mMenu ;
+    private Menu mMenu;
+
     public ShelfFragment() {
         // Required empty public constructor
     }
@@ -91,6 +100,9 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 
         // 准备就绪
         mIsPrepared = true;
+
+        mShelfAdapter = new ShelfAdapter(activity, myCollection);
+
         /**
          * 因为启动时先走loadData() 再走onActivityCreated，
          * 所以此处要额外调用load(),不然最初不会加载内容
@@ -121,8 +133,12 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
         // 设置LayoutManger
         mLayoutManager = new GridLayoutManager(activity, 3);
         bindingView.xrvShelf.setLayoutManager(mLayoutManager);
-        scrollRecycleView();
 
+        // 设置divider
+        GridDividerDecoration gridItemDecoration = new GridDividerDecoration(activity, R.drawable.shelf_divider);
+        bindingView.xrvShelf.addItemDecoration(gridItemDecoration);
+
+        scrollRecycleView();
 
         // 切换到MallFragment
         bindingView.btnShelfEmpty.setOnClickListener(new PerfectClickListener() {
@@ -135,6 +151,22 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
         });
     }
 
+    //显示或者隐藏ActionBar
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        DebugUtil.debug("ShelfFragment ---------> setUserVisibleHint : " + isVisibleToUser);
+        super.setUserVisibleHint(isVisibleToUser);
+        try {
+            if (getUserVisibleHint()) {//界面可见时
+                EventBus.getDefault().post(new OtherFragmentVisibleEvent(true));
+            } else {
+                EventBus.getDefault().post(new OtherFragmentVisibleEvent(false));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onStart() {
@@ -187,17 +219,66 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
         switch (item.getItemId()) {
             case R.id.action_edit:
                 Toasty.normal(activity, "edit").show();
-                mMenu.getItem(0).setVisible(false);
-                mMenu.getItem(1).setVisible(true);
+                mMenu.getItem(1).setVisible(false); // 编辑
+                mMenu.getItem(0).setVisible(true); // 完成
+                mMenu.getItem(2).setVisible(true); // 删除
+
+                activity.getSupportActionBar().setTitle("");
+//                actionBar.setIcon(R.drawable.actionbar_finish);
+                mShelfAdapter.setEdit(true);
+                // 可以要通知ShelfAdapter重新加载数据
                 return true;
 
             case R.id.action_delete:
                 Toasty.normal(activity, "delete").show();
+                // 弹出对话框
+
+                final List<BookOfShelf> deleteList = mShelfAdapter.getDeleteList();
+                DebugUtil.debug("deleteList.size() ------------------> " + deleteList.size());
+                if (deleteList == null || deleteList.size() == 0)
+                    return true;
+                new MaterialDialog.Builder(activity)
+                        .title("删除")
+                        .content("确认删除选中文件吗？")
+                        .positiveText("确定")
+                        .negativeText("取消")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                DebugUtil.debug("MaterialDialog -------------------> onClick");
+//                                EventBus.getDefault().post(new ShelfDeleteEvent());
+                                // 更新数据库
+                                for (BookOfShelf item : deleteList) {
+                                    item.setDeleted(1);
+                                    item.save();
+                                }
+                                // 完成编辑
+                                finishEdit();
+                                loadCustomData();
+//                                // 移除数据
+                            }
+                        }).show();
+
+                return true;
+
+            case R.id.action_finish:
+                Toasty.normal(activity, "finish").show();
+                mShelfAdapter.setEdit(false);
+                finishEdit();
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    private void finishEdit() {
+        mMenu.getItem(0).setVisible(false); // 完成
+        mMenu.getItem(2).setVisible(false); // 删除
+        mMenu.getItem(1).setVisible(true); // 编辑
+        activity.getSupportActionBar().setTitle("书城");
+        mShelfAdapter.setEdit(false);
     }
 
     /**
@@ -220,7 +301,7 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 
         // 这里按照上次阅读时间排序(降序）
 //        bookOfShelfList = DataSupport.findAll(BookOfShelf.class);
-        bookOfShelfList = DataSupport.where().order("lastTime desc").find(BookOfShelf.class);
+        bookOfShelfList = DataSupport.where("isDeleted = ? ", "0").order("lastTime desc").find(BookOfShelf.class);
 
         if (mShelfAdapter == null) {
             mShelfAdapter = new ShelfAdapter(activity, myCollection);
@@ -237,7 +318,7 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
         bindingView.srlShelf.setRefreshing(false);
 
         // 如果没有数据，则设置空白页面
-       if (bookOfShelfList.size() == 0) {
+        if (bookOfShelfList.size() == 0) {
             bindingView.rlShelfEmptyContainer.setVisibility(View.VISIBLE);
         } else {
             bindingView.rlShelfEmptyContainer.setVisibility(View.GONE);

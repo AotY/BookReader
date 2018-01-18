@@ -49,6 +49,11 @@ public class BookOfShelf extends DataSupport implements Serializable {
     // 文件大小
     private long fileSize;
 
+    //标记是否已经删除
+    @Column(defaultValue = "0")
+    private int isDeleted;
+
+
     public BookOfShelf() {
 
     }
@@ -57,6 +62,7 @@ public class BookOfShelf extends DataSupport implements Serializable {
         this.id = id;
         this.title = title;
     }
+
 
 
     public long getId() {
@@ -145,5 +151,14 @@ public class BookOfShelf extends DataSupport implements Serializable {
 
     public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
+    }
+
+
+    public int isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(int deleted) {
+        isDeleted = deleted;
     }
 }

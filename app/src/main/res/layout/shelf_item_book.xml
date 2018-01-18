@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <data>
@@ -14,18 +15,33 @@
         android:id="@+id/ll_item_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="25dp"
+        android:background="#EEFEFEFE"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:elevation="5dp"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/shelf_item_background"
+                android:paddingRight="3dp"
+                android:paddingStart="3dp"
+                android:paddingTop="3dp"
+                android:visibility="visible" />
+
+            <ImageView
                 android:id="@+id/iv_top_photo"
                 android:layout_width="match_parent"
-                android:layout_height="155dp"
-                android:background="@color/colorPageBg"
+                android:layout_height="150dp"
+                android:background="@drawable/myrect"
+                android:elevation="5dp"
                 android:scaleType="fitXY"
                 android:showBookImg='@{bookOfShelf.coverImage}'
                 android:src="@drawable/img_transition_default"
@@ -34,46 +50,76 @@
                 app:layout_collapseParallaxMultiplier="0.7" />
 
             <ImageView
+                android:id="@+id/iv_edit_background"
                 android:layout_width="match_parent"
-                android:layout_height="155dp"
-                android:layout_alignEnd="@+id/imageView"
+                android:layout_height="150dp"
                 android:layout_alignParentTop="true"
-                android:background="#55333333" />
+                android:background="#88333333"
+                android:elevation="5dp"
+                android:visibility="visible" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/download_pause" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/download_start" />
-
-            <ImageView
+                android:id="@+id/iv_download_img"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:padding="2dp"
+                android:layout_centerInParent="true"
+                android:elevation="5dp"
+                android:src="@drawable/download_pause"
+                android:visibility="visible" />
+
+
+            <ImageView
+                android:id="@+id/iv_select_img"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:elevation="5dp"
+                android:paddingBottom="10dp"
+                android:paddingStart="10dp"
                 android:src="@drawable/delete_select_normal"
-                android:id="@+id/imageView" />
+                android:visibility="visible"
+                tools:ignore="RtlSymmetry" />
+
+            <ProgressBar
+                android:id="@+id/pb_downloading"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_centerInParent="true"
+                android:elevation="5dp"
+                android:visibility="visible" />
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_download_start"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:src="@drawable/download_start" />-->
+
+
+            <!--<ImageView-->
+            <!--android:layout_width="27dp"-->
+            <!--android:layout_height="27dp"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:paddingBottom="7dp"-->
+            <!--android:paddingStart="7dp"-->
+            <!--android:src="@drawable/delete_select_press"-->
+            <!--tools:ignore="RtlSymmetry" />-->
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="3dp"
-            android:ellipsize="end"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:maxLines="2"
-            android:text="@{bookOfShelf.title}"
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="12sp" />
+        <!--<TextView-->
+        <!--android:id="@+id/tv_name"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_marginTop="3dp"-->
+        <!--android:ellipsize="end"-->
+        <!--android:focusable="true"-->
+        <!--android:focusableInTouchMode="true"-->
+        <!--android:maxLines="2"-->
+        <!--android:text="@{bookOfShelf.title}"-->
+        <!--android:textColor="@color/colorSecondaryText"-->
+        <!--android:textSize="12sp" />-->
 
         <!--<TextView-->
         <!--android:id="@+id/tv_rate"-->

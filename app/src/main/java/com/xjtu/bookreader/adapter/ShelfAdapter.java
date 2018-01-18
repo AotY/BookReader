@@ -16,10 +16,14 @@ import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.bean.model.BookOfShelf;
 import com.xjtu.bookreader.databinding.ShelfHeaderItemBookBinding;
 import com.xjtu.bookreader.databinding.ShelfItemBookBinding;
+import com.xjtu.bookreader.event.ShelfDeleteEvent;
 import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.KooreaderUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +51,14 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final int TYPE_HEADER_BOOK = -3;
     private static final int TYPE_CONTENT_BOOK = -4;
 
-
     private List<BookOfShelf> list;
 
     private BookCollectionShadow myCollection;
+
+    private List<BookOfShelf> deleteList;
+
+    // 是否处于编辑模式
+    private boolean isEdit = false;
 
     public ShelfAdapter(Context activity, BookCollectionShadow myCollection) {
         this.activity = (MainActivity) activity;
@@ -58,7 +66,9 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         list = new ArrayList<>();
         KooreaderUtil.verifyStoragePermissions(this.activity);
+
     }
+
 
     /**
      * getItemViewType
@@ -85,9 +95,6 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             case TYPE_HEADER_BOOK:
                 ShelfHeaderItemBookBinding mBindHeader = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.shelf_header_item_book, parent, false);
                 return new HeaderViewHolder(mBindHeader.getRoot());
-//            case TYPE_FOOTER_BOOK:
-//                ShelfFooterItemBookBinding mBindFooter = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.shelf_footer_item_book, parent, false);
-//                return new FooterViewHolder(mBindFooter.getRoot());
             default:
                 ShelfItemBookBinding mBindBook = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.shelf_item_book, parent, false);
                 return new BookViewHolder(mBindBook.getRoot());
@@ -99,23 +106,18 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
             headerViewHolder.bindItem();
-        }
-//        else if (holder instanceof FooterViewHolder) {
-//            FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
-//            footerViewHolder.bindItem();
-//        }
-        else if (holder instanceof BookViewHolder) {
+        } else if (holder instanceof BookViewHolder) {
             BookViewHolder bookViewHolder = (BookViewHolder) holder;
             if (list != null && list.size() > 0) {
                 // 内容从"1"开始 bookViewHolder.bindItem(list.get(position - 1), position - 1);
-                DebugUtil.debug("list.size() ----------------> " + list.size());
+//                DebugUtil.debug("list.size() ----------------> " + list.size());
                 bookViewHolder.bindItem(list.get(position - 1), position - 1);
             }
         }
     }
 
     /**
-     * 这里是？ 一个头，一个尾巴吗？
+     * 因为增加了一个头部布局
      *
      * @return
      */
@@ -187,6 +189,14 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    // 设置是否处于编辑状态
+    public void setEdit(boolean isEdit) {
+        this.isEdit = isEdit;
+        if (isEdit) {
+            deleteList = new ArrayList<>();
+        }
+        notifyDataSetChanged();
+    }
 
     /**
      * BookView
@@ -203,48 +213,113 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         private void bindItem(final BookOfShelf bookOfShelf, int position) {
             mBindBook.setBookOfShelf(bookOfShelf);
-
             // Evaluates the pending bindings, updating any Views that have expressions bound to modified variables.
             mBindBook.executePendingBindings();
+
+            DebugUtil.debug("bindItem ---------> isEdit : " + isEdit);
+            // 如果是编辑状态
+            if (isEdit) {
+                mBindBook.ivSelectImg.setVisibility(View.VISIBLE);
+                mBindBook.ivSelectImg.setImageResource(R.drawable.delete_select_normal);
+            } else { // 不是编辑状态
+                mBindBook.ivSelectImg.setVisibility(View.GONE);
+            }
+
+            // 判断是否已经下载
+            if (bookOfShelf.isDownloaded()) {
+                mBindBook.ivDownloadImg.setVisibility(View.GONE);
+                mBindBook.pbDownloading.setVisibility(View.GONE);
+
+                mBindBook.ivEditBackground.setVisibility(View.GONE);
+            } else {
+                mBindBook.ivDownloadImg.setVisibility(View.VISIBLE);
+                mBindBook.ivEditBackground.setVisibility(View.VISIBLE);
+                mBindBook.ivDownloadImg.setImageResource(R.drawable.download_start);
+                mBindBook.pbDownloading.setVisibility(View.GONE); // 点击后才设置可见
+            }
 
             mBindBook.llItemTop.setOnClickListener(new PerfectClickListener() {
                 @Override
                 protected void onNoDoubleClick(View v) {
-                    // 判断书籍是否已经下载
-                    if (bookOfShelf.isDownloaded()) {
-                        final String bookPath = bookOfShelf.getBookPath();
-                        final long bookId = bookOfShelf.getId();
-
-                        if (myCollection != null) {
-                            myCollection.bindToService(activity, new Runnable() {
-                                public void run() {
-                                    Book book = myCollection.getBookByFile(bookPath);
-                                    if (book != null) {
-                                        book.setTitle(bookOfShelf.getTitle());
-                                        book.setMyCoverPath(bookOfShelf.getCoverImage());
-                                        book.setId(bookOfShelf.getId());
-
-                                        DebugUtil.debug("bookOfShelf.getId() ------------------> " + bookOfShelf.getId());
-//                                        book.setBookId(bookOfShelf.getId());
-                                        // 这里打开书籍，返回时需要回传时间和进度。
-                                        Bookmark bookmark = null;
-                                        KooreaderUtil.openBookForResult(activity, MainActivity.REQUEST_FROM_SHELF_ADAPTER, book, bookmark);
-                                    } else {
-                                        Toasty.error(activity, "打开失败，文件不存在, paht --->" + bookPath).show();
-                                    }
-                                }
-                            });
+                    if (isEdit) { //如果处于编辑状态
+                        // 选择就更换右上角图片，并且将当前item加入deleteList
+                        if (deleteList.contains(bookOfShelf)) {
+                            mBindBook.ivSelectImg.setImageResource(R.drawable.delete_select_normal);
+                            deleteList.remove(bookOfShelf);
+                        } else {
+                            mBindBook.ivSelectImg.setImageResource(R.drawable.delete_select_press);
+                            deleteList.add(bookOfShelf);
                         }
+
                     } else {
-                        // 如果没有下载，点击则下载； 然后更新数据库
+                        // 判断书籍是否已经下载
+                        if (bookOfShelf.isDownloaded()) {
+                            final String bookPath = bookOfShelf.getBookPath();
+                            final long bookId = bookOfShelf.getId();
+
+                            if (myCollection != null) {
+                                myCollection.bindToService(activity, new Runnable() {
+                                    public void run() {
+                                        Book book = myCollection.getBookByFile(bookPath);
+                                        if (book != null) {
+                                            book.setTitle(bookOfShelf.getTitle());
+                                            book.setMyCoverPath(bookOfShelf.getCoverImage());
+                                            book.setId(bookId);
+
+                                            DebugUtil.debug("bookOfShelf.getId() ------------------> " + bookId);
+//                                        book.setBookId(bookOfShelf.getId());
+                                            // 这里打开书籍，返回时需要回传时间和进度。
+                                            Bookmark bookmark = null;
+                                            KooreaderUtil.openBookForResult(activity, MainActivity.REQUEST_FROM_SHELF_ADAPTER, book, bookmark);
+                                        } else {
+                                            Toasty.error(activity, "打开失败，文件不存在, paht --->" + bookPath).show();
+                                        }
+                                    }
+                                });
+                            }
+                        } else {
+                            // 如果没有下载，点击则下载； 然后更新数据库
+                            mBindBook.ivDownloadImg.setImageResource(R.drawable.download_pause);
+                            mBindBook.pbDownloading.setVisibility(View.VISIBLE); // 点击后才设置可见
+//                        mBindBook.pbDownloading.setProgress();
+                            // 开始下载，设置进度
+                        }
 
                     }
+
                 }
             });
 
         }
     }
 
+
+//    public void onDeleteEvent(ShelfDeleteEvent event) {
+//
+//        if (deleteList == null || deleteList.size() == 0)
+//            return;
+//
+//        DebugUtil.debug("deleteList.size() ------------------> " + deleteList.size());
+//
+//        // 更新数据库
+//        for (BookOfShelf item : deleteList) {
+//            item.setDeleted(1);
+//            item.save();
+//        }
+//
+//        // 移除数据
+//        list.removeAll(deleteList);
+//
+//
+//        //退出编辑状态
+//        this.isEdit = false;
+//        notifyDataSetChanged();
+//    }
+
+
+    public List<BookOfShelf> getDeleteList() {
+        return deleteList;
+    }
 
     public void updateLoadStatus(int status) {
         this.status = status;
@@ -268,6 +343,5 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void addAll(List<BookOfShelf> list) {
         this.list.addAll(list);
     }
-
 
 }

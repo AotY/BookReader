@@ -7,9 +7,9 @@
     </data>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/rl_shelf_empty_container"
@@ -52,21 +52,21 @@
         </RelativeLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout xmlns:tools="http://schemas.android.com/tools"
-            android:visibility="visible"
             android:id="@+id/srl_shelf"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="50dp"
+            android:visibility="visible"
             tools:activity="com.xjtu.bookreader.ui.fragment.ShelfFragment">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/xrv_shelf"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="40dp"
                 android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:scrollbarFadeDuration="1"
                 android:scrollbarSize="4dp"

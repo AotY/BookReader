@@ -64,24 +64,6 @@ public class BookReaderApplication extends ZLAndroidApplication {
      */
     private void initDBData() {
         final String path = Environment.getExternalStorageDirectory() + "/Download";
-//        bookDBHelper.insertBook("1", );
-//        bookDBHelper.insertBook("2", path + "/步履不停.epub");
-//        bookDBHelper.insertBook("3", path + "/艺术的故事.epub");
-//        bookDBHelper.insertBook("4", path + "/我的前半生.epub");
-//        bookDBHelper.insertBook("5", path + "/百年孤独.epub");
-//        bookDBHelper.insertBook("6", path + "/活着.epub");
-//        bookDBHelper.insertBook("7", path + "/人间失格.epub");
-//        bookDBHelper.insertBook("8", path + "/月亮与六便士.epub");
-//
-//        bookOfShelfList.add(new BookOfShelf("1", "芳华", ));
-//        bookOfShelfList.add(new BookOfShelf("2", "步履不停", ""));
-//        bookOfShelfList.add(new BookOfShelf("3", ""));
-//        bookOfShelfList.add(new BookOfShelf("4", "", ""));
-//        bookOfShelfList.add(new BookOfShelf("5", "", ""));
-//        bookOfShelfList.add(new BookOfShelf("6", "", ""));
-//        bookOfShelfList.add(new BookOfShelf("7", "", ""));
-//        bookOfShelfList.add(new BookOfShelf("8", "月亮与六便士", "https://img1.doubanio.com/lpic/s2659208.jpg"));
-
         BookOfShelf bookOfShelf1 = new BookOfShelf(10001, "芳华");
         bookOfShelf1.setDownloaded(true);
         bookOfShelf1.setBookPath(path + "/芳华.epub");
@@ -123,6 +105,13 @@ public class BookReaderApplication extends ZLAndroidApplication {
         bookOfShelf7.setBookPath(path + "/人间失格.epub");
         bookOfShelf7.setCoverImage("https://img3.doubanio.com/lpic/s6100756.jpg");
         bookOfShelf7.save();
+
+
+        BookOfShelf bookOfShelf8 = new BookOfShelf(10008, "月亮与六便士");
+        bookOfShelf8.setDownloaded(false);
+        bookOfShelf8.setBookPath(path + "/月亮与六便士.epub");
+        bookOfShelf8.setCoverImage("https://img1.doubanio.com/lpic/s2659208.jpg");
+        bookOfShelf8.save();
     }
 
 
