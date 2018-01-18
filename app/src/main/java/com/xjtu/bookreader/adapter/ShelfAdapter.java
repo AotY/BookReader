@@ -16,14 +16,10 @@ import com.xjtu.bookreader.R;
 import com.xjtu.bookreader.bean.model.BookOfShelf;
 import com.xjtu.bookreader.databinding.ShelfHeaderItemBookBinding;
 import com.xjtu.bookreader.databinding.ShelfItemBookBinding;
-import com.xjtu.bookreader.event.ShelfDeleteEvent;
 import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.KooreaderUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -192,8 +188,10 @@ public class ShelfAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     // 设置是否处于编辑状态
     public void setEdit(boolean isEdit) {
         this.isEdit = isEdit;
-        if (isEdit) {
+        if (isEdit || deleteList == null) {
             deleteList = new ArrayList<>();
+        } else {
+            deleteList = null;
         }
         notifyDataSetChanged();
     }

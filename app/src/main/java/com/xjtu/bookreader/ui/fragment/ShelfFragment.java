@@ -9,13 +9,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -32,7 +32,7 @@ import com.xjtu.bookreader.ui.MainActivity;
 import com.xjtu.bookreader.util.CommonUtil;
 import com.xjtu.bookreader.util.DebugUtil;
 import com.xjtu.bookreader.util.PerfectClickListener;
-import com.xjtu.bookreader.view.decoration.GridDividerDecoration;
+import com.xjtu.bookreader.view.decoration.SimpleDividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -64,6 +64,8 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
     private final BookCollectionShadow myCollection = new BookCollectionShadow();
 
     private Menu mMenu;
+
+    private static final int spanCount = 3; //每行3个item
 
     public ShelfFragment() {
         // Required empty public constructor
@@ -115,7 +117,7 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
     private void initView() {
         bindingView.srlShelf.setColorSchemeColors(CommonUtil.getColor(R.color.colorPrimary));
 
-        // 刷新页面
+        // 刷新页面 不用刷新吧
         bindingView.srlShelf.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -131,12 +133,26 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
         });
 
         // 设置LayoutManger
-        mLayoutManager = new GridLayoutManager(activity, 3);
+
+        mLayoutManager = new GridLayoutManager(activity, spanCount);
         bindingView.xrvShelf.setLayoutManager(mLayoutManager);
 
         // 设置divider
-        GridDividerDecoration gridItemDecoration = new GridDividerDecoration(activity, R.drawable.shelf_divider);
-        bindingView.xrvShelf.addItemDecoration(gridItemDecoration);
+//        GridDividerDecoration gridItemDecoration = new GridDividerDecoration(activity, R.drawable.shelf_divider);
+
+//        HorizontalDividerItemDecoration horizontalDividerItemDecoration = new HorizontalDividerItemDecoration.Builder(activity).drawable(R.drawable.shelf_divider).build();
+
+
+//        MyDividerItemDecoration myDividerItemDecoration = new MyDividerItemDecoration(activity, MyDividerItemDecoration.VERTICAL);
+//        myDividerItemDecoration.setDrawable(activity.getResources().getDrawable(R.drawable.shelf_divider));
+//        myDividerItemDecoration.setSpanCount(spanCount);
+//        bindingView.xrvShelf.addItemDecoration(myDividerItemDecoration);
+
+        SimpleDividerItemDecoration simpleDividerItemDecoration = new SimpleDividerItemDecoration(activity, R.drawable.shelf_divider, spanCount);
+        bindingView.xrvShelf.addItemDecoration(simpleDividerItemDecoration);
+
+        bindingView.xrvShelf.setItemAnimator(new DefaultItemAnimator());
+        DebugUtil.debug("bindingView.xrvShelf.getItemDecorationCount() ---------------------> " + bindingView.xrvShelf.getItemDecorationCount());
 
         scrollRecycleView();
 
@@ -303,6 +319,16 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 //        bookOfShelfList = DataSupport.findAll(BookOfShelf.class);
         bookOfShelfList = DataSupport.where("isDeleted = ? ", "0").order("lastTime desc").find(BookOfShelf.class);
 
+        DebugUtil.debug("loadCustomData ----------------> bookOfShelfList size: " + bookOfShelfList.size());
+
+        // 如果没有数据，则设置空白页面
+        if (bookOfShelfList.size() == 0) {
+            bindingView.rlShelfEmptyContainer.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            bindingView.rlShelfEmptyContainer.setVisibility(View.GONE);
+        }
+
         if (mShelfAdapter == null) {
             mShelfAdapter = new ShelfAdapter(activity, myCollection);
         }
@@ -317,12 +343,6 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
 //        }
         bindingView.srlShelf.setRefreshing(false);
 
-        // 如果没有数据，则设置空白页面
-        if (bookOfShelfList.size() == 0) {
-            bindingView.rlShelfEmptyContainer.setVisibility(View.VISIBLE);
-        } else {
-            bindingView.rlShelfEmptyContainer.setVisibility(View.GONE);
-        }
 
 //        mIsFirst = false;
 
@@ -441,6 +461,7 @@ public class ShelfFragment extends BaseFragment<FragmentShelfBinding> {
     @Override
     public void onStop() {
         DebugUtil.debug("ShelfFragment ---------> onStop");
+        EventBus.getDefault().post(new OtherFragmentVisibleEvent(false));
         super.onStop();
     }
 

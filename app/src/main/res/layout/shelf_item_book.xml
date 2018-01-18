@@ -15,67 +15,65 @@
         android:id="@+id/ll_item_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="25dp"
-        android:background="#EEFEFEFE"
-        android:orientation="vertical">
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <!--<ImageView
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:elevation="5dp"
+                android:layout_height="151dp"
                 android:layout_alignParentTop="true"
                 android:background="@drawable/shelf_item_background"
-                android:paddingRight="3dp"
-                android:paddingStart="3dp"
-                android:paddingTop="3dp"
-                android:visibility="visible" />
+                android:padding="5dp"
+                android:visibility="visible" />-->
 
+            <!--android:background="@drawamy_rectrect"-->
             <ImageView
                 android:id="@+id/iv_top_photo"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@drawable/myrect"
-                android:elevation="5dp"
+                android:layout_width="130dp"
+                android:layout_height="155dp"
+                android:elevation="6dp"
                 android:scaleType="fitXY"
+                android:background="@drawable/my_rect"
                 android:showBookImg='@{bookOfShelf.coverImage}'
-                android:src="@drawable/img_transition_default"
                 android:transitionName="@string/transition_book_img"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7" />
 
+
+            <!--android:src="@drawable/shelf_edit_background"-->
+                <!--android:background="#88313131"-->
             <ImageView
                 android:id="@+id/iv_edit_background"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_width="130dp"
+                android:layout_height="155dp"
                 android:layout_alignParentTop="true"
-                android:background="#88333333"
-                android:elevation="5dp"
-                android:visibility="visible" />
+                android:src="#88313131"
+                android:background="@drawable/my_rect"
+                android:elevation="7dp"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_download_img"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_centerInParent="true"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 android:src="@drawable/download_pause"
                 android:visibility="visible" />
 
 
             <ImageView
                 android:id="@+id/iv_select_img"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_alignParentEnd="true"
-                android:elevation="5dp"
-                android:paddingBottom="10dp"
-                android:paddingStart="10dp"
+                android:elevation="7dp"
                 android:src="@drawable/delete_select_normal"
                 android:visibility="visible"
                 tools:ignore="RtlSymmetry" />
@@ -83,10 +81,10 @@
             <ProgressBar
                 android:id="@+id/pb_downloading"
                 style="?android:attr/progressBarStyle"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_centerInParent="true"
-                android:elevation="5dp"
+                android:elevation="7dp"
                 android:visibility="visible" />
 
             <!--<ImageView-->
@@ -128,6 +126,7 @@
         <!--android:layout_gravity="center_horizontal"-->
         <!--android:text='@{@string/string_rating+bean.rating.average}'-->
         <!--android:textSize="10sp" />-->
+
 
     </LinearLayout>
 </layout>

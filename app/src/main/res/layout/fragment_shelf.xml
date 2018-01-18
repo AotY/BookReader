@@ -55,7 +55,7 @@
             android:id="@+id/srl_shelf"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="50dp"
+            android:paddingBottom="25dp"
             android:visibility="visible"
             tools:activity="com.xjtu.bookreader.ui.fragment.ShelfFragment">
 
@@ -63,16 +63,22 @@
                 android:id="@+id/xrv_shelf"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="40dp"
+                android:background="#EEFEFEFE"
+
+                android:paddingBottom="20dp"
+                android:layout_marginTop="5dp"
+
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+
                 android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:scrollbarFadeDuration="1"
-                android:scrollbarSize="4dp"
+                android:scrollbarSize="2dp"
+                android:scrollbarStyle="outsideOverlay"
                 android:scrollbars="vertical" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
+
 
     </LinearLayout>
 </layout>

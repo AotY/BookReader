@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:text="Show Elevation"></TextView>
+
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text=""></android.support.v4.widget.Space>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="Without Elevation"></TextView>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/my_rect"
+        android:elevation="10dp"
+        android:gravity="center"
+        android:text="Round Cornered Image Background"></TextView>
+
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text=""></android.support.v4.widget.Space>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@android:color/white"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:text="Rectange Background"></TextView>
+
+
+</LinearLayout>
